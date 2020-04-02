@@ -16,37 +16,51 @@ Un projet pour effectuer du suivi énergétique ouvert dans les bâtiments.
 ##### Chirpstack quickstart
 [Chirpstack quistart guide](https://www.chirpstack.io/guides/debian-ubuntu/ "Chirpstack quick guide in English")
 
-Tout d'abord il faut installer un programme qui pemette la communication via le protocole MQTT. Ce programme qui implémente le protocol MQTT est Mosquitto.
-Inline ```commande```
+**Installation de programmes complémentaires**
+Les trois programmes suivants doivent être installé pour le bon fonctionnement
+- Mosquitto: un programme qui implémente le protocole MQTT qui fonctionne sur des messages en publication / subscription.
+- Redis: pour le stockage de données transitoire
+- PostgreSQL: une base de données
+
 ```
 sudo apt install mosquitto mosquitto-clients redis-server redis-tools postgresql
 ``` 
-Setup PostgreSQL databases and users
-To enter the command line utility for PostgreSQL:
-
+**Initialisation de la base PostgreSQL et des utilisateurs**
+```
 sudo -u postgres psql
+
 Inside this prompt, execute the following queries to set up the databases that are used by the ChirpStack stack components. It is recommended to change the usernames and passwords. Just remember to use these other values when updating the chirpstack-network-server.toml and chirpstack-application-server.toml configuration files. Since these two applications both use the same table to track database upgrades, they must have separate databases.
 
 -- set up the users and the passwords
 -- (note that it is important to use single quotes and a semicolon at the end!)
+
 create role chirpstack_as with login password 'dbpassword';
 create role chirpstack_ns with login password 'dbpassword';
 
 -- create the database for the servers
+
 create database chirpstack_as with owner chirpstack_as;
 create database chirpstack_ns with owner chirpstack_ns;
 
 -- change to the ChirpStack Application Server database
+
 \c chirpstack_as
 
 -- enable the pq_trgm and hstore extensions
 -- (this is needed to facilitate the search feature)
+
 create extension pg_trgm;
+
 -- (this is needed to store additional k/v meta-data)
+
 create extension hstore;
 
 -- exit psql
+
 \q
+```
+
+
 Setup ChirpStack software repository
 ChirpStack provides a repository that is compatible with the Ubuntu apt package system. First make sure that both dirmngr and apt-transport-https are installed:
 
