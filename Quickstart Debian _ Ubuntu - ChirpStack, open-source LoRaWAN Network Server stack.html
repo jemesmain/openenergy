@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<!-- saved from url=(0047)https://www.chirpstack.io/guides/debian-ubuntu/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="./Quickstart Debian _ Ubuntu - ChirpStack, open-source LoRaWAN Network Server stack_files/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="./Quickstart Debian _ Ubuntu - ChirpStack, open-source LoRaWAN Network Server stack_files/bootstrap.min(1).css">
+  <link rel="stylesheet" href="./Quickstart Debian _ Ubuntu - ChirpStack, open-source LoRaWAN Network Server stack_files/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+  <link rel="stylesheet" href="./Quickstart Debian _ Ubuntu - ChirpStack, open-source LoRaWAN Network Server stack_files/docs.css">
+  <link rel="stylesheet" href="./Quickstart Debian _ Ubuntu - ChirpStack, open-source LoRaWAN Network Server stack_files/highlight.css">
+  <title>Quickstart Debian / Ubuntu - ChirpStack, open-source LoRaWAN Network Server stack</title>
+<style>@media print {#ghostery-purple-box {display:none !important}}</style></head>
+
+<body>
+  <nav id="topnavrow" class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand" href="https://www.chirpstack.io/">
+        <img src="./Quickstart Debian _ Ubuntu - ChirpStack, open-source LoRaWAN Network Server stack_files/logo.png" height="40">
+      </a>
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navcollapse" aria-controls="navcollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://forum.chirpstack.io/"><i class="fab fa-discourse"></i> forum.chirpstack.io</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <nav class="navbar navbar-expand-lg navbar-light py-0 navbar-components">
+    <div class="container">
+      <div id="navcollapse" class="collapse navbar-collapse my-0">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/">Home</a>
+          <a class="nav-item nav-link px-3 mx-2 active" href="https://www.chirpstack.io/overview/">Getting started</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/gateway-bridge/">Gateway Bridge</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/network-server/">Network Server</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/application-server/">Application Server</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/geolocation-server/">Geolocation Server</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/gateway-os/">Gateway OS</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+
+<section class="documentation">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+         <aside>
+  <div id="sidebar" class="nav-collapse">
+    <ul class="sidebar-menu">
+      
+      
+        
+          <li class="sub-menu">
+            <a href="https://www.chirpstack.io/overview/">
+              <i class="fas fa-hand-point-right"></i>
+              <span>Overview</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  
+                    <li><a href="https://www.chirpstack.io/overview/"> Project</a></li>
+                  
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/overview/architecture/"> Architecture</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+          <li class="sub-menu active">
+            <a href="https://www.chirpstack.io/guides/">
+              <i class="fas fa-book-open"></i>
+              <span>Guides</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  
+                
+              
+                
+                  <li class="active"><a href="https://www.chirpstack.io/guides/debian-ubuntu/"> Quickstart Debian / Ubuntu</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/guides/docker-compose/"> Quickstart Docker Compose</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/guides/google-cloud-platform/"> Quickstart Google Cloud Platform</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/guides/microsoft-azure/"> Quickstart Microsoft Azure</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/guides/ansible-vagrant/"> Ansible and Vagrant</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/guides/raspberry-pi/"> Raspberry Pi</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/guides/mqtt-authentication/"> MQTT authentication</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/guides/first-gateway-device/"> First gateway and device</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/guides/thingsboard/"> ThingsBoard getting started</a></li>
+                
+              
+                
+                  
+                    <li><a href="https://www.chirpstack.io/guides/troubleshooting/"> Troubleshooting</a></li>
+                  
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+          <li class="sub-menu">
+            <a href="https://www.chirpstack.io/install/">
+              <i class="fas fa-download"></i>
+              <span>Install</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/install/requirements/"> Requirements</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/install/install/"> General installation</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/install/docker/"> Docker install</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/install/configuration/"> Configuration</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+          <li class="sub-menu">
+            <a href="https://www.chirpstack.io/community/">
+              <i class="fab fa-github"></i>
+              <span>Community &amp; support</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/community/support/"> Support</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/community/contribute/"> Contribute</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/community/source/"> Source</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/community/links/"> Links</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+    </ul>
+  </div>
+</aside>
+
+      </div>
+      <div class="col-md-9 content">
+        
+    
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="https://www.chirpstack.io/guides/debian-ubuntu/#assumptions">Assumptions</a></li>
+    <li><a href="https://www.chirpstack.io/guides/debian-ubuntu/#install-dependencies">Install dependencies</a>
+      <ul>
+        <li><a href="https://www.chirpstack.io/guides/debian-ubuntu/#setup-postgresql-databases-and-users">Setup PostgreSQL databases and users</a></li>
+      </ul>
+    </li>
+    <li><a href="https://www.chirpstack.io/guides/debian-ubuntu/#setup-chirpstack-software-repository">Setup ChirpStack software repository</a></li>
+    <li><a href="https://www.chirpstack.io/guides/debian-ubuntu/#install-chirpstack-gateway-bridge">Install ChirpStack Gateway Bridge</a></li>
+    <li><a href="https://www.chirpstack.io/guides/debian-ubuntu/#installing-the-chirpstack-network-server">Installing the ChirpStack Network Server</a>
+      <ul>
+        <li><a href="https://www.chirpstack.io/guides/debian-ubuntu/#eu868-configuration-example">EU868 configuration example</a></li>
+        <li><a href="https://www.chirpstack.io/guides/debian-ubuntu/#us915-configuration-example-sub-band-1-125khz-channels-0---7--500khz-channel-64">US915 configuration example sub-band 1 (125kHz channels 0 - 7 &amp; 500kHz channel 64)</a></li>
+        <li><a href="https://www.chirpstack.io/guides/debian-ubuntu/#us915-configuration-example-sub-band-2-125khz-channels-8---15--500khz-channel-65">US915 configuration example sub-band 2 (125kHz channels 8 - 15 &amp; 500kHz channel 65)</a></li>
+      </ul>
+    </li>
+    <li><a href="https://www.chirpstack.io/guides/debian-ubuntu/#installing-chirpstack-application-server">Installing ChirpStack Application Server</a></li>
+    <li><a href="https://www.chirpstack.io/guides/debian-ubuntu/#optional-install-chirpstack-gateway-bridge-on-the-gateway">Optional: install ChirpStack Gateway Bridge on the gateway</a></li>
+    <li><a href="https://www.chirpstack.io/guides/debian-ubuntu/#setting-up-your-first-device">Setting up your first device</a></li>
+  </ul>
+</nav>
+    
+<h1 id="quickstart-on-debian-or-ubuntu">Quickstart on Debian or Ubuntu</h1>
+<p>This tutorial describes the steps needed to setup the ChirpStack stack
+<strong>including all requirements</strong> on a single machine. It has been tested on
+the following distributions (but with non or minimal modifications it will
+work on other versions too):</p>
+<ul>
+<li>Ubuntu 18.04 LTS</li>
+<li>Debian 10 (Buster)</li>
+</ul>
+<p>Please refer to the other install pages for more generic installation
+instructions.</p>
+<h2 id="assumptions">Assumptions</h2>
+<p>Many configurations of these packages are possible. Dependent software packages
+could be installed on any number of remote servers, and the packages themselves
+could be on their own servers. However, in order to simplify the initial
+installation, we will assume the following deployment architecture:</p>
+<ul>
+<li>All ChirpStack components and their dependencies will be installed on a single
+server instance.</li>
+<li>The <a href="https://www.chirpstack.io/gateway-bridge/">ChirpStack Gateway Bridge</a> component will be
+installed on the server, but can also be installed on the gateway itself.</li>
+<li>No firewall rules are setup.</li>
+</ul>
+<p>Of course, optimizations may need to be made depending on the performance of
+your systems. You may opt to move the PostgreSQL database to another server.
+Or you may decide to put your MQTT broker on a different system, or even use a
+different server than the one recommended in this document. These and other
+installation changes are beyond the scope of this document. However, you
+should be able to find the information here that would make these changes
+relatively straight-forward.</p>
+<h2 id="install-dependencies">Install dependencies</h2>
+<ul>
+<li><strong>MQTT broker</strong> - A publish/subscribe protocol that allows users to publish
+information under topics that others can subscribe to. A popular
+implementation of the MQTT protocol is <a href="https://mosquitto.org/">Mosquitto</a>.</li>
+<li><strong>Redis</strong> - An in-memory database used to store relatively transient data.</li>
+<li><strong>PostgreSQL</strong> - The long-term storage database used by the open source
+packages.</li>
+</ul>
+<p>Use the package manager <code>apt</code> to install these dependencies:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install mosquitto mosquitto-clients redis-server redis-tools postgresql </code></pre></div>
+<h3 id="setup-postgresql-databases-and-users">Setup PostgreSQL databases and users</h3>
+<p>To enter the command line utility for PostgreSQL:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo -u postgres psql</code></pre></div>
+<p>Inside this prompt, execute the following queries to set up the databases
+that are used by the ChirpStack stack components. It is recommended to change the
+usernames and passwords. Just remember to use these other values when updating
+the <code>chirpstack-network-server.toml</code> and <code>chirpstack-application-server.toml</code> configuration files.
+Since these two applications both use the same table to track database upgrades,
+they must have separate databases.</p>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="c1">-- set up the users and the passwords
+</span><span class="c1"></span><span class="c1">-- (note that it is important to use single quotes and a semicolon at the end!)
+</span><span class="c1"></span><span class="k">create</span> <span class="k">role</span> <span class="n">chirpstack_as</span> <span class="k">with</span> <span class="n">login</span> <span class="n">password</span> <span class="s1">'</span><span class="s1">dbpassword</span><span class="s1">'</span><span class="p">;</span>
+<span class="k">create</span> <span class="k">role</span> <span class="n">chirpstack_ns</span> <span class="k">with</span> <span class="n">login</span> <span class="n">password</span> <span class="s1">'</span><span class="s1">dbpassword</span><span class="s1">'</span><span class="p">;</span>
+
+<span class="c1">-- create the database for the servers
+</span><span class="c1"></span><span class="k">create</span> <span class="k">database</span> <span class="n">chirpstack_as</span> <span class="k">with</span> <span class="k">owner</span> <span class="n">chirpstack_as</span><span class="p">;</span>
+<span class="k">create</span> <span class="k">database</span> <span class="n">chirpstack_ns</span> <span class="k">with</span> <span class="k">owner</span> <span class="n">chirpstack_ns</span><span class="p">;</span>
+
+<span class="c1">-- change to the ChirpStack Application Server database
+</span><span class="c1"></span><span class="err">\</span><span class="k">c</span> <span class="n">chirpstack_as</span>
+
+<span class="c1">-- enable the pq_trgm and hstore extensions
+</span><span class="c1"></span><span class="c1">-- (this is needed to facilitate the search feature)
+</span><span class="c1"></span><span class="k">create</span> <span class="n">extension</span> <span class="n">pg_trgm</span><span class="p">;</span>
+<span class="c1">-- (this is needed to store additional k/v meta-data)
+</span><span class="c1"></span><span class="k">create</span> <span class="n">extension</span> <span class="n">hstore</span><span class="p">;</span>
+
+<span class="c1">-- exit psql
+</span><span class="c1"></span><span class="err">\</span><span class="n">q</span></code></pre></div>
+<h2 id="setup-chirpstack-software-repository">Setup ChirpStack software repository</h2>
+<p>ChirpStack provides a repository that is compatible with the
+Ubuntu apt package system. First make sure that both <code>dirmngr</code> and
+<code>apt-transport-https</code> are installed:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install apt-transport-https dirmngr</code></pre></div>
+<p>Set up the key for this new repository:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 1CE2AFD36DBCCA00</code></pre></div>
+<p>Add the repository to the repository list by creating a new file:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo <span class="nb">echo</span> <span class="s2">"deb https://artifacts.chirpstack.io/packages/3.x/deb stable main"</span> <span class="p">|</span> sudo tee /etc/apt/sources.list.d/chirpstack.list</code></pre></div>
+<p>Update the apt package cache:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt update</code></pre></div>
+<h2 id="install-chirpstack-gateway-bridge">Install ChirpStack Gateway Bridge</h2>
+<p><strong>Note:</strong> If you intend to run the <a href="https://www.chirpstack.io/gateway-bridge/">ChirpStack Gateway Bridge</a>
+only on gateway(s) themselves, you can skip this step.</p>
+<p>Install the package using <code>apt</code>:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install chirpstack-gateway-bridge</code></pre></div>
+<p>The configuration file is located at <code>/etc/chirpstack-gateway-bridge/chirpstack-gateway-bridge.toml</code>.
+The default configuration is sufficient for this guide.</p>
+<p>Start the ChirpStack Gateway Bridge service:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># start chirpstack-gateway-bridge</span>
+sudo systemctl start chirpstack-gateway-bridge
+
+<span class="c1"># start chirpstack-gateway-bridge on boot</span>
+sudo systemctl <span class="nb">enable</span> chirpstack-gateway-bridge</code></pre></div>
+<h2 id="installing-the-chirpstack-network-server">Installing the ChirpStack Network Server</h2>
+<p>Install the package using apt:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install chirpstack-network-server</code></pre></div>
+<p>The configuration file is located at <code>/etc/chirpstack-network-server/chirpstack-network-server.toml</code> and
+must be updated to match the database and band configuration. See below
+two examples for the EU868 and US915 band. For more information about all
+the ChirpStack Network Server configuration options, see
+<a href="https://www.chirpstack.io/network-server/install/config/">ChirpStack Network Server configuration</a>.</p>
+<p>After updating the configuration, you need to restart the ChirpStack Network Server and validate
+that there are no errors.</p>
+<p>Start the ChirpStack Network Server service:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># start chirpstack-network-server</span>
+sudo systemctl start chirpstack-network-server
+
+<span class="c1"># start chirpstack-network-server on boot</span>
+sudo systemctl <span class="nb">enable</span> chirpstack-network-server</code></pre></div>
+<p>Print the ChirpStack Network Server log-output:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo journalctl -f -n <span class="m">100</span> -u chirpstack-network-server</code></pre></div>
+<h3 id="eu868-configuration-example">EU868 configuration example</h3>
+<div class="highlight"><pre class="chroma"><code class="language-toml" data-lang="toml"><span class="p">[</span><span class="nx">general</span><span class="p">]</span>
+<span class="nx">log_level</span><span class="p">=</span><span class="mi">4</span>
+
+<span class="p">[</span><span class="nx">postgresql</span><span class="p">]</span>
+<span class="nx">dsn</span><span class="p">=</span><span class="s2">"postgres://chirpstack_ns:dbpassword@localhost/chirpstack_ns?sslmode=disable"</span>
+
+<span class="p">[</span><span class="nx">network_server</span><span class="p">]</span>
+<span class="nx">net_id</span><span class="p">=</span><span class="s2">"000000"</span>
+
+  <span class="p">[</span><span class="nx">network_server</span><span class="p">.</span><span class="nx">band</span><span class="p">]</span>
+  <span class="nx">name</span><span class="p">=</span><span class="s2">"EU_863_870"</span>
+
+  <span class="p">[</span><span class="p">[</span><span class="nx">network_server</span><span class="p">.</span><span class="nx">network_settings</span><span class="p">.</span><span class="nx">extra_channels</span><span class="p">]</span><span class="p">]</span>
+  <span class="nx">frequency</span><span class="p">=</span><span class="mi">867100000</span>
+  <span class="nx">min_dr</span><span class="p">=</span><span class="mi">0</span>
+  <span class="nx">max_dr</span><span class="p">=</span><span class="mi">5</span>
+
+  <span class="p">[</span><span class="p">[</span><span class="nx">network_server</span><span class="p">.</span><span class="nx">network_settings</span><span class="p">.</span><span class="nx">extra_channels</span><span class="p">]</span><span class="p">]</span>
+  <span class="nx">frequency</span><span class="p">=</span><span class="mi">867300000</span>
+  <span class="nx">min_dr</span><span class="p">=</span><span class="mi">0</span>
+  <span class="nx">max_dr</span><span class="p">=</span><span class="mi">5</span>
+
+  <span class="p">[</span><span class="p">[</span><span class="nx">network_server</span><span class="p">.</span><span class="nx">network_settings</span><span class="p">.</span><span class="nx">extra_channels</span><span class="p">]</span><span class="p">]</span>
+  <span class="nx">frequency</span><span class="p">=</span><span class="mi">867500000</span>
+  <span class="nx">min_dr</span><span class="p">=</span><span class="mi">0</span>
+  <span class="nx">max_dr</span><span class="p">=</span><span class="mi">5</span>
+
+  <span class="p">[</span><span class="p">[</span><span class="nx">network_server</span><span class="p">.</span><span class="nx">network_settings</span><span class="p">.</span><span class="nx">extra_channels</span><span class="p">]</span><span class="p">]</span>
+  <span class="nx">frequency</span><span class="p">=</span><span class="mi">867700000</span>
+  <span class="nx">min_dr</span><span class="p">=</span><span class="mi">0</span>
+  <span class="nx">max_dr</span><span class="p">=</span><span class="mi">5</span>
+
+  <span class="p">[</span><span class="p">[</span><span class="nx">network_server</span><span class="p">.</span><span class="nx">network_settings</span><span class="p">.</span><span class="nx">extra_channels</span><span class="p">]</span><span class="p">]</span>
+  <span class="nx">frequency</span><span class="p">=</span><span class="mi">867900000</span>
+  <span class="nx">min_dr</span><span class="p">=</span><span class="mi">0</span>
+  <span class="nx">max_dr</span><span class="p">=</span><span class="mi">5</span></code></pre></div>
+<h3 id="us915-configuration-example-sub-band-1-125khz-channels-0---7--500khz-channel-64">US915 configuration example sub-band 1 (125kHz channels 0 - 7 &amp; 500kHz channel 64)</h3>
+<div class="highlight"><pre class="chroma"><code class="language-toml" data-lang="toml"><span class="p">[</span><span class="nx">general</span><span class="p">]</span>
+<span class="nx">log_level</span><span class="p">=</span><span class="mi">4</span>
+
+<span class="p">[</span><span class="nx">postgresql</span><span class="p">]</span>
+<span class="nx">dsn</span><span class="p">=</span><span class="s2">"postgres://chirpstack_ns:dbpassword@localhost/chirpstack_ns?sslmode=disable"</span>
+
+<span class="p">[</span><span class="nx">network_server</span><span class="p">]</span>
+<span class="nx">net_id</span><span class="p">=</span><span class="s2">"000000"</span>
+
+<span class="p">[</span><span class="nx">network_server</span><span class="p">.</span><span class="nx">band</span><span class="p">]</span>
+<span class="nx">name</span><span class="p">=</span><span class="s2">"US_902_928"</span>
+
+<span class="p">[</span><span class="nx">network_server</span><span class="p">.</span><span class="nx">network_settings</span><span class="p">]</span>
+<span class="nx">enabled_uplink_channels</span><span class="p">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">64</span><span class="p">]</span></code></pre></div>
+<h3 id="us915-configuration-example-sub-band-2-125khz-channels-8---15--500khz-channel-65">US915 configuration example sub-band 2 (125kHz channels 8 - 15 &amp; 500kHz channel 65)</h3>
+<p>This is the same channel-plan as used by The Things Network.</p>
+<div class="highlight"><pre class="chroma"><code class="language-toml" data-lang="toml"><span class="p">[</span><span class="nx">general</span><span class="p">]</span>
+<span class="nx">log_level</span><span class="p">=</span><span class="mi">4</span>
+
+<span class="p">[</span><span class="nx">postgresql</span><span class="p">]</span>
+<span class="nx">dsn</span><span class="p">=</span><span class="s2">"postgres://chirpstack_ns:dbpassword@localhost/chirpstack_ns?sslmode=disable"</span>
+
+<span class="p">[</span><span class="nx">network_server</span><span class="p">]</span>
+<span class="nx">net_id</span><span class="p">=</span><span class="s2">"000000"</span>
+
+<span class="p">[</span><span class="nx">network_server</span><span class="p">.</span><span class="nx">band</span><span class="p">]</span>
+<span class="nx">name</span><span class="p">=</span><span class="s2">"US_902_928"</span>
+
+<span class="p">[</span><span class="nx">network_server</span><span class="p">.</span><span class="nx">network_settings</span><span class="p">]</span>
+<span class="nx">enabled_uplink_channels</span><span class="p">=</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">65</span><span class="p">]</span></code></pre></div>
+<h2 id="installing-chirpstack-application-server">Installing ChirpStack Application Server</h2>
+<p>Install the package using apt:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install chirpstack-application-server</code></pre></div>
+<p>The configuration file is located at <code>/etc/chirpstack-application-server/chirpstack-application-server.toml</code> and
+must be updated to match the database configuration. See below a configuration
+example which matches the database which we have created in one of the previous steps.
+For more information about the ChirpStack Application Server configuration options, see
+<a href="https://www.chirpstack.io/application-server/install/config/">ChirpStack Application Server configuration</a>.</p>
+<div class="highlight"><pre class="chroma"><code class="language-toml" data-lang="toml"><span class="p">[</span><span class="nx">general</span><span class="p">]</span>
+<span class="nx">log_level</span><span class="p">=</span><span class="mi">4</span>
+
+<span class="p">[</span><span class="nx">postgresql</span><span class="p">]</span>
+<span class="nx">dsn</span><span class="p">=</span><span class="s2">"postgres://chirpstack_as:dbpassword@localhost/chirpstack_as?sslmode=disable"</span>
+
+  <span class="p">[</span><span class="nx">application_server</span><span class="p">.</span><span class="nx">external_api</span><span class="p">]</span>
+  <span class="nx">jwt_secret</span><span class="p">=</span><span class="s2">"verysecret"</span></code></pre></div>
+<p><strong>Note:</strong> you <strong>must</strong> replace the <code>jwt_secret</code> with a secure secret!
+You could use the command <code>openssl rand -base64 32</code> to generate a random secret.</p>
+<p>Start the ChirpStack Application Server service:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># start chirpstack-application-server</span>
+sudo systemctl start chirpstack-application-server
+
+<span class="c1"># start chirpstack-application-server on boot</span>
+sudo systemctl <span class="nb">enable</span> chirpstack-application-server</code></pre></div>
+<p>Print the ChirpStack Application Server log-output:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo journalctl -f -n <span class="m">100</span> -u chirpstack-application-server</code></pre></div>
+<h2 id="optional-install-chirpstack-gateway-bridge-on-the-gateway">Optional: install ChirpStack Gateway Bridge on the gateway</h2>
+<p>It is advised to run ChirpStack Gateway Bridge on each gateway itself, to enable a
+secure connection between your gateways and your server.</p>
+<p>As there are many types of gateways available, please refer to the
+ChirpStack Gateway Bridge instructions for
+<a href="https://www.chirpstack.io/gateway-bridge/gateway/">installing ChirpStack Gateway Bridge on the gateway</a>.</p>
+<h2 id="setting-up-your-first-device">Setting up your first device</h2>
+<p>To setup your first device, please refer to the <a href="https://www.chirpstack.io/guides/first-gateway-device/">First gateway and device</a>
+guide.</p>
+
+
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="./Quickstart Debian _ Ubuntu - ChirpStack, open-source LoRaWAN Network Server stack_files/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="./Quickstart Debian _ Ubuntu - ChirpStack, open-source LoRaWAN Network Server stack_files/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="./Quickstart Debian _ Ubuntu - ChirpStack, open-source LoRaWAN Network Server stack_files/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-3512995-9', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async="" src="./Quickstart Debian _ Ubuntu - ChirpStack, open-source LoRaWAN Network Server stack_files/analytics.js"></script>
+
+
+
+
+</body></html>
