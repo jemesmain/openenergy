@@ -14,7 +14,7 @@ Un projet pour effectuer du suivi énergétique ouvert dans les bâtiments.
 ### Serveur - on stock et on affiche
 #### Chirpstack - on gère les élément de notre réseau
 ##### Chirpstack quickstart
-[Chirpstack quistart guide](https://www.chirpstack.io/guides/debian-ubuntu/ "Chirpstack quick guide in English")
+[Chirpstack quickstart guide](https://www.chirpstack.io/guides/debian-ubuntu/ "Chirpstack quick guide in English")
 
 **Installation de programmes complémentaires**
 Les trois programmes suivants doivent être installé pour le bon fonctionnement
@@ -60,21 +60,25 @@ create extension hstore;
 \q
 ```
 
-
-Setup ChirpStack software repository
-ChirpStack provides a repository that is compatible with the Ubuntu apt package system. First make sure that both dirmngr and apt-transport-https are installed:
-
+** Initialisation du dépot logiciel de Chirpstack**
+Chirpstack met a disposition un dépot qui est compatible avec les paquets apt d'Ubuntu. Tout d'abord il faut s'assurer que les paquets nécessaire à l'obtention des paquets soient bien installés.
+```
 sudo apt install apt-transport-https dirmngr
+
 Set up the key for this new repository:
 
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 1CE2AFD36DBCCA00
+
 Add the repository to the repository list by creating a new file:
 
 sudo echo "deb https://artifacts.chirpstack.io/packages/3.x/deb stable main" | sudo tee /etc/apt/sources.list.d/chirpstack.list
+
 Update the apt package cache:
 
 sudo apt update
-Install ChirpStack Gateway Bridge
+```
+** Installation du ChirpStack Gateway Bridge**
+
 Note: If you intend to run the ChirpStack Gateway Bridge only on gateway(s) themselves, you can skip this step.
 
 Install the package using apt:
