@@ -10,6 +10,8 @@ Un projet pour effectuer du suivi énergétique ouvert dans les bâtiments.
 #### Lopy
 
 ### Gateway - les grandes oreilles sont à l'écoute
+#### Rakwireless RAK7246 LPWAN Developer Gateway - RAK7246 - EU868
+#### Lopy Nano Gateway
 
 ### Serveur - on stock et on affiche
 #### Chirpstack - on gère les élément de notre réseau
@@ -26,6 +28,8 @@ Les trois programmes suivants doivent être installé pour le bon fonctionnement
 sudo apt install mosquitto mosquitto-clients redis-server redis-tools postgresql
 ``` 
 **Initialisation de la base PostgreSQL et des utilisateurs**
+
+Deux utilisateurs avec mots de passe ainsi que deux utilisateurs avec mot de passe, chirpstack_as et chirpstack_ns sont créés. Ils seront repris dans plusieurs des configurations de la gateway, du server et de l'application server.
 ```
 sudo -u postgres psql
 
@@ -60,8 +64,9 @@ create extension hstore;
 \q
 ```
 
-** Initialisation du dépot logiciel de Chirpstack**
-Chirpstack met a disposition un dépot qui est compatible avec les paquets apt d'Ubuntu. Tout d'abord il faut s'assurer que les paquets nécessaire à l'obtention des paquets soient bien installés.
+**Initialisation du dépot logiciel de Chirpstack**
+
+Chirpstack met a disposition un dépot qui est compatible avec les paquets apt d'Ubuntu. Tout d'abord il faut s'assurer que les paquets nécessaires à l'obtention des paquets soient bien installés.
 ```
 sudo apt install apt-transport-https dirmngr
 
@@ -77,25 +82,79 @@ Update the apt package cache:
 
 sudo apt update
 ```
-** Installation du ChirpStack Gateway Bridge**
+**Installation du ChirpStack Gateway Bridge**
 
-Note: If you intend to run the ChirpStack Gateway Bridge only on gateway(s) themselves, you can skip this step.
+L'installation du Chispstack Gateway Bridge présente deux modes:
+- mode "sécurisé": ou le Gateway bridge est installé sur chacune des Gateway mais pour cela il faut avoir acces aux "paramétrages avancées" de la Gateway. Ce mode va être de plus en plus généralisé attendu que Chirspstack est en train de développer un Gateway OS.
+- mode "non-securisé": le Gateway bridge est installé sur le server. C'est le mode à préférer si vous ne voulez pas ou ne pouvez pas modifier le contenu de vos gateways.
 
-Install the package using apt:
-
+*Installation du paquet*
+```
 sudo apt install chirpstack-gateway-bridge
-The configuration file is located at /etc/chirpstack-gateway-bridge/chirpstack-gateway-bridge.toml. The default configuration is sufficient for this guide.
+```
 
-Start the ChirpStack Gateway Bridge service:
+Le fichier de configuration est situé /etc/chirpstack-gateway-bridge/chirpstack-gateway-bridge.toml. Le ficher de configuration par défaut est sufisant pour cette installation.
 
-# start chirpstack-gateway-bridge
-sudo systemctl start chirpstack-gateway-bridge
+Pour la configuration détaillée voir la partie chirpstack gateway bridge ci-dessous.
 
-# start chirpstack-gateway-bridge on boot
-sudo systemctl enable chirpstack-gateway-bridge
+Il y a deux manières de démarrer les service de ce bridge:
+- Manuellement:
+
+```sudo systemctl start chirpstack-gateway-bridge```
+- au démarrage:
+```sudo systemctl enable chirpstack-gateway-bridge```
+
+**Installation du ChirpStack Network Server**
+Installation des paquet en utilisant apt apt:
+
+sudo apt install chirpstack-network-server
+
+Le fichier de configuration est situé /etc/chirpstack-network-server/chirpstack-network-server.toml et doit être configuré pour correspondre avec les bases de données, les utilisateur et les mots de passe PostgreSQL. Il doit aussi correspondre aux réglage des fréquence d'émission. Pour l'Europe c'est le EU868 et pour les USA US915. Pour plus d'option voir avec la partie ChirpStack Network Server configuration
+
+Après la modification du fichier de configuration, vous devez redémarrer Chirpstack Network Server et valider qu'il n'y a pas d'erreur.
+
+Il y a deux manières de démarrer les service de ce server:
+- Manuellement:
+```sudo systemctl start chirpstack-network-server```
+- au démarrage
+```sudo systemctl enable chirpstack-network-server```
+
+Afin de visualiser les log du network server.
+```sudo journalctl -f -n 100 -u chirpstack-network-server```
+
+Pour la configuration détaillée voir la partie chirpstack server ci-dessous.
+
+**Installation de  ChirpStack Application Server**
+Installation des paquets en utilisant apt:
+
+```sudo apt install chirpstack-application-server```
+
+le chemin du fichiers de configuration est le suivant /etc/chirpstack-application-server/chirpstack-application-server.toml et doit être mis à jour pour correspondre à la configuration de la base de données PostgreSQL.
+
+Pour la configuration détaillée voir la partie chirpstack application server ci-dessous.
+
+Note: il faut impérativement remplacé le paramètre jwt_secret avec une chaine de sécurité! Voupouvez utiliser la commande suivante openssl rand -base64 32 pour générer une chaine de sécurité secret.
+
+Le ChirpStack Application Server service peut être démarré de deux manières:
+
+- manuellement:
+```sudo systemctl start chirpstack-application-server```
+
+- au démarrage:
+```sudo systemctl enable chirpstack-application-server```
+
+Afin de voir si il n'y a pas d'erreur vous pouvez visualiser le log de ChirpStack Application Server avec la commande suivante:
+
+```sudo journalctl -f -n 100 -u chirpstack-application-server```
+
+
 ##### Chirpstack bridge
+**DETAIL CONFIGURATION**
+TROUBLESHOOTING
 ##### Chirpstack server
+**DETAIL CONFIGURATION**
 ##### Chirpstack application server
+**DETAIL CONFIGURATION**
 #### Thingsboard - on gère les tableaux de bord et les alertes
 #### Node-red - pour aider au décryptage des message
 
