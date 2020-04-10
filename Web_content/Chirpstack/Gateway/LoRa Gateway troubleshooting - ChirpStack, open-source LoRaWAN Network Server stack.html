@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<!-- saved from url=(0057)https://www.chirpstack.io/guides/troubleshooting/gateway/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="./LoRa Gateway troubleshooting - ChirpStack, open-source LoRaWAN Network Server stack_files/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="./LoRa Gateway troubleshooting - ChirpStack, open-source LoRaWAN Network Server stack_files/bootstrap.min(1).css">
+  <link rel="stylesheet" href="./LoRa Gateway troubleshooting - ChirpStack, open-source LoRaWAN Network Server stack_files/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+  <link rel="stylesheet" href="./LoRa Gateway troubleshooting - ChirpStack, open-source LoRaWAN Network Server stack_files/docs.css">
+  <link rel="stylesheet" href="./LoRa Gateway troubleshooting - ChirpStack, open-source LoRaWAN Network Server stack_files/highlight.css">
+  <title>LoRa Gateway troubleshooting - ChirpStack, open-source LoRaWAN Network Server stack</title>
+<style>@media print {#ghostery-purple-box {display:none !important}}</style></head>
+
+<body>
+  <nav id="topnavrow" class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand" href="https://www.chirpstack.io/">
+        <img src="./LoRa Gateway troubleshooting - ChirpStack, open-source LoRaWAN Network Server stack_files/logo.png" height="40">
+      </a>
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navcollapse" aria-controls="navcollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://forum.chirpstack.io/"><i class="fab fa-discourse"></i> forum.chirpstack.io</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <nav class="navbar navbar-expand-lg navbar-light py-0 navbar-components">
+    <div class="container">
+      <div id="navcollapse" class="collapse navbar-collapse my-0">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/">Home</a>
+          <a class="nav-item nav-link px-3 mx-2 active" href="https://www.chirpstack.io/overview/">Getting started</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/gateway-bridge/">Gateway Bridge</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/network-server/">Network Server</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/application-server/">Application Server</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/geolocation-server/">Geolocation Server</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/gateway-os/">Gateway OS</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+
+<section class="documentation">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+         <aside>
+  <div id="sidebar" class="nav-collapse">
+    <ul class="sidebar-menu">
+      
+      
+        
+          <li class="sub-menu">
+            <a href="https://www.chirpstack.io/overview/">
+              <i class="fas fa-hand-point-right"></i>
+              <span>Overview</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  
+                    <li><a href="https://www.chirpstack.io/overview/"> Project</a></li>
+                  
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/overview/architecture/"> Architecture</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+          <li class="sub-menu active">
+            <a href="https://www.chirpstack.io/guides/">
+              <i class="fas fa-book-open"></i>
+              <span>Guides</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/guides/debian-ubuntu/"> Quickstart Debian / Ubuntu</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/guides/docker-compose/"> Quickstart Docker Compose</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/guides/google-cloud-platform/"> Quickstart Google Cloud Platform</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/guides/microsoft-azure/"> Quickstart Microsoft Azure</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/guides/ansible-vagrant/"> Ansible and Vagrant</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/guides/raspberry-pi/"> Raspberry Pi</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/guides/mqtt-authentication/"> MQTT authentication</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/guides/first-gateway-device/"> First gateway and device</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/guides/thingsboard/"> ThingsBoard getting started</a></li>
+                
+              
+                
+                  
+                    <li class="active"><a href="https://www.chirpstack.io/guides/troubleshooting/"> Troubleshooting</a></li>
+                  
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+          <li class="sub-menu">
+            <a href="https://www.chirpstack.io/install/">
+              <i class="fas fa-download"></i>
+              <span>Install</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/install/requirements/"> Requirements</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/install/install/"> General installation</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/install/docker/"> Docker install</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/install/configuration/"> Configuration</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+          <li class="sub-menu">
+            <a href="https://www.chirpstack.io/community/">
+              <i class="fab fa-github"></i>
+              <span>Community &amp; support</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/community/support/"> Support</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/community/contribute/"> Contribute</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/community/source/"> Source</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/community/links/"> Links</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+    </ul>
+  </div>
+</aside>
+
+      </div>
+      <div class="col-md-9 content">
+        
+    
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="https://www.chirpstack.io/guides/troubleshooting/gateway/#semtech-packet-forwarder-sends-data">Semtech Packet Forwarder sends data?</a>
+      <ul>
+        <li><a href="https://www.chirpstack.io/guides/troubleshooting/gateway/#expected-tcpdump-output">Expected tcpdump output</a></li>
+        <li><a href="https://www.chirpstack.io/guides/troubleshooting/gateway/#no-tcpdump-output">No tcpdump output?</a></li>
+      </ul>
+    </li>
+    <li><a href="https://www.chirpstack.io/guides/troubleshooting/gateway/#chirpstack-gateway-bridge-receives-data">ChirpStack Gateway Bridge receives data?</a>
+      <ul>
+        <li><a href="https://www.chirpstack.io/guides/troubleshooting/gateway/#no-log-output">No log output?</a></li>
+      </ul>
+    </li>
+    <li><a href="https://www.chirpstack.io/guides/troubleshooting/gateway/#chirpstack-gateway-bridge-publishes-data">ChirpStack Gateway Bridge publishes data?</a></li>
+  </ul>
+</nav>
+    
+<h1 id="troubleshooting-lorasupregsup-gateway-connectivity">Troubleshooting LoRa<!-- raw HTML omitted -->®<!-- raw HTML omitted --> Gateway connectivity</h1>
+<p>This guide helps you to troubleshoot gateway connectivity issues and to find the
+underlying cause. This guide assumes you already have the
+<a href="https://www.chirpstack.io/gateway-bridge/">ChirpStack Gateway Bridge</a> component installed and running.</p>
+<p>We will validate in this guide:</p>
+<ul>
+<li>If the <a href="https://github.com/lora-net/packet_forwarder">Packet Forwarder</a> is receiving device data</li>
+<li>If the <a href="https://www.chirpstack.io/gateway-bridge/">ChirpStack Gateway Bridge</a> is receiving data from the packet-forwarder</li>
+<li>If ChirpStack Gateway Bridge is publishing the data to the MQTT broker</li>
+</ul>
+<h2 id="semtech-packet-forwarder-sends-data">Semtech Packet Forwarder sends data?</h2>
+<p>The first step starts at the source of the data, the gateway. To make sure your
+gateway is actually receiving device data, you can use <code>tcpdump</code> to monitor
+the data that is sent by your gateway.</p>
+<p>When the ChirpStack Gateway Bridge is running on the gateway itself, then you need
+to run the following command <strong>on the gateway</strong> (it will monitor the loopback interface):</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo tcpdump -AUq -i lo port <span class="m">1700</span></code></pre></div>
+<p>When the ChirpStack Gateway Bridge is installed on a separate machine / server, the
+you need to run the following command:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo tcpdump -AUq port <span class="m">1700</span></code></pre></div>
+<p>The above command can be executed on the gateway (if possible) or on the
+machine where the ChirpStack Gateway Bridge component is installed. Running it
+on the gateway will show the data sent by the gateway, running it on your
+machine will show the data received by your machine.</p>
+<p>When you see that data is sent by the gateway, but not received by your
+machine / server, then likely there is a firewall inbetween that is blocking
+the data.</p>
+<h3 id="expected-tcpdump-output">Expected tcpdump output</h3>
+<p>As the packet-forwarder sends regular “ping” messages, there is no need for
+your device to send data. You should see a regular data-exchange in the
+<code>tcpdump</code> output, for example:</p>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">11:42:00.114726 IP localhost.34268 &gt; localhost.1700: UDP, length 12
+E..(..@.@."................'.....UZ.....
+11:42:00.130292 IP localhost.1700 &gt; localhost.34268: UDP, length 4
+E.. ..@.@.".....................
+11:42:10.204723 IP localhost.34268 &gt; localhost.1700: UDP, length 12
+E..(.&amp;@.@..................'.x...UZ.....
+11:42:10.206503 IP localhost.1700 &gt; localhost.34268: UDP, length 4
+E.. .'@.@....................x..
+11:42:10.968420 IP localhost.43827 &gt; localhost.1700: UDP, length 113
+E....h@.@............3...y.......UZ.....{"stat":{"time":"2017-09-11 11:42:10 GMT","rxnb":0,"rxok":0,"rxfw":0,"ackr":100.0,"dwnb":0,"txnb":0}}
+11:42:10.970702 IP localhost.1700 &gt; localhost.43827: UDP, length 4
+E.. .i@.@..b...........3........
+11:42:20.284752 IP localhost.34268 &gt; localhost.1700: UDP, length 12
+E..(..@.@..................'.....UZ.....
+11:42:20.289256 IP localhost.1700 &gt; localhost.34268: UDP, length 4
+E.. ..@.@.......................
+11:42:30.364780 IP localhost.34268 &gt; localhost.1700: UDP, length 12
+E..( .@.@..................'.S7..UZ.....
+11:42:30.366310 IP localhost.1700 &gt; localhost.34268: UDP, length 4
+E..  .@.@....................S7.</code></pre></div>
+<p>What we see in this log:</p>
+<ul>
+<li><code>localhost.34268 &gt; localhost.1700</code>: packet sent from the packet-forwarder to the ChirpStack Gateway Bridge</li>
+<li><code>localhost.1700 &gt; localhost.34268</code>: packet sent from the ChirpStack Gateway Bridge to the Packet Forwarder</li>
+</ul>
+<h3 id="no-tcpdump-output">No tcpdump output?</h3>
+<p>When <code>tcpdump</code> does not show anything, then likely the Packet Forwarder on
+the gateway is not running, or the Packet Forwarder is misconfigured.</p>
+<p>Inspect the <code>local_conf.json</code> of the Packet Forwarder running on your gateway.
+You might need to refer to your gateway manual to find out where you can locate
+this file. This file could contain the following content:</p>
+<div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span>
+    <span class="nt">"gateway_conf"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="err">.</span><span class="err">.</span><span class="err">.</span>
+        <span class="nt">"serv_port_down"</span><span class="p">:</span> <span class="mi">1700</span><span class="p">,</span>
+        <span class="nt">"serv_port_up"</span><span class="p">:</span> <span class="mi">1700</span><span class="p">,</span>
+        <span class="nt">"server_address"</span><span class="p">:</span> <span class="s2">"localhost"</span><span class="p">,</span>
+        <span class="err">.</span><span class="err">.</span><span class="err">.</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+<p>What we learn from this file is that:</p>
+<ul>
+<li>It uses port <code>1700</code> (default port used by ChirpStack Gateway Bridge)</li>
+<li>It sends data to <code>localhost</code> (when ChirpStack Gateway Bridge is installed on the same device)</li>
+</ul>
+<p>Make sure the ports and <code>server_address</code> are correct. In case ChirpStack Gateway
+Bridge is not running on the same device, you need to replace this with
+the correct hostname or IP of your ChirpStack Gateway Bridge instance. After making
+any changes, don’t forget to restart the Packet Forwarder.</p>
+<p>See <a href="https://github.com/Lora-net/packet_forwarder/tree/master/lora_pkt_fwd">https://github.com/Lora-net/packet_forwarder/tree/master/lora_pkt_fwd</a>
+for more information about the packet-forwarder.</p>
+<h2 id="chirpstack-gateway-bridge-receives-data">ChirpStack Gateway Bridge receives data?</h2>
+<p>When the previous step confirmed that the gateway is sending data, you need to
+confirm that the <a href="https://www.chirpstack.io/gateway-bridge/">ChirpStack Gateway Bridge</a> is receiving
+data from your gateway.</p>
+<p>The first indications you will find in the ChirpStack Gateway Bridge logs. Depending
+how the ChirpStack Gateway Bridge was installed on your system, one of the following
+commands will show you the logs:</p>
+<ul>
+<li><code>journalctl -f -n 100 -u chirpstack-gateway-bridge</code></li>
+<li><code>tail -f -n 100 /var/log/chirpstack-gateway-bridge/chirpstack-gateway-bridge.log</code></li>
+</ul>
+<p>When the <a href="https://github.com/lora-net/packet_forwarder">Packet Forwarder</a> sends
+data to the ChirpStack Gateway Bridge (this could be a “ping”), you will see the following logs:</p>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">INFO[0013] mqtt: subscribing to topic qos=0 topic=gateway/7276ff002e062c18/command/#</code></pre></div>
+<p>When your device sends an uplink message, you will see something like:</p>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">INFO[0267] mqtt: publishing message qos=0 topic=gateway/7276ff002e062c18/event/up</code></pre></div>
+<p>If you see these logs, then this indicates that the ChirpStack Gateway Bridge
+components receives the data sent by the packet-forwarder.</p>
+<h3 id="no-log-output">No log output?</h3>
+<h4 id="double-check-gateway">Double-check gateway</h4>
+<p>When you don’t see any logs printed when your device sends an uplink message
+double-check if the packet-forwarder sends data (previous section).</p>
+<h4 id="chirpstack-gateway-bridge-active">ChirpStack Gateway Bridge active?</h4>
+<p>You also need to make sure that the ChirpStack Gateway Bridge is actually active.
+You can use the following command to check this:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ps aux <span class="p">|</span>grep chirpstack-gateway-bridge</code></pre></div>
+<p>The output should look like:</p>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">root      6403  0.0  0.2  12944  1088 pts/0    S+   12:53   0:00 grep --color=auto chirpstack-gateway-bridge
+gateway+ 23060  0.1  2.1 214260 10664 ?        Ssl  Aug30  47:55 /usr/bin/chirpstack-gateway-bridge</code></pre></div>
+<p>If no ChirpStack Gateway Bridge process is active, please refer to the
+<a href="https://www.chirpstack.io/gateway-bridge/install/">ChirpStack Gateway Bridge Install</a>
+documentation.</p>
+<h4 id="chirpstack-gateway-bridge-configuration">ChirpStack Gateway Bridge configuration</h4>
+<p>When you have completed the previous steps succesfully, then packet-forwarder
+data is received by your machine / server, but is not seen by the ChirpStack Gateway Bridge service.
+This probably means that ChirpStack Gateway Bridge is binding on a different network
+interface and / or port. Please check your <code>chirpstack-gateway-bridge.toml</code> <a href="https://www.chirpstack.io/gateway-bridge/install/config">Configuration</a>.</p>
+<h2 id="chirpstack-gateway-bridge-publishes-data">ChirpStack Gateway Bridge publishes data?</h2>
+<p>If you have confirmed that the ChirpStack Gateway Bridge component receives the
+data sent by the packet-forwarder, it is time to confirm ChirpStack Gateway Brige is
+succesfully publishing this data to the MQTT broker.</p>
+<p>To validate that the ChirpStack Gateway Bridge is publishing LoRa<!-- raw HTML omitted -->®<!-- raw HTML omitted --> frames to the MQTT
+broker, you can subscribe to the <code>gateway/#</code> MQTT topic. When using the
+<code>mosquitto_sub</code> utility, you can execute the following command:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mosquitto_sub -v -t <span class="s2">"gateway/#"</span></code></pre></div>
+<p>When you do not see any data appear when your device sends data, then make sure
+the ChirpStack Gateway Bridge is authorized to publish to the MQTT topic <strong>and</strong>
+the <code>mosquitto_sub</code> client is authorized to subscribe to the given MQTT topic.
+This issue usually happens when you have configured your MQTT broker so that
+clients need to authenticate when connecting.</p>
+
+
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="./LoRa Gateway troubleshooting - ChirpStack, open-source LoRaWAN Network Server stack_files/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="./LoRa Gateway troubleshooting - ChirpStack, open-source LoRaWAN Network Server stack_files/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="./LoRa Gateway troubleshooting - ChirpStack, open-source LoRaWAN Network Server stack_files/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-3512995-9', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async="" src="./LoRa Gateway troubleshooting - ChirpStack, open-source LoRaWAN Network Server stack_files/analytics.js"></script>
+
+
+
+
+</body></html>

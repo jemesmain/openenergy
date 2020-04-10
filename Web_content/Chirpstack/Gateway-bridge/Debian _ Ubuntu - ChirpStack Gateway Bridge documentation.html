@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<!-- saved from url=(0056)https://www.chirpstack.io/gateway-bridge/install/debian/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="./Debian _ Ubuntu - ChirpStack Gateway Bridge documentation_files/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="./Debian _ Ubuntu - ChirpStack Gateway Bridge documentation_files/bootstrap.min(1).css">
+  <link rel="stylesheet" href="./Debian _ Ubuntu - ChirpStack Gateway Bridge documentation_files/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+  <link rel="stylesheet" href="./Debian _ Ubuntu - ChirpStack Gateway Bridge documentation_files/docs.css">
+  <link rel="stylesheet" href="./Debian _ Ubuntu - ChirpStack Gateway Bridge documentation_files/highlight.css">
+  <title>Debian / Ubuntu - ChirpStack Gateway Bridge documentation</title>
+<style>@media print {#ghostery-purple-box {display:none !important}}</style></head>
+
+<body>
+  <nav id="topnavrow" class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand" href="https://www.chirpstack.io/">
+        <img src="./Debian _ Ubuntu - ChirpStack Gateway Bridge documentation_files/logo.png" height="40">
+      </a>
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navcollapse" aria-controls="navcollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://forum.chirpstack.io/"><i class="fab fa-discourse"></i> forum.chirpstack.io</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <nav class="navbar navbar-expand-lg navbar-light py-0 navbar-components">
+    <div class="container">
+      <div id="navcollapse" class="collapse navbar-collapse my-0">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/">Home</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/overview/">Getting started</a>
+          <a class="nav-item nav-link px-3 mx-2 active" href="https://www.chirpstack.io/gateway-bridge/">Gateway Bridge</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/network-server/">Network Server</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/application-server/">Application Server</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/geolocation-server/">Geolocation Server</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/gateway-os/">Gateway OS</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+
+<section class="documentation">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+         <aside>
+  <div id="sidebar" class="nav-collapse">
+    <ul class="sidebar-menu">
+      
+      
+        
+          <li class="sub-menu">
+            <a href="https://www.chirpstack.io/gateway-bridge/overview/">
+              <i class="fas fa-hand-point-right"></i>
+              <span>Overview</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  
+                    <li><a href="https://www.chirpstack.io/gateway-bridge/overview/"> ChirpStack Gateway Bridge</a></li>
+                  
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/gateway-bridge/overview/changelog/"> Changelog</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/gateway-bridge/overview/downloads/"> Downloads</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+          <li class="sub-menu active">
+            <a href="https://www.chirpstack.io/gateway-bridge/install/">
+              <i class="fas fa-download"></i>
+              <span>Install</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/gateway-bridge/install/requirements/"> Requirements</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/gateway-bridge/install/deployment/"> Deployment strategies</a></li>
+                
+              
+                
+                  <li class="active"><a href="https://www.chirpstack.io/gateway-bridge/install/debian/"> Debian / Ubuntu</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/gateway-bridge/install/config/"> Configuration</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+          <li class="sub-menu">
+            <a href="https://www.chirpstack.io/gateway-bridge/gateway/">
+              <i class="fas fa-broadcast-tower"></i>
+              <span>Gateway installation</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  <li><a href="https://www.chirpstack.io/gateway-bridge/gateway/cisco/"> Cisco</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/gateway-bridge/gateway/dragino/"> Dragino</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/gateway-bridge/gateway/kerlink/"> Kerlink</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/gateway-bridge/gateway/laird/"> Laird</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/gateway-bridge/gateway/matchx/"> MatchX</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/gateway-bridge/gateway/multitech/"> Multitech</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/gateway-bridge/gateway/raspberrypi/"> Raspberry Pi</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/gateway-bridge/gateway/tektelic/"> Tektelic</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/gateway-bridge/gateway/wifx/"> Wifx</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+          <li class="sub-menu">
+            <a href="https://www.chirpstack.io/gateway-bridge/backends/">
+              <i class="fas fa-cogs"></i>
+              <span>Backends</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  <li><a href="https://www.chirpstack.io/gateway-bridge/backends/basic-station/"> Basic Station</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/gateway-bridge/backends/concentratord/"> Concentratord</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/gateway-bridge/backends/semtech-udp/"> Semtech UDP</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+          <li class="sub-menu">
+            <a href="https://www.chirpstack.io/gateway-bridge/payloads/">
+              <i class="far fa-file-alt"></i>
+              <span>Payloads</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  <li><a href="https://www.chirpstack.io/gateway-bridge/payloads/commands/"> Commands</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/gateway-bridge/payloads/events/"> Events</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+          <li class="sub-menu">
+            <a href="https://www.chirpstack.io/gateway-bridge/integrate/">
+              <i class="fas fa-code"></i>
+              <span>Integrate</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  <li><a href="https://www.chirpstack.io/gateway-bridge/integrate/generic-mqtt/"> Generic MQTT</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/gateway-bridge/integrate/azure-iot-hub/"> Azure IoT Hub</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/gateway-bridge/integrate/gcp-cloud-iot-core/"> GCP Cloud IoT Core</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/gateway-bridge/integrate/metrics/"> Prometheus metrics</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+          <li class="sub-menu">
+            <a href="https://www.chirpstack.io/gateway-bridge/metrics/">
+              <i class="fas fa-chart-line"></i>
+              <span>Metrics</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  <li><a href="https://www.chirpstack.io/gateway-bridge/metrics/prometheus/"> Prometheus</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+          <li class="sub-menu">
+            <a href="https://www.chirpstack.io/gateway-bridge/community/">
+              <i class="fab fa-github"></i>
+              <span>Community &amp; support</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/gateway-bridge/community/support/"> Support</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/gateway-bridge/community/contribute/"> Contribute</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/gateway-bridge/community/source/"> Source</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+      
+    </ul>
+  </div>
+</aside>
+
+      </div>
+      <div class="col-md-9 content">
+        
+    
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="https://www.chirpstack.io/gateway-bridge/install/debian/#chirpstack-debian-repository">ChirpStack Debian repository</a></li>
+    <li><a href="https://www.chirpstack.io/gateway-bridge/install/debian/#install-chirpstack-gateway-bridge">Install ChirpStack Gateway Bridge</a></li>
+    <li><a href="https://www.chirpstack.io/gateway-bridge/install/debian/#starting-chirpstack-gateway-bridge">Starting ChirpStack Gateway Bridge</a>
+      <ul>
+        <li><a href="https://www.chirpstack.io/gateway-bridge/install/debian/#systemd">systemd</a></li>
+        <li><a href="https://www.chirpstack.io/gateway-bridge/install/debian/#initd">init.d</a></li>
+      </ul>
+    </li>
+    <li><a href="https://www.chirpstack.io/gateway-bridge/install/debian/#chirpstack-gateway-bridge-log-output">ChirpStack Gateway Bridge log output</a>
+      <ul>
+        <li><a href="https://www.chirpstack.io/gateway-bridge/install/debian/#initd-1">init.d</a></li>
+        <li><a href="https://www.chirpstack.io/gateway-bridge/install/debian/#systemd-1">systemd</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    
+<h1 id="debian--ubuntu">Debian / Ubuntu</h1>
+<p>These steps have been tested using:</p>
+<ul>
+<li>Ubuntu 18.04 (LTS)</li>
+<li>Debian 10 (Buster)</li>
+</ul>
+<h2 id="chirpstack-debian-repository">ChirpStack Debian repository</h2>
+<p>ChirpStack pre-compiled binaries packaged as Debian (.deb)
+packages. In order to activate this repository, execute the following
+commands:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 1CE2AFD36DBCCA00
+
+sudo <span class="nb">echo</span> <span class="s2">"deb https://artifacts.chirpstack.io/packages/3.x/deb stable main"</span> <span class="p">|</span> sudo tee /etc/apt/sources.list.d/chirpstack.list
+sudo apt-get update</code></pre></div>
+<h2 id="install-chirpstack-gateway-bridge">Install ChirpStack Gateway Bridge</h2>
+<p>In order to install ChirpStack Gateway Bridge, execute the following command:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt-get install chirpstack-gateway-bridge</code></pre></div>
+<p>This will setup an user and group, create start scripts for systemd or init.d
+(this depends on your version of Debian / Ubuntu). The configuration file is
+located at <code>/etc/chirpstack-gateway-bridge/chirpstack-gateway-bridge.toml</code>.</p>
+<h2 id="starting-chirpstack-gateway-bridge">Starting ChirpStack Gateway Bridge</h2>
+<p>How you need to (re)start and stop ChirpStack Gateway Bridge depends on if your
+platform uses systemd or init.d.</p>
+<h3 id="systemd">systemd</h3>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl <span class="o">[</span>start<span class="p">|</span>stop<span class="p">|</span>restart<span class="p">|</span>status<span class="o">]</span> chirpstack-gateway-bridge</code></pre></div>
+<h3 id="initd">init.d</h3>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo /etc/init.d/chirpstack-gateway-bridge <span class="o">[</span>start<span class="p">|</span>stop<span class="p">|</span>restart<span class="p">|</span>status<span class="o">]</span></code></pre></div>
+<h2 id="chirpstack-gateway-bridge-log-output">ChirpStack Gateway Bridge log output</h2>
+<p>Now you’ve setup ChirpStack Gateway Bridge and your gateway is configured to forward
+it’s data to it, it is a good time to verify that data is actually comming in.
+This can be done by looking at the ChirpStack Gateway Bridge log output.</p>
+<p>Like the previous step, which command you need to use for viewing the
+log output depends on if your distribution uses init.d or systemd.</p>
+<h3 id="initd-1">init.d</h3>
+<p>All logs are written to <code>/var/log/chirpstack-gateway-bridge/chirpstack-gateway-bridge.log</code>.
+To view and follow this logfile:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">tail -f /var/log/chirpstack-gateway-bridge/chirpstack-gateway-bridge.log</code></pre></div>
+<h3 id="systemd-1">systemd</h3>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">journalctl -u chirpstack-gateway-bridge -f -n <span class="m">50</span></code></pre></div>
+
+
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="./Debian _ Ubuntu - ChirpStack Gateway Bridge documentation_files/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="./Debian _ Ubuntu - ChirpStack Gateway Bridge documentation_files/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="./Debian _ Ubuntu - ChirpStack Gateway Bridge documentation_files/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-3512995-9', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async="" src="./Debian _ Ubuntu - ChirpStack Gateway Bridge documentation_files/analytics.js"></script>
+
+
+
+
+</body></html>

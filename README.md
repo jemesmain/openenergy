@@ -2,7 +2,7 @@
 
 Un projet pour effectuer du suivi énergétique ouvert dans les bâtiments.
 ## Architecture
-
+**illustration**
 ## Installation
 
 ### Capteur - les données sont recueillies
@@ -149,13 +149,84 @@ Afin de voir si il n'y a pas d'erreur vous pouvez visualiser le log de ChirpStac
 
 
 ##### Chirpstack bridge
-**DETAIL CONFIGURATION**
-TROUBLESHOOTING
+Selon la typologie de votre gateway, deux mode sont disponible pour transmettre les messages:
+
+- Semtech UDP Packet Forwarder c'est le cas qui correspond à la gateway RakWireless
+- Basic Station Packet Forwarder
+Les instruction détaillées de l'installation sont présente à l'adresse suivante: https://www.chirpstack.io/gateway-bridge/install/debian/
+
+**DETAIL de la CONFIGURATION**
+Le détail est présent à l'adresse suivante: https://www.chirpstack.io/gateway-bridge/install/config/
+Le fichier de configuration finalisé sur github est ici: Settings/Chirpstack/chirpstack-gateway-bridge/chirpstack-gateway-bridge.toml
+
+Il spécifie:
+- que le type choisi est udp paquet forwarder
+- qu'il écoute sur le port 1700. Un port mapping pouvant être effectué sur la box de votre FAI c'est vers ce port ou le port correspondant au port mapping qui doit etre spécifié dans les réglages de la gateway.
+- que le protocole MQTT est actif sur le port 1883.
+
+**TROUBLESHOOTING**
+
+https://www.chirpstack.io/guides/troubleshooting/gateway/
+Il s'agit de verifier que l'on recoive bien des informations de la gateway
+
+Tout d'abord il faut s'assurer que le Semtech Packet Forwarder de la gateway recoive bien des données du capteur. Ainsi on utilise la commande TCP dump pour suivre les messages échangés. Le port doit correspondre à celui de la configuration de ChirpStack Gateway Bridge.
+- Lorsqque ChirpStack Gateway Bridge tourne sur la gateway l'instruction suivante vérifiera cela: 
+```sudo tcpdump -AUq -i lo port 1700```
+- Lorsque ChirpStack Gateway Bridge est installé sur une machine / serveur différents dans ce cas c'est l'intruction suivante:
+
+```sudo tcpdump -AUq port 1700```
+
+On doit constater une réponse équivalente à ci-dessous pour valider le bon fonctionement
+```11:42:00.114726 IP localhost.34268 > localhost.1700: UDP, length 12 E..(..@.@."................'.....UZ.....
+11:42:00.130292 IP localhost.1700 > localhost.34268: UDP, length 4E.. ..@.@.".....................
+```
+
+Si l'instruction TCP dump ne permet pas de constater de message alors il vous faut vérifier la configuration de la gateway local_conf.json à l'aide du manuel technique de votre gateway. Le fichier de configuration devrait contenir les lignes similaires suivantes.
+```
+{
+    "gateway_conf": {
+        ...
+        "serv_port_down": 1700,
+        "serv_port_up": 1700,
+        "server_address": "localhost",
+        ...
+    }
+}
+```
+
+Ensuite on peut s'assurer que le chirpstack-gateway-bridge recoivent des données.
+- journalctl -f -n 100 -u chirpstack-gateway-bridge
+- tail -f -n 100 /var/log/chirpstack-gateway-bridge/chirpstack-gateway-bridge.log
+
+On devrait ainsi avoir ce type de contenu à l'écran
+```INFO[0013] mqtt: subscribing to topic qos=0 topic=gateway/7276ff002e062c18/command/#
+
+INFO[0267] mqtt: publishing message qos=0 topic=gateway/7276ff002e062c18/event/up
+```
+
+Si le contenu de l'écran n'est pas de ce type il faut
+- revérifier la configuration de la gateway
+- vérifier que le service du ChirpStack Gateway Bridge est en fonctionnement. Pour vérifier on utilise la commande suivante:
+
+```ps aux |grep chirpstack-gateway-bridge
+```
+Le résultat devrait ressembler à cela:
+
+```root      6403  0.0  0.2  12944  1088 pts/0    S+   12:53   0:00 grep --color=auto chirpstack-gateway-bridge
+gateway+ 23060  0.1  2.1 214260 10664 ?        Ssl  Aug30  47:55 /usr/bin/chirpstack-gateway-bridge
+```
+- Vérifier ChirpStack Gateway Bridge configuration pour s'assurer des réglages machine:port dans le fichier de configuration chirpstack-gateway-bridge.toml.
+
+- Vérifier que ChirpStack Gateway Bridge publie des données sur le broker MQTT. On effectue cela en souscrivant "au fil" concernant les gateway: gateway/# MQTT. on effectue cela avec l'instruction mosquitto_sub:
+
+```mosquitto_sub -v -t "gateway/#"```
+Si vous ne voyer aucun message lorsque le capteur envoie des données, il faut alors s'assurer que  ChirpStack Gateway Bridge est autorisé de publier des données sur le sujet MQTT et que le client  mosquitto_sub client est autorisé de souscrire à ce sujet MQTT Ce problème apparait habituellement lorsque vous avec configuré le MQTT Broker afin que les client doivent s'authentifier lors de la connexion.
 ##### Chirpstack server
 **DETAIL CONFIGURATION**
 ##### Chirpstack application server
 **DETAIL CONFIGURATION**
 #### Thingsboard - on gère les tableaux de bord et les alertes
+**port et mosquitto conflit**
 #### Node-red - pour aider au décryptage des message
 
     
