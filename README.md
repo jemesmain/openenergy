@@ -281,7 +281,169 @@ Commme les différentes partie du serveur sont sur la même machine je ne me sui
 
 Le détail de toute les options est présent à l'adresse suivante https://www.chirpstack.io/application-server/install/config/
 #### Thingsboard - on gère les tableaux de bord et les alertes
-**port et mosquitto conflit**
+
+La procédure d'installation et de configuration est présente à l'adresse suivante https://thingsboard.io/docs/user-guide/install/rpi/ ou dans la partie web_content
+Elle se compose des étapes suivantes
+ 
+- 1. Installation de composents tiers Java 8 (OpenJDK)
+- 2. Installation des services ThingsBoard
+- 3. Configuration de la base de données ThingsBoard
+    - 3.1 Installation PostgreSQL 
+    - 3.2 Configuration ThingsBoard
+- 4. Limitation de la mémoire pour les machine de petite capacité (1GB of RAM)
+- 5. Script d'installation
+- 6. Démarrage des services ThingsBoard
+- 7. Réglages complémentaires
+- Troubleshooting
+
+Ce guide décrit l'installation de ThingsBoard sur un Raspberry Pi 3 doté du système d'exploitation Raspbian Buster.
+
+** 1. Installation de composents tiers Java 8 (OpenJDK)**
+
+Le service ThingsBoard tourne sur Java 8. Suivre ces instruction pour installer OpenJDK 8:
+```
+sudo apt update
+sudo apt install openjdk-8-jdk
+```
+Merci de ne pas oulbié de spécifier dans la configuration que le système d'exploitation doit utiliser par défaut OpenJDK 8. En utilisant la commande suivante vous pouvez spécifier cela:
+```
+sudo update-alternatives --config java
+```
+Vous pouvez verifier l'installation avec la commande:
+```
+java -version
+```
+Le résultat attendu est le suivant:
+```
+openjdk version "1.8.0_xxx"
+OpenJDK Runtime Environment (...)
+OpenJDK 64-Bit Server VM (build ...)
+```
+** 2. Installation des services ThingsBoard**
+Télécharger les paquets d'installation
+```
+wget https://github.com/thingsboard/thingsboard/releases/download/v2.4.3/thingsboard-2.4.3.deb
+```
+
+Installation du service ThingsBoard.
+```
+sudo dpkg -i thingsboard-2.4.3.deb
+```
+3. Configuration de la base de données ThingsBoard
+     
+    
+L''équipe ThingsBoard recommande d'utiliser PostgreSQL pour le développement et des environnements de production avec une charge raisonable de  (< 5000 msg/sec).
+
+**- Installation PostgreSQL**
+Les instructions ci-dessous vous permettent l'installation de PostgreSQL.
+```
+sudo apt-get update
+sudo apt-get install postgresql postgresql-contrib
+sudo service postgresql start
+```
+Une fois PostgreSQL installé il vous faut créer un nouvel utilisateur / password pour l'utilisateur principal. Les instructions ci-desssous vous permettent d'effectuer cela.
+```
+sudo su - postgres
+psql
+\password
+\q
+```
+Appuyer sur “Ctrl+D” pour retourner sur la console de l'utisateur principal afin de créer la base de données  thingsboard DB:
+```
+psql -U postgres -d postgres -h 127.0.0.1 -W
+CREATE DATABASE thingsboard;
+\q
+```
+    **  - Configuration ThingsBoard**
+
+Editer le fichier de configuration ThingsBoard
+```
+sudo nano /etc/thingsboard/conf/thingsboard.conf
+```
+Ajouter les lignes suivantes au fichier. Ne pas oublier de remplacer  “PUT_YOUR_POSTGRESQL_PASSWORD_HERE” avec le nom et mot de passe utilisateur choisi.
+```
+# DB Configuration 
+export DATABASE_ENTITIES_TYPE=sql
+export DATABASE_TS_TYPE=sql
+export SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.PostgreSQLDialect
+export SPRING_DRIVER_CLASS_NAME=org.postgresql.Driver
+export SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/thingsboard
+export SPRING_DATASOURCE_USERNAME=postgres
+export SPRING_DATASOURCE_PASSWORD=PUT_YOUR_POSTGRESQL_PASSWORD_HERE
+```
+**- 4. Limitation de la mémoire pour les machine de petite capacité (1GB of RAM)**
+Editer le fichier de configuration ThingsBoard
+```
+sudo nano /etc/thingsboard/conf/thingsboard.conf
+```
+Ajouter les lignes suivantes au fichier.
+```
+# Update ThingsBoard memory usage and restrict it to 256MB in /etc/thingsboard/conf/thingsboard.conf
+export JAVA_OPTS="$JAVA_OPTS -Xms256M -Xmx256M"
+```
+**5. Script d'installation**
+Une fois le service ThingsBoard installée et la configuration de la base de données renseignée, il faut executer le script suivant.:
+```
+# --loadDemo option will load demo data: users, devices, assets, rules, widgets.
+sudo /usr/share/thingsboard/bin/install/install.sh --loadDemo
+
+```
+** - 6. Démarrage des services ThingsBoard**
+
+Exécuter la commande suivante pour  démarrer ThingsBoard:
+```
+sudo service thingsboard start
+```
+Une fois démarré tapé l'adresse suivant sur votre explorateur web:
+```
+http://localhost:8080/
+
+```
+Les logins suivants sont ceux disponnible par défaut si vous avez spécifié –loadDemo pendant le script d'installation:
+
+*Systen Administrator: sysadmin@thingsboard.org / sysadmin*
+
+*Tenant Administrator: tenant@thingsboard.org / tenant*
+
+*Customer User: customer@thingsboard.org / customer*
+
+Vous pouvez toujours changer les mots de passe dans les logins utilisateurs
+
+Merci de bien attendre environ 240 secondes pour que l'interface démarre en particulier pour les machines lentes avec 1-2 CPUs ou 1-2 GB RAM.
+
+** - 7. Réglages complémentaires**
+
+Le fichier de configuration utilisé est présent dans la partie settings.
+Du fait que thingsboard est installé sur la même machine que Chirpstack leur port de l'explorateur web sont en conflit sur le 8080
+Il vous faut de la meme manière que le fichier de configuration éditer le fichier Thingsboard.yml et le modifier comme indiqué sur le port 8085:
+```
+# Server bind port
+  port: "${HTTP_BIND_PORT:8085}"
+```
+Le protocole MQTT est aussi en conflit pour des raisons identiques sur le port 8880. Pour Thingsboard vous pouvez le configurer sur le port 8883
+```
+mqtt:
+    # Enable/disable mqtt transport protocol.
+    enabled: "${MQTT_ENABLED:true}"
+    bind_address: "${MQTT_BIND_ADDRESS:0.0.0.0}"
+    bind_port: "${MQTT_BIND_PORT:8883}"
+```
+
+**- Troubleshooting**
+
+Si le service Thingsboard ne démarre pas malgré les modifications ci-dessus il vousu faut analyser les éléments plus précisement à l'aide des instructions suivantes:
+Les logs de ThingsBoard logs sont enregistré dans le répertoire suivant:
+```
+/var/log/thingsboard
+
+```
+Vous pouvez toujours utiliser la commande suivante pour vérifier les erreur du coté "backend":
+```
+cat /var/log/thingsboard/thingsboard.log | grep ERROR
+```
+
+
+
 #### Node-red - pour aider au décryptage des message
 
     PRE DECODAGE DU PAYLOAD PAR TTN OU CHIRPSTACK CONVERSION EN STRING...
