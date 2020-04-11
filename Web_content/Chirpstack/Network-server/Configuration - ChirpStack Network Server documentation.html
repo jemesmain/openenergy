@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<!-- saved from url=(0056)https://www.chirpstack.io/network-server/install/config/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="./Configuration - ChirpStack Network Server documentation_files/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="./Configuration - ChirpStack Network Server documentation_files/bootstrap.min(1).css">
+  <link rel="stylesheet" href="./Configuration - ChirpStack Network Server documentation_files/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+  <link rel="stylesheet" href="./Configuration - ChirpStack Network Server documentation_files/docs.css">
+  <link rel="stylesheet" href="./Configuration - ChirpStack Network Server documentation_files/highlight.css">
+  <title>Configuration - ChirpStack Network Server documentation</title>
+<style>@media print {#ghostery-purple-box {display:none !important}}</style></head>
+
+<body>
+  <nav id="topnavrow" class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand" href="https://www.chirpstack.io/">
+        <img src="./Configuration - ChirpStack Network Server documentation_files/logo.png" height="40">
+      </a>
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navcollapse" aria-controls="navcollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://forum.chirpstack.io/"><i class="fab fa-discourse"></i> forum.chirpstack.io</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <nav class="navbar navbar-expand-lg navbar-light py-0 navbar-components">
+    <div class="container">
+      <div id="navcollapse" class="collapse navbar-collapse my-0">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/">Home</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/overview/">Getting started</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/gateway-bridge/">Gateway Bridge</a>
+          <a class="nav-item nav-link px-3 mx-2 active" href="https://www.chirpstack.io/network-server/">Network Server</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/application-server/">Application Server</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/geolocation-server/">Geolocation Server</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/gateway-os/">Gateway OS</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+
+<section class="documentation">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+         <aside>
+  <div id="sidebar" class="nav-collapse">
+    <ul class="sidebar-menu">
+      
+      
+        
+          <li class="sub-menu">
+            <a href="https://www.chirpstack.io/network-server/overview/">
+              <i class="fas fa-hand-point-right"></i>
+              <span>Overview</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  
+                    <li><a href="https://www.chirpstack.io/network-server/overview/"> ChirpStack Network Server</a></li>
+                  
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/overview/downloads/"> Downloads</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/overview/changelog/"> Changelog</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+          <li class="sub-menu active">
+            <a href="https://www.chirpstack.io/network-server/install/">
+              <i class="fas fa-download"></i>
+              <span>Install</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/install/requirements/"> Requirements</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/install/debian/"> Debian / Ubuntu</a></li>
+                
+              
+                
+                  <li class="active"><a href="https://www.chirpstack.io/network-server/install/config/"> Configuration</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+          <li class="sub-menu">
+            <a href="https://www.chirpstack.io/network-server/backends/">
+              <i class="fas fa-cogs"></i>
+              <span>Gateway backends</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/backends/mqtt/"> MQTT</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/backends/amqp/"> AMQP / RabbitMQ</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/backends/azure-iot-hub/"> Azure IoT Hub</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/backends/gcp-pub-sub/"> GCP Pub/Sub</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+          <li class="sub-menu">
+            <a href="https://www.chirpstack.io/network-server/features/">
+              <i class="fas fa-check-double"></i>
+              <span>Features</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/activation/"> Activation</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/adaptive-data-rate/"> Adaptive data-rate (ADR)</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/channel-configuration/"> Channel (re)configuration</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/device-classes/"> Device Classes</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/device-profile/"> Device Profile</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/device-status/"> Device Status</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/device-time/"> Device Time</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/gateway-management/"> Gateway management</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/gateway-profile/"> Gateway Profile</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/geolocation/"> Geolocation</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/regions/"> LoRaWAN regions</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/lorawan-versions/"> LoRaWAN versions</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/multicast/"> Multicast</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/rejoin/"> Rejoin configuration</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/routing-profile/"> Routing Profile</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/rx-parameter-configuration/"> RX parameter (re)configuration</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/service-profile/"> Service Profile</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+          <li class="sub-menu">
+            <a href="https://www.chirpstack.io/network-server/integrate/">
+              <i class="fas fa-code"></i>
+              <span>Integrate</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/integrate/api/"> API</a></li>
+                
+              
+                
+                  
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/integrate/application-server/"> Application Server</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/integrate/network-controller/"> Network Controller</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+          <li class="sub-menu">
+            <a href="https://www.chirpstack.io/network-server/metrics/">
+              <i class="fas fa-chart-line"></i>
+              <span>Metrics</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/metrics/prometheus/"> Prometheus</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+          <li class="sub-menu">
+            <a href="https://www.chirpstack.io/network-server/community/">
+              <i class="fab fa-github"></i>
+              <span>Community &amp; support</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/community/support/"> Support</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/community/contribute/"> Contribute</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/community/source/"> Source</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+    </ul>
+  </div>
+</aside>
+
+      </div>
+      <div class="col-md-9 content">
+        
+    
+<h1 id="configuration">Configuration</h1>
+<p>To list all configuration options, start <code>chirpstack-network-server</code> with the <code>--help</code>
+flag. This will display:</p>
+<p>The <code>chirpstack-network-server</code> binary has the following command-line flags:</p>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">ChirpStack Network Server is an open-source network-server, part of the ChirpStack Network Server stack
+        &gt; documentation &amp; support: https://www.chirpstack.io/network-server/
+        &gt; source &amp; copyright information: https://github.com/brocaar/network-server/
+
+Usage:
+  chirpstack-network-server [flags]
+  chirpstack-network-server [command]
+
+Available Commands:
+  configfile  Print the ChirpStack Network Server configuration file
+  help        Help about any command
+  version     Print the ChirpStack Network Server version
+
+Flags:
+  -c, --config string   path to configuration file (optional)
+  -h, --help            help for chirpstack-network-server
+      --log-level int   debug=5, info=4, error=2, fatal=1, panic=0 (default 4)
+
+Use "chirpstack-network-server [command] --help" for more information about a command.</code></pre></div>
+<h2 id="configuration-file">Configuration file</h2>
+<p>By default <code>chirpstack-network-server</code> will look in the following order for a
+configuration file at the following paths when <code>--config</code> is not:</p>
+<ul>
+<li><code>chirpstack-network-server.toml</code> (current working directory)</li>
+<li><code>$HOME/.config/chirpstack-network-server/chirpstack-network-server.toml</code></li>
+<li><code>/etc/chirpstack-network-server/chirpstack-network-server.toml</code></li>
+</ul>
+<p>To load configuration from a different location, use the <code>--config</code> flag.</p>
+<p>To generate a new configuration file <code>chirpstack-network-server.toml</code>, execute the following command:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">chirpstack-network-server configfile &gt; chirpstack-network-server.toml</code></pre></div>
+<p>Note that this configuration file will be pre-filled with the current configuration
+(either loaded from the paths mentioned above, or by using the <code>--config</code> flag).
+This makes it possible when new fields get added to upgrade your configuration file
+while preserving your old configuration. Example:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">chirpstack-network-server configfile --config chirpstack-network-server-old.toml &gt; chirpstack-network-server-new.toml</code></pre></div>
+<p>Example configuration file:</p>
+<div class="highlight"><pre class="chroma"><code class="language-toml" data-lang="toml"><span class="p">[</span><span class="nx">general</span><span class="p">]</span>
+<span class="c"># Log level</span>
+<span class="c">#</span>
+<span class="c"># debug=5, info=4, warning=3, error=2, fatal=1, panic=0</span>
+<span class="nx">log_level</span><span class="p">=</span><span class="mi">4</span>
+
+<span class="c"># Log to syslog.</span>
+<span class="c">#</span>
+<span class="c"># When set to true, log messages are being written to syslog.</span>
+<span class="nx">log_to_syslog</span><span class="p">=</span><span class="kc">false</span>
+
+
+<span class="c"># PostgreSQL settings.</span>
+<span class="c">#</span>
+<span class="c"># Please note that PostgreSQL 9.5+ is required.</span>
+<span class="p">[</span><span class="nx">postgresql</span><span class="p">]</span>
+<span class="c"># PostgreSQL dsn (e.g.: postgres://user:password@hostname/database?sslmode=disable).</span>
+<span class="c">#</span>
+<span class="c"># Besides using an URL (e.g. 'postgres://user:password@hostname/database?sslmode=disable')</span>
+<span class="c"># it is also possible to use the following format:</span>
+<span class="c"># 'user=chirpstack_ns dbname=chirpstack_ns sslmode=disable'.</span>
+<span class="c">#</span>
+<span class="c"># The following connection parameters are supported:</span>
+<span class="c">#</span>
+<span class="c"># * dbname - The name of the database to connect to</span>
+<span class="c"># * user - The user to sign in as</span>
+<span class="c"># * password - The user's password</span>
+<span class="c"># * host - The host to connect to. Values that start with / are for unix domain sockets. (default is localhost)</span>
+<span class="c"># * port - The port to bind to. (default is 5432)</span>
+<span class="c"># * sslmode - Whether or not to use SSL (default is require, this is not the default for libpq)</span>
+<span class="c"># * fallback_application_name - An application_name to fall back to if one isn't provided.</span>
+<span class="c"># * connect_timeout - Maximum wait for connection, in seconds. Zero or not specified means wait indefinitely.</span>
+<span class="c"># * sslcert - Cert file location. The file must contain PEM encoded data.</span>
+<span class="c"># * sslkey - Key file location. The file must contain PEM encoded data.</span>
+<span class="c"># * sslrootcert - The location of the root certificate file. The file must contain PEM encoded data.</span>
+<span class="c">#</span>
+<span class="c"># Valid values for sslmode are:</span>
+<span class="c">#</span>
+<span class="c"># * disable - No SSL</span>
+<span class="c"># * require - Always SSL (skip verification)</span>
+<span class="c"># * verify-ca - Always SSL (verify that the certificate presented by the server was signed by a trusted CA)</span>
+<span class="c"># * verify-full - Always SSL (verify that the certification presented by the server was signed by a trusted CA and the server host name matches the one in the certificate)</span>
+<span class="nx">dsn</span><span class="p">=</span><span class="s2">"postgres://localhost/chirpstack_ns?sslmode=disable"</span>
+
+<span class="c"># Automatically apply database migrations.</span>
+<span class="c">#</span>
+<span class="c"># It is possible to apply the database-migrations by hand</span>
+<span class="c"># (see https://github.com/brocaar/chirpstack-network-server/tree/master/migrations)</span>
+<span class="c"># or let ChirpStack Application Server migrate to the latest state automatically, by using</span>
+<span class="c"># this setting. Make sure that you always make a backup when upgrading ChirpStack</span>
+<span class="c"># Application Server and / or applying migrations.</span>
+<span class="nx">automigrate</span><span class="p">=</span><span class="kc">true</span>
+
+<span class="c"># Max open connections.</span>
+<span class="c">#</span>
+<span class="c"># This sets the max. number of open connections that are allowed in the</span>
+<span class="c"># PostgreSQL connection pool (0 = unlimited).</span>
+<span class="nx">max_open_connections</span><span class="p">=</span><span class="mi">0</span>
+
+<span class="c"># Max idle connections.</span>
+<span class="c">#</span>
+<span class="c"># This sets the max. number of idle connections in the PostgreSQL connection</span>
+<span class="c"># pool (0 = no idle connections are retained).</span>
+<span class="nx">max_idle_connections</span><span class="p">=</span><span class="mi">2</span>
+
+
+<span class="c"># Redis settings</span>
+<span class="c">#</span>
+<span class="c"># Please note that Redis 2.6.0+ is required.</span>
+<span class="p">[</span><span class="nx">redis</span><span class="p">]</span>
+<span class="c"># Redis url (e.g. redis://user:password@hostname/0)</span>
+<span class="c">#</span>
+<span class="c"># For more information about the Redis URL format, see:</span>
+<span class="c"># https://www.iana.org/assignments/uri-schemes/prov/redis</span>
+<span class="nx">url</span><span class="p">=</span><span class="s2">"redis://localhost:6379"</span>
+
+<span class="c"># Redis Cluster.</span>
+<span class="c">#</span>
+<span class="c"># Set this to true when the provided URL is pointing to a Redis Cluster</span>
+<span class="c"># instance.</span>
+<span class="nx">cluster</span><span class="p">=</span><span class="kc">false</span>
+
+<span class="c"># The master name.</span>
+<span class="c">#</span>
+<span class="c"># Set the master name when the provided URL is pointing to a Redis Sentinel</span>
+<span class="c"># instance.</span>
+<span class="nx">master_name</span><span class="p">=</span><span class="s2">""</span>
+
+<span class="c"># Connection pool size.</span>
+<span class="c">#</span>
+<span class="c"># Default is 10 connections per every CPU.</span>
+<span class="nx">pool_size</span><span class="p">=</span><span class="mi">0</span>
+
+
+<span class="c"># Network-server settings.</span>
+<span class="p">[</span><span class="nx">network_server</span><span class="p">]</span>
+<span class="c"># Network identifier (NetID, 3 bytes) encoded as HEX (e.g. 010203)</span>
+<span class="nx">net_id</span><span class="p">=</span><span class="s2">"000000"</span>
+
+<span class="c"># Time to wait for uplink de-duplication.</span>
+<span class="c">#</span>
+<span class="c"># This is the time that ChirpStack Network Server will wait for other gateways to receive</span>
+<span class="c"># the same uplink frame. Valid units are 'ms' or 's'.</span>
+<span class="c"># Please note that this value has influence on the uplink / downlink</span>
+<span class="c"># roundtrip time. Setting this value too high means ChirpStack Network Server will be</span>
+<span class="c"># unable to respond to the device within its receive-window.</span>
+<span class="nx">deduplication_delay</span><span class="p">=</span><span class="s2">"200ms"</span>
+
+<span class="c"># Device session expiration.</span>
+<span class="c">#</span>
+<span class="c"># The TTL value defines the time after which a device-session expires</span>
+<span class="c"># after no activity. Valid units are 'ms', 's', 'm', 'h'. Note that these</span>
+<span class="c"># values can be combined, e.g. '24h30m15s'.</span>
+<span class="nx">device_session_ttl</span><span class="p">=</span><span class="s2">"744h0m0s"</span>
+
+<span class="c"># Get downlink data delay.</span>
+<span class="c">#</span>
+<span class="c"># This is the time that ChirpStack Network Server waits between forwarding data to the</span>
+<span class="c"># application-server and reading data from the queue. A higher value</span>
+<span class="c"># means that the application-server has more time to schedule a downlink</span>
+<span class="c"># queue item which can be processed within the same uplink / downlink</span>
+<span class="c"># transaction.</span>
+<span class="c"># Please note that this value has influence on the uplink / downlink</span>
+<span class="c"># roundtrip time. Setting this value too high means ChirpStack Network Server will be</span>
+<span class="c"># unable to respond to the device within its receive-window.</span>
+<span class="nx">get_downlink_data_delay</span><span class="p">=</span><span class="s2">"100ms"</span>
+
+
+  <span class="c"># LoRaWAN regional band configuration.</span>
+  <span class="c">#</span>
+  <span class="c"># Note that you might want to consult the LoRaWAN Regional Parameters</span>
+  <span class="c"># specification for valid values that apply to your region.</span>
+  <span class="c"># See: https://www.lora-alliance.org/lorawan-for-developers</span>
+  <span class="p">[</span><span class="nx">network_server</span><span class="p">.</span><span class="nx">band</span><span class="p">]</span>
+  <span class="c"># LoRaWAN band to use.</span>
+  <span class="c">#</span>
+  <span class="c"># Valid values are:</span>
+  <span class="c"># * AS923</span>
+  <span class="c"># * AU915</span>
+  <span class="c"># * CN470</span>
+  <span class="c"># * CN779</span>
+  <span class="c"># * EU433</span>
+  <span class="c"># * EU868</span>
+  <span class="c"># * IN865</span>
+  <span class="c"># * KR920</span>
+  <span class="c"># * RU864</span>
+  <span class="c"># * US915</span>
+  <span class="nx">name</span><span class="p">=</span><span class="s2">"EU868"</span>
+
+  <span class="c"># Enforce 400ms dwell time.</span>
+  <span class="c">#</span>
+  <span class="c"># Some regions require the configuration of the dwell time, which will</span>
+  <span class="c"># limit the time-on-air to 400ms. Please refer to the LoRaWAN Regional</span>
+  <span class="c"># Parameters specification for more information.</span>
+  <span class="c">#</span>
+  <span class="c"># When configured and required in the configured region, ChirpStack Network Server will</span>
+  <span class="c"># use the TxParamSetup mac-command to communicate this to the devices.</span>
+  <span class="nx">uplink_dwell_time_400ms</span><span class="p">=</span><span class="kc">false</span>
+  <span class="nx">downlink_dwell_time_400ms</span><span class="p">=</span><span class="kc">false</span>
+
+  <span class="c"># Uplink max. EIRP.</span>
+  <span class="c">#</span>
+  <span class="c"># This defines the maximum allowed device EIRP which must be configured</span>
+  <span class="c"># for some regions. Please refer the LoRaWAN Regional Parameters specification</span>
+  <span class="c"># for more information. Set this to -1 to use the default value for this</span>
+  <span class="c"># region.</span>
+  <span class="c">#</span>
+  <span class="c"># When required in the configured region, ChirpStack Network Server will use the</span>
+  <span class="c"># TxParamSetup mac-command to communicate this to the devices.</span>
+  <span class="c"># For regions where the TxParamSetup mac-command is not implemented, this</span>
+  <span class="c"># setting is ignored.</span>
+  <span class="nx">uplink_max_eirp</span><span class="p">=</span><span class="mi">-1</span>
+
+  <span class="c"># Enforce repeater compatibility.</span>
+  <span class="c">#</span>
+  <span class="c"># Most band configurations define the max payload size for both an optional</span>
+  <span class="c"># repeater encapsulation layer as for setups where a repeater will never</span>
+  <span class="c"># be used. The latter case increases the max payload size for some data-rates.</span>
+  <span class="c"># In case a repeater might used, set this flag to true.</span>
+  <span class="nx">repeater_compatible</span><span class="p">=</span><span class="kc">false</span>
+
+
+  <span class="c"># LoRaWAN network related settings.</span>
+  <span class="p">[</span><span class="nx">network_server</span><span class="p">.</span><span class="nx">network_settings</span><span class="p">]</span>
+  <span class="c"># Installation margin (dB) used by the ADR engine.</span>
+  <span class="c">#</span>
+  <span class="c"># A higher number means that the network-server will keep more margin,</span>
+  <span class="c"># resulting in a lower data-rate but decreasing the chance that the</span>
+  <span class="c"># device gets disconnected because it is unable to reach one of the</span>
+  <span class="c"># surrounded gateways.</span>
+  <span class="nx">installation_margin</span><span class="p">=</span><span class="mi">10</span>
+
+  <span class="c"># RX window (Class-A).</span>
+  <span class="c">#</span>
+  <span class="c"># Set this to:</span>
+  <span class="c"># 0: RX1 / RX2</span>
+  <span class="c"># 1: RX1 only</span>
+  <span class="c"># 2: RX2 only</span>
+  <span class="nx">rx_window</span><span class="p">=</span><span class="mi">0</span>
+
+  <span class="c"># Class A RX1 delay</span>
+  <span class="c">#</span>
+  <span class="c"># 0=1sec, 1=1sec, ... 15=15sec. A higher value means ChirpStack Network Server has more</span>
+  <span class="c"># time to respond to the device as the delay between the uplink and the</span>
+  <span class="c"># first receive-window will be increased.</span>
+  <span class="nx">rx1_delay</span><span class="p">=</span><span class="mi">1</span>
+
+  <span class="c"># RX1 data-rate offset</span>
+  <span class="c">#</span>
+  <span class="c"># Please consult the LoRaWAN Regional Parameters specification for valid</span>
+  <span class="c"># options of the configured network_server.band.name.</span>
+  <span class="nx">rx1_dr_offset</span><span class="p">=</span><span class="mi">0</span>
+
+  <span class="c"># RX2 data-rate</span>
+  <span class="c">#</span>
+  <span class="c"># When set to -1, the default RX2 data-rate will be used for the configured</span>
+  <span class="c"># LoRaWAN band.</span>
+  <span class="c">#</span>
+  <span class="c"># Please consult the LoRaWAN Regional Parameters specification for valid</span>
+  <span class="c"># options of the configured network_server.band.name.</span>
+  <span class="nx">rx2_dr</span><span class="p">=</span><span class="mi">-1</span>
+
+  <span class="c"># RX2 frequency</span>
+  <span class="c">#</span>
+  <span class="c"># When set to -1, the default RX2 frequency will be used.</span>
+  <span class="c">#</span>
+  <span class="c"># Please consult the LoRaWAN Regional Parameters specification for valid</span>
+  <span class="c"># options of the configured network_server.band.name.</span>
+  <span class="nx">rx2_frequency</span><span class="p">=</span><span class="mi">-1</span>
+
+  <span class="c"># Prefer RX2 on RX1 data-rate less than.</span>
+  <span class="c">#</span>
+  <span class="c"># Prefer RX2 over RX1 based on the RX1 data-rate. When the RX1 data-rate</span>
+  <span class="c"># is smaller than the configured value, then the Network Server will</span>
+  <span class="c"># first try to schedule the downlink for RX2, failing that (e.g. the gateway</span>
+  <span class="c"># has already a payload scheduled at the RX2 timing) it will try RX1.</span>
+  <span class="nx">rx2_prefer_on_rx1_dr_lt</span><span class="p">=</span><span class="mi">0</span>
+
+  <span class="c"># Prefer RX2 on link budget.</span>
+  <span class="c">#</span>
+  <span class="c"># When the link-budget is better for RX2 than for RX1, the Network Server will first</span>
+  <span class="c"># try to schedule the downlink in RX2, failing that it will try RX1.</span>
+  <span class="nx">rx2_prefer_on_link_budget</span><span class="p">=</span><span class="kc">false</span>
+
+  <span class="c"># Prefer gateways for downlink with given uplink (SNR) margin.</span>
+  <span class="c">#</span>
+  <span class="c"># When receiving an uplink (by multiple gateways), the Network Server will</span>
+  <span class="c"># prefer the gateways that have at least the configured margin for the uplink</span>
+  <span class="c"># SNR when sending a downlink. Margin:</span>
+  <span class="c">#   uplink SNR - required SNR for spreading factor</span>
+  <span class="c">#</span>
+  <span class="c">#  * In case multiple gateways match, the Network Server will select a random</span>
+  <span class="c">#    gateway from the match.</span>
+  <span class="c">#  * In case non of the gateways have the desired margin or the uplink</span>
+  <span class="c">#    modulation was not LoRa, then the gateway with the best SNR (or RSSI</span>
+  <span class="c">#    in case of FSK) will be selected when sending a downlink.</span>
+  <span class="nx">gateway_prefer_min_margin</span><span class="p">=</span><span class="mi">10</span>
+
+  <span class="c"># Downlink TX Power (dBm)</span>
+  <span class="c">#</span>
+  <span class="c"># When set to -1, the downlink TX Power from the configured band will</span>
+  <span class="c"># be used.</span>
+  <span class="c">#</span>
+  <span class="c"># Please consult the LoRaWAN Regional Parameters and local regulations</span>
+  <span class="c"># for valid and legal options. Note that the configured TX Power must be</span>
+  <span class="c"># supported by your gateway(s).</span>
+  <span class="nx">downlink_tx_power</span><span class="p">=</span><span class="mi">-1</span>
+
+  <span class="c"># Disable mac-commands</span>
+  <span class="c">#</span>
+  <span class="c"># When set to true, ChirpStack Network Server will not handle and / or schedule any</span>
+  <span class="c"># mac-commands. However, it is still possible for an external controller</span>
+  <span class="c"># to handle and / or schedule mac-commands. This is intended for testing</span>
+  <span class="c"># only.</span>
+  <span class="nx">disable_mac_commands</span><span class="p">=</span><span class="kc">false</span>
+
+  <span class="c"># Disable ADR</span>
+  <span class="c">#</span>
+  <span class="c"># When set, this globally disables ADR.</span>
+  <span class="nx">disable_adr</span><span class="p">=</span><span class="kc">false</span>
+
+  <span class="c"># Max mac-command error count.</span>
+  <span class="c">#</span>
+  <span class="c"># When a mac-command is nACKed for more than the configured value, then the</span>
+  <span class="c"># ChirpStack Network Server will stop sending this mac-command to the device.</span>
+  <span class="c"># This setting prevents that the Network Server will keep sending mac-commands</span>
+  <span class="c"># on every downlink in case of a malfunctioning device.</span>
+  <span class="nx">max_mac_command_error_count</span><span class="p">=</span><span class="mi">3</span>
+
+  <span class="c"># Enable only a given sub-set of channels</span>
+  <span class="c">#</span>
+  <span class="c"># Use this when ony a sub-set of the by default enabled channels are being</span>
+  <span class="c"># used. For example when only using the first 8 channels of the US band.</span>
+  <span class="c"># Note: when left blank, all channels will be enabled.</span>
+  <span class="c">#</span>
+  <span class="c"># For the US band, there are 64 125kHz channels (0-63) with 8 500kHz</span>
+  <span class="c"># channels (65-71) with frequencies in the middle of each</span>
+  <span class="c"># sub-band of 125kHz channels.</span>
+  <span class="c"># Most US LoRa gateways recieve on only one sub-band which consists of</span>
+  <span class="c"># 8 125kHz channels and 1 500 kHz channel</span>
+  <span class="c">#</span>
+  <span class="c"># Example: (sub-band 1)</span>
+  <span class="c"># enabled_uplink_channels=[0, 1, 2, 3, 4, 5, 6, 7, 64]</span>
+  <span class="c"># Exmaple: (sub-band 2)</span>
+  <span class="c"># enabled_uplink_channels=[8, 9, 10, 11, 12, 13, 14, 15, 65]</span>
+  <span class="nx">enabled_uplink_channels</span><span class="p">=[]</span>
+
+
+  <span class="c"># Extra channel configuration.</span>
+  <span class="c">#</span>
+  <span class="c"># Use this for LoRaWAN regions where it is possible to extend the by default</span>
+  <span class="c"># available channels with additional channels (e.g. the EU band).</span>
+  <span class="c"># The first 5 channels will be configured as part of the OTAA join-response</span>
+  <span class="c"># (using the CFList field).</span>
+  <span class="c"># The other channels (or channel / data-rate changes) will be (re)configured</span>
+  <span class="c"># using the NewChannelReq mac-command.</span>
+  <span class="c">#</span>
+  <span class="c"># Example:</span>
+  <span class="c"># [[network_server.network_settings.extra_channels]]</span>
+  <span class="c"># frequency=867100000</span>
+  <span class="c"># min_dr=0</span>
+  <span class="c"># max_dr=5</span>
+
+  <span class="c"># [[network_server.network_settings.extra_channels]]</span>
+  <span class="c"># frequency=867300000</span>
+  <span class="c"># min_dr=0</span>
+  <span class="c"># max_dr=5</span>
+
+  <span class="c"># [[network_server.network_settings.extra_channels]]</span>
+  <span class="c"># frequency=867500000</span>
+  <span class="c"># min_dr=0</span>
+  <span class="c"># max_dr=5</span>
+
+  <span class="c"># [[network_server.network_settings.extra_channels]]</span>
+  <span class="c"># frequency=867700000</span>
+  <span class="c"># min_dr=0</span>
+  <span class="c"># max_dr=5</span>
+
+  <span class="c"># [[network_server.network_settings.extra_channels]]</span>
+  <span class="c"># frequency=867900000</span>
+  <span class="c"># min_dr=0</span>
+  <span class="c"># max_dr=5</span>
+
+
+  <span class="c"># Class B settings</span>
+  <span class="p">[</span><span class="nx">network_server</span><span class="p">.</span><span class="nx">network_settings</span><span class="p">.</span><span class="nx">class_b</span><span class="p">]</span>
+  <span class="c"># Ping-slot data-rate.</span>
+  <span class="nx">ping_slot_dr</span><span class="p">=</span><span class="mi">0</span>
+
+  <span class="c"># Ping-slot frequency (Hz)</span>
+  <span class="c">#</span>
+  <span class="c"># Set this to 0 to use the default frequency plan for the configured region</span>
+  <span class="c"># (which could be frequency hopping).</span>
+  <span class="nx">ping_slot_frequency</span><span class="p">=</span><span class="mi">0</span>
+
+
+  <span class="c"># Rejoin-request settings</span>
+  <span class="c">#</span>
+  <span class="c"># When enabled, ChirpStack Network Server will request the device to send a rejoin-request</span>
+  <span class="c"># every time when one of the 2 conditions below is met (frame count or time).</span>
+  <span class="p">[</span><span class="nx">network_server</span><span class="p">.</span><span class="nx">network_settings</span><span class="p">.</span><span class="nx">rejoin_request</span><span class="p">]</span>
+  <span class="c"># Request device to periodically send rejoin-requests</span>
+  <span class="nx">enabled</span><span class="p">=</span><span class="kc">false</span>
+
+  <span class="c"># The device must send a rejoin-request type 0 at least every 2^(max_count_n + 4)</span>
+  <span class="c"># uplink messages. Valid values are 0 to 15.</span>
+  <span class="nx">max_count_n</span><span class="p">=</span><span class="mi">0</span>
+
+  <span class="c"># The device must send a rejoin-request type 0 at least every 2^(max_time_n + 10)</span>
+  <span class="c"># seconds. Valid values are 0 to 15.</span>
+  <span class="c">#</span>
+  <span class="c"># 0  = roughly 17 minutes</span>
+  <span class="c"># 15 = about 1 year</span>
+  <span class="nx">max_time_n</span><span class="p">=</span><span class="mi">0</span>
+
+
+  <span class="c"># Scheduler settings</span>
+  <span class="c">#</span>
+  <span class="c"># These settings affect the multicast, Class-B and Class-C downlink queue</span>
+  <span class="c"># scheduler.</span>
+  <span class="p">[</span><span class="nx">network_server</span><span class="p">.</span><span class="nx">scheduler</span><span class="p">]</span>
+  <span class="c"># Scheduler interval</span>
+  <span class="c">#</span>
+  <span class="c"># The interval in which the downlink scheduler for multicast, Class-B and</span>
+  <span class="c"># Class-C runs.</span>
+  <span class="nx">scheduler_interval</span><span class="p">=</span><span class="s2">"1s"</span>
+
+    <span class="c"># Class-C settings.</span>
+    <span class="p">[</span><span class="nx">network_server</span><span class="p">.</span><span class="nx">scheduler</span><span class="p">.</span><span class="nx">class_c</span><span class="p">]</span>
+    <span class="c"># Downlink lock duration</span>
+    <span class="c">#</span>
+    <span class="c"># Contains the duration to lock the downlink Class-C transmissions</span>
+    <span class="c"># after a preceeding downlink tx (per device).</span>
+    <span class="nx">downlink_lock_duration</span><span class="p">=</span><span class="s2">"2s"</span>
+
+        <span class="c"># Multicast gateway delay.</span>
+        <span class="c">#</span>
+        <span class="c"># In case of a multi-gateway multicast downlink, this delay will added to</span>
+        <span class="c"># the transmission time of each downlink to avoid collisions between overlapping</span>
+        <span class="c"># gateways.</span>
+        <span class="nx">multicast_gateway_delay</span><span class="p">=</span><span class="s2">"2s"</span>
+
+
+  <span class="c"># Network-server API</span>
+  <span class="c">#</span>
+  <span class="c"># This is the network-server API that is used by ChirpStack Application Server or other</span>
+  <span class="c"># custom components interacting with ChirpStack Network Server.</span>
+  <span class="p">[</span><span class="nx">network_server</span><span class="p">.</span><span class="nx">api</span><span class="p">]</span>
+  <span class="c"># ip:port to bind the api server</span>
+  <span class="nx">bind</span><span class="p">=</span><span class="s2">"0.0.0.0:8000"</span>
+
+  <span class="c"># ca certificate used by the api server (optional)</span>
+  <span class="nx">ca_cert</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># tls certificate used by the api server (optional)</span>
+  <span class="nx">tls_cert</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># tls key used by the api server (optional)</span>
+  <span class="nx">tls_key</span><span class="p">=</span><span class="s2">""</span>
+
+
+  <span class="c"># Backend defines the gateway backend settings.</span>
+  <span class="c">#</span>
+  <span class="c"># The gateway backend handles the communication with the gateway(s) part of</span>
+  <span class="c"># the LoRaWAN network.</span>
+  <span class="p">[</span><span class="nx">network_server</span><span class="p">.</span><span class="nx">gateway</span><span class="p">.</span><span class="nx">backend</span><span class="p">]</span>
+    <span class="c"># Backend</span>
+    <span class="c">#</span>
+    <span class="c"># This defines the backend to use for the communication with the gateways.</span>
+    <span class="c"># Use the section name of one of the following gateway backends.</span>
+    <span class="c"># Valid options are:</span>
+    <span class="c">#  * mqtt</span>
+    <span class="c">#  * amqp</span>
+    <span class="c">#  * gcp_pub_sub</span>
+    <span class="c">#  * azure_iot_hub</span>
+    <span class="nx">type</span><span class="p">=</span><span class="s2">"mqtt"</span>
+
+
+    <span class="c"># MQTT gateway backend settings.</span>
+    <span class="c">#</span>
+    <span class="c"># This is the backend communicating with the LoRa gateways over a MQTT broker.</span>
+    <span class="p">[</span><span class="nx">network_server</span><span class="p">.</span><span class="nx">gateway</span><span class="p">.</span><span class="nx">backend</span><span class="p">.</span><span class="nx">mqtt</span><span class="p">]</span>
+    <span class="c"># MQTT topic templates for the different MQTT topics.</span>
+    <span class="c">#</span>
+    <span class="c"># The meaning of these topics are documented at:</span>
+    <span class="c"># https://www.chirpstack.io/gateway-bridge/</span>
+    <span class="c">#</span>
+    <span class="c"># The default values match the default expected configuration of the</span>
+    <span class="c"># ChirpStack Gateway Bridge MQTT backend. Therefore only change these values when</span>
+    <span class="c"># absolutely needed.</span>
+
+    <span class="c"># Event topic template.</span>
+    <span class="nx">event_topic</span><span class="p">=</span><span class="s2">"gateway/+/event/+"</span>
+
+    <span class="c"># Command topic template.</span>
+    <span class="c">#</span>
+    <span class="c"># Use:</span>
+    <span class="c">#   * "{{ .GatewayID }}" as an substitution for the LoRa gateway ID</span>
+    <span class="c">#   * "{{ .CommandType }}" as an substitution for the command type</span>
+    <span class="nx">command_topic_template</span><span class="p">=</span><span class="s2">"gateway/{{ .GatewayID }}/command/{{ .CommandType }}"</span>
+
+    <span class="c"># MQTT server (e.g. scheme://host:port where scheme is tcp, ssl or ws)</span>
+    <span class="nx">server</span><span class="p">=</span><span class="s2">"tcp://localhost:1883"</span>
+
+    <span class="c"># Connect with the given username (optional)</span>
+    <span class="nx">username</span><span class="p">=</span><span class="s2">""</span>
+
+    <span class="c"># Connect with the given password (optional)</span>
+    <span class="nx">password</span><span class="p">=</span><span class="s2">""</span>
+
+    <span class="c"># Maximum interval that will be waited between reconnection attempts when connection is lost.</span>
+    <span class="c"># Valid units are 'ms', 's', 'm', 'h'. Note that these values can be combined, e.g. '24h30m15s'.</span>
+    <span class="nx">max_reconnect_interval</span><span class="p">=</span><span class="s2">"1m0s"</span>
+
+    <span class="c"># Quality of service level</span>
+    <span class="c">#</span>
+    <span class="c"># 0: at most once</span>
+    <span class="c"># 1: at least once</span>
+    <span class="c"># 2: exactly once</span>
+    <span class="c">#</span>
+    <span class="c"># Note: an increase of this value will decrease the performance.</span>
+    <span class="c"># For more information: https://www.hivemq.com/blog/mqtt-essentials-part-6-mqtt-quality-of-service-levels</span>
+    <span class="nx">qos</span><span class="p">=</span><span class="mi">0</span>
+
+    <span class="c"># Clean session</span>
+    <span class="c">#</span>
+    <span class="c"># Set the "clean session" flag in the connect message when this client</span>
+    <span class="c"># connects to an MQTT broker. By setting this flag you are indicating</span>
+    <span class="c"># that no messages saved by the broker for this client should be delivered.</span>
+    <span class="nx">clean_session</span><span class="p">=</span><span class="kc">true</span>
+
+    <span class="c"># Client ID</span>
+    <span class="c">#</span>
+    <span class="c"># Set the client id to be used by this client when connecting to the MQTT</span>
+    <span class="c"># broker. A client id must be no longer than 23 characters. When left blank,</span>
+    <span class="c"># a random id will be generated. This requires clean_session=true.</span>
+    <span class="nx">client_id</span><span class="p">=</span><span class="s2">""</span>
+
+    <span class="c"># CA certificate file (optional)</span>
+    <span class="c">#</span>
+    <span class="c"># Use this when setting up a secure connection (when server uses ssl://...)</span>
+    <span class="c"># but the certificate used by the server is not trusted by any CA certificate</span>
+    <span class="c"># on the server (e.g. when self generated).</span>
+    <span class="nx">ca_cert</span><span class="p">=</span><span class="s2">""</span>
+
+    <span class="c"># TLS certificate file (optional)</span>
+    <span class="nx">tls_cert</span><span class="p">=</span><span class="s2">""</span>
+
+    <span class="c"># TLS key file (optional)</span>
+    <span class="nx">tls_key</span><span class="p">=</span><span class="s2">""</span>
+
+
+    <span class="c"># AMQP / RabbitMQ.</span>
+    <span class="c">#</span>
+    <span class="c"># Use this backend when the ChirpStack Gateway Bridge is configured to connect</span>
+    <span class="c"># to RabbitMQ using the MQTT plugin. See for more details about this plugin:</span>
+    <span class="c"># https://www.rabbitmq.com/mqtt.html</span>
+    <span class="p">[</span><span class="nx">network_server</span><span class="p">.</span><span class="nx">gateway</span><span class="p">.</span><span class="nx">backend</span><span class="p">.</span><span class="nx">amqp</span><span class="p">]</span>
+    <span class="c"># Server URL.</span>
+    <span class="c">#</span>
+    <span class="c"># See for a specification of all the possible options:</span>
+    <span class="c"># https://www.rabbitmq.com/uri-spec.html</span>
+    <span class="nx">url</span><span class="p">=</span><span class="s2">"amqp://guest:guest@localhost:5672"</span>
+
+    <span class="c"># Event queue name.</span>
+    <span class="c">#</span>
+    <span class="c"># This queue will be created when it does not yet exist and is used to</span>
+    <span class="c"># queue the events received from the gateway.</span>
+    <span class="nx">event_queue_name</span><span class="p">=</span><span class="s2">"gateway-events"</span>
+
+    <span class="c"># Event routing key.</span>
+    <span class="c">#</span>
+    <span class="c"># This is the routing-key used for creating the queue binding.</span>
+    <span class="nx">event_routing_key</span><span class="p">=</span><span class="s2">"gateway.*.event.*"</span>
+
+    <span class="c"># Command routing key template.</span>
+    <span class="c">#</span>
+    <span class="c"># This is the command routing-key template used when publishing gateway</span>
+    <span class="c"># commands.</span>
+    <span class="nx">command_routing_key_template</span><span class="p">=</span><span class="s2">"gateway.{{ .GatewayID }}.command.{{ .CommandType }}"</span>
+
+
+    <span class="c"># Google Cloud Pub/Sub backend.</span>
+    <span class="c">#</span>
+    <span class="c"># Use this backend when the ChirpStack Gateway Bridge is configured to connect</span>
+    <span class="c"># to the Google Cloud IoT Core MQTT broker (which integrates with Pub/Sub).</span>
+    <span class="p">[</span><span class="nx">network_server</span><span class="p">.</span><span class="nx">gateway</span><span class="p">.</span><span class="nx">backend</span><span class="p">.</span><span class="nx">gcp_pub_sub</span><span class="p">]</span>
+    <span class="c"># Path to the IAM service-account credentials file.</span>
+    <span class="c">#</span>
+    <span class="c"># Note: this service-account must have the following Pub/Sub roles:</span>
+    <span class="c">#  * Pub/Sub Editor</span>
+    <span class="nx">credentials_file</span><span class="p">=</span><span class="s2">""</span>
+
+    <span class="c"># Google Cloud project id.</span>
+    <span class="nx">project_id</span><span class="p">=</span><span class="s2">""</span>
+
+    <span class="c"># Uplink Pub/Sub topic name (to which Cloud IoT Core publishes).</span>
+    <span class="nx">uplink_topic_name</span><span class="p">=</span><span class="s2">""</span>
+
+    <span class="c"># Downlink Pub/Sub topic name (for publishing downlink frames).</span>
+    <span class="nx">downlink_topic_name</span><span class="p">=</span><span class="s2">""</span>
+
+    <span class="c"># Uplink retention duration.</span>
+    <span class="c">#</span>
+    <span class="c"># The retention duration that ChirpStack Network Server will set on the uplink subscription.</span>
+    <span class="nx">uplink_retention_duration</span><span class="p">=</span><span class="s2">"24h0m0s"</span>
+
+
+    <span class="c"># Azure IoT Hub backend.</span>
+    <span class="c">#</span>
+    <span class="c"># Use this backend when the ChirpStack Gateway Bridge is configured to connect</span>
+    <span class="c"># to the Azure IoT Hub MQTT broker.</span>
+    <span class="p">[</span><span class="nx">network_server</span><span class="p">.</span><span class="nx">gateway</span><span class="p">.</span><span class="nx">backend</span><span class="p">.</span><span class="nx">azure_iot_hub</span><span class="p">]</span>
+
+    <span class="c"># Events connection string.</span>
+    <span class="c">#</span>
+    <span class="c"># This connection string must point to the Service Bus Queue to which the</span>
+    <span class="c"># IoT Hub is forwarding the (uplink) gateway events.</span>
+    <span class="nx">events_connection_string</span><span class="p">=</span><span class="s2">""</span>
+
+    <span class="c"># Commands connection string.</span>
+    <span class="c">#</span>
+    <span class="c"># This connection string must point to the IoT Hub and is used by ChirpStack Network Server</span>
+    <span class="c"># for sending commands to the gateways.</span>
+    <span class="nx">commands_connection_string</span><span class="p">=</span><span class="s2">""</span>
+
+
+  <span class="c"># Geolocation settings.</span>
+  <span class="c">#</span>
+  <span class="c"># When set, ChirpStack Network Server will use the configured geolocation server to</span>
+  <span class="c"># resolve the location of the devices.</span>
+  <span class="p">[</span><span class="nx">geolocation_server</span><span class="p">]</span>
+  <span class="c"># Server.</span>
+  <span class="c">#</span>
+  <span class="c"># The hostname:ip of the geolocation service (optional).</span>
+  <span class="nx">server</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># CA certificate used by the API client (optional).</span>
+  <span class="nx">ca_cert</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># TLS certificate used by the API client (optional).</span>
+  <span class="nx">tls_cert</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># TLS key used by the API client (optional).</span>
+  <span class="nx">tls_key</span><span class="p">=</span><span class="s2">""</span>
+
+
+  <span class="c"># Monitoring settings.</span>
+  <span class="c">#</span>
+  <span class="c"># Note that this replaces the metrics configuration. If a metrics section is</span>
+  <span class="c"># found in the configuration, then it will fall back to that and the monitoring</span>
+  <span class="c"># section is ignored.</span>
+  <span class="p">[</span><span class="nx">monitoring</span><span class="p">]</span>
+
+  <span class="c"># IP:port to bind the monitoring endpoint to.</span>
+  <span class="c">#</span>
+  <span class="c"># When left blank, the monitoring endpoint will be disabled.</span>
+  <span class="nx">bind</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># Prometheus metrics endpoint.</span>
+  <span class="c">#</span>
+  <span class="c"># When set true, Prometheus metrics will be served at '/metrics'.</span>
+  <span class="nx">prometheus_endpoint</span><span class="p">=</span><span class="kc">false</span>
+
+  <span class="c"># Prometheus API timing histogram.</span>
+  <span class="c">#</span>
+  <span class="c"># By setting this to true, the API request timing histogram will be enabled.</span>
+  <span class="c"># See also: https://github.com/grpc-ecosystem/go-grpc-prometheus#histograms</span>
+  <span class="nx">prometheus_api_timing_histogram</span><span class="p">=</span><span class="kc">false</span>
+
+  <span class="c"># Health check endpoint.</span>
+  <span class="c">#</span>
+  <span class="c"># When set to true, the healthcheck endpoint will be served at '/health'.</span>
+  <span class="c"># When requesting, this endpoint will perform the following actions to</span>
+  <span class="c"># determine the health of this service:</span>
+  <span class="c">#   * Ping PostgreSQL database</span>
+  <span class="c">#   * Ping Redis database</span>
+  <span class="nx">healthcheck_endpoint</span><span class="p">=</span><span class="kc">false</span>
+
+
+<span class="c"># Join-server settings.</span>
+<span class="p">[</span><span class="nx">join_server</span><span class="p">]</span>
+<span class="c"># Resolve JoinEUI (experimental).</span>
+<span class="c"># Default join-server settings.</span>
+<span class="c">#</span>
+<span class="c"># When set to true, ChirpStack Network Server will use the JoinEUI to resolve the join-server</span>
+<span class="c"># for the given JoinEUI. ChirpStack Network Server will fallback on the default join-server</span>
+<span class="c"># when resolving the JoinEUI fails.</span>
+<span class="nx">resolve_join_eui</span><span class="p">=</span><span class="kc">false</span>
+
+<span class="c"># Resolve domain suffix.</span>
+<span class="c">#</span>
+<span class="c"># This configures the domain suffix used for resolving the join-server.</span>
+<span class="nx">resolve_domain_suffix</span><span class="p">=</span><span class="s2">".joineuis.lora-alliance.org"</span>
+
+
+  <span class="c"># Join-server certificates.</span>
+  <span class="c">#</span>
+  <span class="c"># Example:</span>
+  <span class="c"># [[join_server.certificates]]</span>
+  <span class="c"># # JoinEUI.</span>
+  <span class="c"># #</span>
+  <span class="c"># # The JoinEUI of the joinserver to to use the certificates for.</span>
+  <span class="c"># join_eui="0102030405060708"</span>
+
+  <span class="c"># # CA certificate (optional).</span>
+  <span class="c"># #</span>
+  <span class="c"># # Set this to validate the join-server server certificate (e.g. when the</span>
+  <span class="c"># # certificate was self-signed).</span>
+  <span class="c"># ca_cert="/path/to/ca.pem"</span>
+
+  <span class="c"># # TLS client-certificate (optional).</span>
+  <span class="c"># #</span>
+  <span class="c"># # Set this to enable client-certificate authentication with the join-server.</span>
+  <span class="c"># tls_cert="/path/to/tls_cert.pem"</span>
+
+  <span class="c"># # TLS client-certificate key (optional).</span>
+  <span class="c"># #</span>
+  <span class="c"># # Set this to enable client-certificate authentication with the join-server.</span>
+  <span class="c"># tls_key="/path/to/tls_key.pem"</span>
+
+
+  <span class="c"># Default join-server settings.</span>
+  <span class="c">#</span>
+  <span class="c"># This join-server will be used when resolving the JoinEUI is set to false</span>
+  <span class="c"># or as a fallback when resolving the JoinEUI fails.</span>
+  <span class="p">[</span><span class="nx">join_server</span><span class="p">.</span><span class="nx">default</span><span class="p">]</span>
+  <span class="c"># hostname:port of the default join-server</span>
+  <span class="c">#</span>
+  <span class="c"># This API is provided by ChirpStack Application Server.</span>
+  <span class="nx">server</span><span class="p">=</span><span class="s2">"http://localhost:8003"</span>
+
+  <span class="c"># ca certificate used by the default join-server client (optional)</span>
+  <span class="nx">ca_cert</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># tls certificate used by the default join-server client (optional)</span>
+  <span class="nx">tls_cert</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># tls key used by the default join-server client (optional)</span>
+  <span class="nx">tls_key</span><span class="p">=</span><span class="s2">""</span>
+
+
+  <span class="c"># Join-server KEK set.</span>
+  <span class="c">#</span>
+  <span class="c"># These KEKs (Key Encryption Keys) are used to decrypt the network related</span>
+  <span class="c"># session-keys received from the join-server on a (re)join-accept.</span>
+  <span class="c"># Please refer to the LoRaWAN Backend Interface specification</span>
+  <span class="c"># 'Key Transport Security' section for more information.</span>
+  <span class="c">#</span>
+  <span class="c"># Example (the [[join_server.kek.set]] can be repeated):</span>
+  <span class="c"># [[join_server.kek.set]]</span>
+  <span class="c"># # KEK label.</span>
+  <span class="c"># label="000000"</span>
+
+  <span class="c"># # Key Encryption Key.</span>
+  <span class="c"># kek="01020304050607080102030405060708"</span>
+
+
+  <span class="c"># Network-controller configuration.</span>
+  <span class="p">[</span><span class="nx">network_controller</span><span class="p">]</span>
+  <span class="c"># hostname:port of the network-controller api server (optional)</span>
+  <span class="nx">server</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># ca certificate used by the network-controller client (optional)</span>
+  <span class="nx">ca_cert</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># tls certificate used by the network-controller client (optional)</span>
+  <span class="nx">tls_cert</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># tls key used by the network-controller client (optional)</span>
+  <span class="nx">tls_key</span><span class="p">=</span><span class="s2">""</span></code></pre></div>
+<h2 id="securing-the-network-server-api">Securing the Network Server API</h2>
+<p>In order to protect the Network Server API (<code>network_server.api</code>) against
+unauthorized access and to encrypt all communication, it is advised to use
+TLS certificates. Once the <code>ca_cert</code>, <code>tls_cert</code> and <code>tls_key</code> are set,
+the API will enforce client certificate validation on all incoming connections.
+This means that when configuring this Network Server instance in <a href="https://www.chirpstack.io/application-server/">ChirpStack Application Server</a>
+you must provide the CA and TLS client certificate. See also ChirpStack Application Server
+<a href="https://www.chirpstack.io/application-server/use/network-servers/">Network Server Management</a>.</p>
+<p>See <a href="https://github.com/brocaar/chirpstack-certificates">https://github.com/brocaar/chirpstack-certificates</a>
+for a set of scripts to generate such certificates.</p>
+<h2 id="join-server-api-configuration">Join Server API configuration</h2>
+<p>In the current implementation ChirpStack Network Server uses a fixed join-server URL
+(provided by ChirpStack Application Server) which is used as a Join Server backend (<code>join_server.default</code>).</p>
+<p>In case this endpoint is secured using a TLS certificate and expects a client
+certificate, you must set <code>ca_cert</code>, <code>tls_cert</code> and <code>tls_key</code>.
+Also don’t forget to change <code>server</code> from <code>http://...</code> to <code>https://...</code>.</p>
+<p>See <a href="https://github.com/brocaar/chirpstack-certificates">https://github.com/brocaar/chirpstack-certificates</a>
+for a set of scripts to generate such certificates.</p>
+
+
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="./Configuration - ChirpStack Network Server documentation_files/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="./Configuration - ChirpStack Network Server documentation_files/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="./Configuration - ChirpStack Network Server documentation_files/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-3512995-9', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async="" src="./Configuration - ChirpStack Network Server documentation_files/analytics.js"></script>
+
+
+
+
+</body></html>

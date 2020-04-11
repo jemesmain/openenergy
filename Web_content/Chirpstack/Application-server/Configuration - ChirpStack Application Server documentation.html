@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<!-- saved from url=(0060)https://www.chirpstack.io/application-server/install/config/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="./Configuration - ChirpStack Application Server documentation_files/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="./Configuration - ChirpStack Application Server documentation_files/bootstrap.min(1).css">
+  <link rel="stylesheet" href="./Configuration - ChirpStack Application Server documentation_files/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+  <link rel="stylesheet" href="./Configuration - ChirpStack Application Server documentation_files/docs.css">
+  <link rel="stylesheet" href="./Configuration - ChirpStack Application Server documentation_files/highlight.css">
+  <title>Configuration - ChirpStack Application Server documentation</title>
+<style>@media print {#ghostery-purple-box {display:none !important}}</style></head>
+
+<body>
+  <nav id="topnavrow" class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand" href="https://www.chirpstack.io/">
+        <img src="./Configuration - ChirpStack Application Server documentation_files/logo.png" height="40">
+      </a>
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navcollapse" aria-controls="navcollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://forum.chirpstack.io/"><i class="fab fa-discourse"></i> forum.chirpstack.io</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <nav class="navbar navbar-expand-lg navbar-light py-0 navbar-components">
+    <div class="container">
+      <div id="navcollapse" class="collapse navbar-collapse my-0">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/">Home</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/overview/">Getting started</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/gateway-bridge/">Gateway Bridge</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/network-server/">Network Server</a>
+          <a class="nav-item nav-link px-3 mx-2 active" href="https://www.chirpstack.io/application-server/">Application Server</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/geolocation-server/">Geolocation Server</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/gateway-os/">Gateway OS</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+
+<section class="documentation">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+         <aside>
+  <div id="sidebar" class="nav-collapse">
+    <ul class="sidebar-menu">
+      
+      
+        
+          <li class="sub-menu">
+            <a href="https://www.chirpstack.io/application-server/overview/">
+              <i class="fas fa-hand-point-right"></i>
+              <span>Overview</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  
+                    <li><a href="https://www.chirpstack.io/application-server/overview/"> ChirpStack Application Server</a></li>
+                  
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/application-server/overview/features/"> Features</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/application-server/overview/downloads/"> Downloads</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/application-server/overview/changelog/"> Changelog</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+          <li class="sub-menu active">
+            <a href="https://www.chirpstack.io/application-server/install/">
+              <i class="fas fa-download"></i>
+              <span>Install</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/application-server/install/requirements/"> Requirements</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/application-server/install/debian/"> Debian / Ubuntu</a></li>
+                
+              
+                
+                  <li class="active"><a href="https://www.chirpstack.io/application-server/install/config/"> Configuration</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+          <li class="sub-menu">
+            <a href="https://www.chirpstack.io/application-server/use/">
+              <i class="fas fa-desktop"></i>
+              <span>Using the UI</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  <li><a href="https://www.chirpstack.io/application-server/use/login/"> Login</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/application-server/use/users/"> Users</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/application-server/use/network-servers/"> Network Servers</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/application-server/use/organizations/"> Organizations</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/application-server/use/service-profiles/"> Service Profiles</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/application-server/use/device-profiles/"> Device Profiles</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/application-server/use/applications/"> Applications</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/application-server/use/multicast-groups/"> Multicast Groups</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/application-server/use/devices/"> Devices</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/application-server/use/gateways/"> Gateways</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/application-server/use/frame-logging/"> Frame logging</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/application-server/use/event-logging/"> Event logging</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/application-server/use/fuota/"> Firmware updates</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+          <li class="sub-menu">
+            <a href="https://www.chirpstack.io/application-server/integrate/">
+              <i class="fas fa-code"></i>
+              <span>Integrate</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  
+                    <li><a href="https://www.chirpstack.io/application-server/integrate/sending-receiving/"> Sending / receiving data</a></li>
+                  
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/application-server/integrate/api/"> API</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/application-server/integrate/auth/"> Authentication</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/application-server/integrate/grpc/"> gRPC</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/application-server/integrate/rest/"> RESTful JSON</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+          <li class="sub-menu">
+            <a href="https://www.chirpstack.io/application-server/metrics/">
+              <i class="fas fa-chart-line"></i>
+              <span>Metrics</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  <li><a href="https://www.chirpstack.io/application-server/metrics/prometheus/"> Prometheus</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+          <li class="sub-menu">
+            <a href="https://www.chirpstack.io/application-server/community/">
+              <i class="fab fa-github"></i>
+              <span>Community &amp; support</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  <li><a href="https://www.chirpstack.io/application-server/community/support/"> Support</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/application-server/community/contribute/"> Contribute</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/application-server/community/source/"> Source</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+    </ul>
+  </div>
+</aside>
+
+      </div>
+      <div class="col-md-9 content">
+        
+    
+<h1 id="configuration">Configuration</h1>
+<p>The <code>chirpstack-application-server</code> binary has the following command-line flags:</p>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">ChirpStack Application Server is an open-source application-server, part of the ChirpStack Network Server project
+	&gt; documentation &amp; support: https://www.chirpstack.io/application-server/
+	&gt; source &amp; copyright information: https://github.com/brocaar/chirpstack-application-server
+
+Usage:
+  chirpstack-application-server [flags]
+  chirpstack-application-server [command]
+
+Available Commands:
+  configfile  Print the LoRa Application Server configuration file
+  help        Help about any command
+  version     Print the ChirpStack Application Server version
+
+Flags:
+  -c, --config string   path to configuration file (optional)
+  -h, --help            help for chirpstack-application-server
+      --log-level int   debug=5, info=4, error=2, fatal=1, panic=0 (default 4)
+
+Use "chirpstack-application-server [command] --help" for more information about a command.</code></pre></div>
+<h2 id="configuration-file">Configuration file</h2>
+<p>By default <code>chirpstack-application-server</code> will look in the following order for a
+configuration file at the following paths when <code>--config</code> is not set:</p>
+<ul>
+<li><code>chirpstack-application-server.toml</code> (current working directory)</li>
+<li><code>$HOME/.config/chirpstack-application-server/chirpstack-application-server.toml</code></li>
+<li><code>/etc/chirpstack-application-server/chirpstack-application-server.toml</code></li>
+</ul>
+<p>To load configuration from a different location, use the <code>--config</code> flag.</p>
+<p>To generate a new configuration file <code>chirpstack-application-server.toml</code>, execute the following command:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">chirpstack-application-server configfile &gt; chirpstack-application-server.toml</code></pre></div>
+<p>Note that this configuration file will be pre-filled with the current configuration
+(either loaded from the paths mentioned above, or by using the <code>--config</code> flag).
+This makes it possible when new fields get added to upgrade your configuration file
+while preserving your old configuration. Example:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">chirpstack-application-server configfile --config chirpstack-application-server-old.toml &gt; chirpstack-application-server-new.toml</code></pre></div>
+<p>Example configuration file:</p>
+<div class="highlight"><pre class="chroma"><code class="language-toml" data-lang="toml"><span class="p">[</span><span class="nx">general</span><span class="p">]</span>
+<span class="c"># Log level</span>
+<span class="c">#</span>
+<span class="c"># debug=5, info=4, warning=3, error=2, fatal=1, panic=0</span>
+<span class="nx">log_level</span><span class="p">=</span><span class="mi">4</span>
+
+<span class="c"># Log to syslog.</span>
+<span class="c">#</span>
+<span class="c"># When set to true, log messages are being written to syslog.</span>
+<span class="nx">log_to_syslog</span><span class="p">=</span><span class="kc">false</span>
+
+<span class="c"># The number of times passwords must be hashed. A higher number is safer as</span>
+<span class="c"># an attack takes more time to perform.</span>
+<span class="nx">password_hash_iterations</span><span class="p">=</span><span class="mi">100000</span>
+
+
+<span class="c"># PostgreSQL settings.</span>
+<span class="c">#</span>
+<span class="c"># Please note that PostgreSQL 9.5+ is required.</span>
+<span class="p">[</span><span class="nx">postgresql</span><span class="p">]</span>
+<span class="c"># PostgreSQL dsn (e.g.: postgres://user:password@hostname/database?sslmode=disable).</span>
+<span class="c">#</span>
+<span class="c"># Besides using an URL (e.g. 'postgres://user:password@hostname/database?sslmode=disable')</span>
+<span class="c"># it is also possible to use the following format:</span>
+<span class="c"># 'user=chirpstack_as dbname=chirpstack_as sslmode=disable'.</span>
+<span class="c">#</span>
+<span class="c"># The following connection parameters are supported:</span>
+<span class="c">#</span>
+<span class="c"># * dbname - The name of the database to connect to</span>
+<span class="c"># * user - The user to sign in as</span>
+<span class="c"># * password - The user's password</span>
+<span class="c"># * host - The host to connect to. Values that start with / are for unix domain sockets. (default is localhost)</span>
+<span class="c"># * port - The port to bind to. (default is 5432)</span>
+<span class="c"># * sslmode - Whether or not to use SSL (default is require, this is not the default for libpq)</span>
+<span class="c"># * fallback_application_name - An application_name to fall back to if one isn't provided.</span>
+<span class="c"># * connect_timeout - Maximum wait for connection, in seconds. Zero or not specified means wait indefinitely.</span>
+<span class="c"># * sslcert - Cert file location. The file must contain PEM encoded data.</span>
+<span class="c"># * sslkey - Key file location. The file must contain PEM encoded data.</span>
+<span class="c"># * sslrootcert - The location of the root certificate file. The file must contain PEM encoded data.</span>
+<span class="c">#</span>
+<span class="c"># Valid values for sslmode are:</span>
+<span class="c">#</span>
+<span class="c"># * disable - No SSL</span>
+<span class="c"># * require - Always SSL (skip verification)</span>
+<span class="c"># * verify-ca - Always SSL (verify that the certificate presented by the server was signed by a trusted CA)</span>
+<span class="c"># * verify-full - Always SSL (verify that the certification presented by the server was signed by a trusted CA and the server host name matches the one in the certificate)</span>
+<span class="nx">dsn</span><span class="p">=</span><span class="s2">"postgres://localhost/chirpstack_as?sslmode=disable"</span>
+
+<span class="c"># Automatically apply database migrations.</span>
+<span class="c">#</span>
+<span class="c"># It is possible to apply the database-migrations by hand</span>
+<span class="c"># (see https://github.com/brocaar/chirpstack-application-server/tree/master/migrations)</span>
+<span class="c"># or let ChirpStack Application Server migrate to the latest state automatically, by using</span>
+<span class="c"># this setting. Make sure that you always make a backup when upgrading Lora</span>
+<span class="c"># App Server and / or applying migrations.</span>
+<span class="nx">automigrate</span><span class="p">=</span><span class="kc">true</span>
+
+<span class="c"># Max open connections.</span>
+<span class="c">#</span>
+<span class="c"># This sets the max. number of open connections that are allowed in the</span>
+<span class="c"># PostgreSQL connection pool (0 = unlimited).</span>
+<span class="nx">max_open_connections</span><span class="p">=</span><span class="mi">0</span>
+
+<span class="c"># Max idle connections.</span>
+<span class="c">#</span>
+<span class="c"># This sets the max. number of idle connections in the PostgreSQL connection</span>
+<span class="c"># pool (0 = no idle connections are retained).</span>
+<span class="nx">max_idle_connections</span><span class="p">=</span><span class="mi">2</span>
+
+
+<span class="c"># Redis settings</span>
+<span class="c">#</span>
+<span class="c"># Please note that Redis 2.6.0+ is required.</span>
+<span class="p">[</span><span class="nx">redis</span><span class="p">]</span>
+<span class="c"># Redis url (e.g. redis://user:password@hostname/0)</span>
+<span class="c">#</span>
+<span class="c"># For more information about the Redis URL format, see:</span>
+<span class="c"># https://www.iana.org/assignments/uri-schemes/prov/redis</span>
+<span class="nx">url</span><span class="p">=</span><span class="s2">"redis://localhost:6379"</span>
+
+<span class="c"># Redis Cluster.</span>
+<span class="c">#</span>
+<span class="c"># Set this to true when the provided URL is pointing to a Redis Cluster</span>
+<span class="c"># instance.</span>
+<span class="nx">cluster</span><span class="p">=</span><span class="kc">false</span>
+
+<span class="c"># The master name.</span>
+<span class="c">#</span>
+<span class="c"># Set the master name when the provided URL is pointing to a Redis Sentinel</span>
+<span class="c"># instance.</span>
+<span class="nx">master_name</span><span class="p">=</span><span class="s2">""</span>
+
+<span class="c"># Connection pool size.</span>
+<span class="c">#</span>
+<span class="c"># Default is 10 connections per every CPU.</span>
+<span class="nx">pool_size</span><span class="p">=</span><span class="mi">0</span>
+
+
+<span class="c"># Application-server settings.</span>
+<span class="p">[</span><span class="nx">application_server</span><span class="p">]</span>
+<span class="c"># Application-server identifier.</span>
+<span class="c">#</span>
+<span class="c"># Random UUID defining the id of the application-server installation (used by</span>
+<span class="c"># ChirpStack Network Server as routing-profile id).</span>
+<span class="c"># For now it is recommended to not change this id.</span>
+<span class="nx">id</span><span class="p">=</span><span class="s2">"6d5db27e-4ce2-4b2b-b5d7-91f069397978"</span>
+
+
+  <span class="c"># JavaScript codec settings.</span>
+  <span class="p">[</span><span class="nx">application_server</span><span class="p">.</span><span class="nx">codec</span><span class="p">.</span><span class="nx">js</span><span class="p">]</span>
+  <span class="c"># Maximum execution time.</span>
+  <span class="nx">max_execution_time</span><span class="p">=</span><span class="s2">"100ms"</span>
+
+
+  <span class="c"># Integration configures the data integration.</span>
+  <span class="c">#</span>
+  <span class="c"># This is the data integration which is available for all applications,</span>
+  <span class="c"># besides the extra integrations that can be added on a per-application</span>
+  <span class="c"># basis.</span>
+  <span class="p">[</span><span class="nx">application_server</span><span class="p">.</span><span class="nx">integration</span><span class="p">]</span>
+  <span class="c"># Payload marshaler.</span>
+  <span class="c">#</span>
+  <span class="c"># This defines how the MQTT payloads are encoded. Valid options are:</span>
+  <span class="c"># * protobuf:  Protobuf encoding</span>
+  <span class="c"># * json:      JSON encoding (easier for debugging, but less compact than 'protobuf')</span>
+  <span class="c"># * json_v3:   v3 JSON (will be removed in the next major release)</span>
+  <span class="nx">marshaler</span><span class="p">=</span><span class="s2">"json_v3"</span>
+
+
+  <span class="c"># Enabled integrations.</span>
+  <span class="c">#</span>
+  <span class="c"># Enabled integrations are enabled for all applications. Multiple</span>
+  <span class="c"># integrations can be configured.</span>
+  <span class="c"># Do not forget to configure the related configuration section below for</span>
+  <span class="c"># the enabled integrations. Integrations that can be enabled are:</span>
+  <span class="c"># * mqtt              - MQTT broker</span>
+  <span class="c"># * amqp              - AMQP / RabbitMQ</span>
+  <span class="c"># * aws_sns           - AWS Simple Notification Service (SNS)</span>
+  <span class="c"># * azure_service_bus - Azure Service-Bus</span>
+  <span class="c"># * gcp_pub_sub       - Google Cloud Pub/Sub</span>
+  <span class="c"># * postgresql        - PostgreSQL database</span>
+  <span class="nx">enabled</span><span class="p">=[</span><span class="s2">"mqtt"</span><span class="p">]</span>
+
+
+  <span class="c"># MQTT integration backend.</span>
+  <span class="p">[</span><span class="nx">application_server</span><span class="p">.</span><span class="nx">integration</span><span class="p">.</span><span class="nx">mqtt</span><span class="p">]</span>
+  <span class="c"># MQTT topic templates for the different MQTT topics.</span>
+  <span class="c">#</span>
+  <span class="c"># The meaning of these topics are documented at:</span>
+  <span class="c"># https://www.chirpstack.io/application-server/integrate/data/</span>
+  <span class="c">#</span>
+  <span class="c"># The following substitutions can be used:</span>
+  <span class="c"># * "{{ .ApplicationID }}" for the application id.</span>
+  <span class="c"># * "{{ .DevEUI }}" for the DevEUI of the device.</span>
+  <span class="c">#</span>
+  <span class="c"># Note: the downlink_topic_template must contain both the application id and</span>
+  <span class="c"># DevEUI substitution!</span>
+  <span class="nx">uplink_topic_template</span><span class="p">=</span><span class="s2">"application/{{ .ApplicationID }}/device/{{ .DevEUI }}/rx"</span>
+  <span class="nx">downlink_topic_template</span><span class="p">=</span><span class="s2">"application/{{ .ApplicationID }}/device/{{ .DevEUI }}/tx"</span>
+  <span class="nx">join_topic_template</span><span class="p">=</span><span class="s2">"application/{{ .ApplicationID }}/device/{{ .DevEUI }}/join"</span>
+  <span class="nx">ack_topic_template</span><span class="p">=</span><span class="s2">"application/{{ .ApplicationID }}/device/{{ .DevEUI }}/ack"</span>
+  <span class="nx">error_topic_template</span><span class="p">=</span><span class="s2">"application/{{ .ApplicationID }}/device/{{ .DevEUI }}/error"</span>
+  <span class="nx">status_topic_template</span><span class="p">=</span><span class="s2">"application/{{ .ApplicationID }}/device/{{ .DevEUI }}/status"</span>
+  <span class="nx">location_topic_template</span><span class="p">=</span><span class="s2">"application/{{ .ApplicationID }}/device/{{ .DevEUI }}/location"</span>
+
+  <span class="c"># Retained messages configuration.</span>
+  <span class="c">#</span>
+  <span class="c"># The MQTT broker will store the last publised message, when retained message is set</span>
+  <span class="c"># to true. When a client subscribes to a topic with retained message set to true, it will</span>
+  <span class="c"># always receive the last published message.</span>
+  <span class="nx">uplink_retained_message</span><span class="p">=</span><span class="kc">false</span>
+  <span class="nx">join_retained_message</span><span class="p">=</span><span class="kc">false</span>
+  <span class="nx">ack_retained_message</span><span class="p">=</span><span class="kc">false</span>
+  <span class="nx">error_retained_message</span><span class="p">=</span><span class="kc">false</span>
+  <span class="nx">status_retained_message</span><span class="p">=</span><span class="kc">false</span>
+  <span class="nx">location_retained_message</span><span class="p">=</span><span class="kc">false</span>
+
+  <span class="c"># MQTT server (e.g. scheme://host:port where scheme is tcp, ssl or ws)</span>
+  <span class="nx">server</span><span class="p">=</span><span class="s2">"tcp://localhost:1883"</span>
+
+  <span class="c"># Connect with the given username (optional)</span>
+  <span class="nx">username</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># Connect with the given password (optional)</span>
+  <span class="nx">password</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># Maximum interval that will be waited between reconnection attempts when connection is lost.</span>
+  <span class="c"># Valid units are 'ms', 's', 'm', 'h'. Note that these values can be combined, e.g. '24h30m15s'.</span>
+  <span class="nx">max_reconnect_interval</span><span class="p">=</span><span class="s2">"1m0s"</span>
+
+  <span class="c"># Quality of service level</span>
+  <span class="c">#</span>
+  <span class="c"># 0: at most once</span>
+  <span class="c"># 1: at least once</span>
+  <span class="c"># 2: exactly once</span>
+  <span class="c">#</span>
+  <span class="c"># Note: an increase of this value will decrease the performance.</span>
+  <span class="c"># For more information: https://www.hivemq.com/blog/mqtt-essentials-part-6-mqtt-quality-of-service-levels</span>
+  <span class="nx">qos</span><span class="p">=</span><span class="mi">0</span>
+
+  <span class="c"># Clean session</span>
+  <span class="c">#</span>
+  <span class="c"># Set the "clean session" flag in the connect message when this client</span>
+  <span class="c"># connects to an MQTT broker. By setting this flag you are indicating</span>
+  <span class="c"># that no messages saved by the broker for this client should be delivered.</span>
+  <span class="nx">clean_session</span><span class="p">=</span><span class="kc">true</span>
+
+  <span class="c"># Client ID</span>
+  <span class="c">#</span>
+  <span class="c"># Set the client id to be used by this client when connecting to the MQTT</span>
+  <span class="c"># broker. A client id must be no longer than 23 characters. When left blank,</span>
+  <span class="c"># a random id will be generated. This requires clean_session=true.</span>
+  <span class="nx">client_id</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># CA certificate file (optional)</span>
+  <span class="c">#</span>
+  <span class="c"># Use this when setting up a secure connection (when server uses ssl://...)</span>
+  <span class="c"># but the certificate used by the server is not trusted by any CA certificate</span>
+  <span class="c"># on the server (e.g. when self generated).</span>
+  <span class="nx">ca_cert</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># TLS certificate file (optional)</span>
+  <span class="nx">tls_cert</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># TLS key file (optional)</span>
+  <span class="nx">tls_key</span><span class="p">=</span><span class="s2">""</span>
+
+
+  <span class="c"># AMQP / RabbitMQ.</span>
+  <span class="p">[</span><span class="nx">application_server</span><span class="p">.</span><span class="nx">integration</span><span class="p">.</span><span class="nx">amqp</span><span class="p">]</span>
+  <span class="c"># Server URL.</span>
+  <span class="c">#</span>
+  <span class="c"># See for a specification of all the possible options:</span>
+  <span class="c"># https://www.rabbitmq.com/uri-spec.html</span>
+  <span class="nx">url</span><span class="p">=</span><span class="s2">"amqp://guest:guest@localhost:5672"</span>
+
+  <span class="c"># Event routing key template.</span>
+  <span class="c">#</span>
+  <span class="c"># This is the event routing-key template used when publishing device</span>
+  <span class="c"># events.</span>
+  <span class="nx">event_routing_key_template</span><span class="p">=</span><span class="s2">"application.{{ .ApplicationID }}.device.{{ .DevEUI }}.event.{{ .EventType }}"</span>
+
+
+  <span class="c"># AWS Simple Notification Service (SNS)</span>
+  <span class="p">[</span><span class="nx">application_server</span><span class="p">.</span><span class="nx">integration</span><span class="p">.</span><span class="nx">aws_sns</span><span class="p">]</span>
+  <span class="c"># AWS region.</span>
+  <span class="c">#</span>
+  <span class="c"># Example: "eu-west-1".</span>
+  <span class="c"># See also: https://docs.aws.amazon.com/general/latest/gr/rande.html.</span>
+  <span class="nx">aws_region</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># AWS Access Key ID.</span>
+  <span class="nx">aws_access_key_id</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># AWS Secret Access Key.</span>
+  <span class="nx">aws_secret_access_key</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># Topic ARN (SNS).</span>
+  <span class="nx">topic_arn</span><span class="p">=</span><span class="s2">""</span>
+
+
+  <span class="c"># Azure Service-Bus integration.</span>
+  <span class="p">[</span><span class="nx">application_server</span><span class="p">.</span><span class="nx">integration</span><span class="p">.</span><span class="nx">azure_service_bus</span><span class="p">]</span>
+  <span class="c"># Connection string.</span>
+  <span class="c">#</span>
+  <span class="c"># The connection string can be found / created in the Azure console under</span>
+  <span class="c"># Settings -&gt; Shared access policies. The policy must contain Manage &amp; Send.</span>
+  <span class="nx">connection_string</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># Publish mode.</span>
+  <span class="c">#</span>
+  <span class="c"># Select either "topic", or "queue".</span>
+  <span class="nx">publish_mode</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># Publish name.</span>
+  <span class="c">#</span>
+  <span class="c"># The name of the topic or queue.</span>
+  <span class="nx">publish_name</span><span class="p">=</span><span class="s2">""</span>
+
+
+  <span class="c"># Google Cloud Pub/Sub integration.</span>
+  <span class="p">[</span><span class="nx">application_server</span><span class="p">.</span><span class="nx">integration</span><span class="p">.</span><span class="nx">gcp_pub_sub</span><span class="p">]</span>
+  <span class="c"># Path to the IAM service-account credentials file.</span>
+  <span class="c">#</span>
+  <span class="c"># Note: this service-account must have the following Pub/Sub roles:</span>
+  <span class="c">#  * Pub/Sub Editor</span>
+  <span class="nx">credentials_file</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># Google Cloud project id.</span>
+  <span class="nx">project_id</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># Pub/Sub topic name.</span>
+  <span class="nx">topic_name</span><span class="p">=</span><span class="s2">""</span>
+
+
+  <span class="c"># PostgreSQL database integration.</span>
+  <span class="p">[</span><span class="nx">application_server</span><span class="p">.</span><span class="nx">integration</span><span class="p">.</span><span class="nx">postgresql</span><span class="p">]</span>
+  <span class="c"># PostgreSQL dsn (e.g.: postgres://user:password@hostname/database?sslmode=disable).</span>
+  <span class="nx">dsn</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># This sets the max. number of open connections that are allowed in the</span>
+  <span class="c"># PostgreSQL connection pool (0 = unlimited).</span>
+  <span class="nx">max_open_connections</span><span class="p">=</span><span class="mi">0</span>
+
+  <span class="c"># Max idle connections.</span>
+  <span class="c">#</span>
+  <span class="c"># This sets the max. number of idle connections in the PostgreSQL connection</span>
+  <span class="c"># pool (0 = no idle connections are retained).</span>
+  <span class="nx">max_idle_connections</span><span class="p">=</span><span class="mi">2</span>
+
+
+  <span class="c"># Settings for the "internal api"</span>
+  <span class="c">#</span>
+  <span class="c"># This is the API used by ChirpStack Network Server to communicate with ChirpStack Application Server</span>
+  <span class="c"># and should not be exposed to the end-user.</span>
+  <span class="p">[</span><span class="nx">application_server</span><span class="p">.</span><span class="nx">api</span><span class="p">]</span>
+  <span class="c"># ip:port to bind the api server</span>
+  <span class="nx">bind</span><span class="p">=</span><span class="s2">"0.0.0.0:8001"</span>
+
+  <span class="c"># ca certificate used by the api server (optional)</span>
+  <span class="nx">ca_cert</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># tls certificate used by the api server (optional)</span>
+  <span class="nx">tls_cert</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># tls key used by the api server (optional)</span>
+  <span class="nx">tls_key</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># Public ip:port of the application-server API.</span>
+  <span class="c">#</span>
+  <span class="c"># This is used by ChirpStack Network Server to connect to ChirpStack Application Server. When running</span>
+  <span class="c"># ChirpStack Application Server on a different host than ChirpStack Network Server, make sure to set</span>
+  <span class="c"># this to the host:ip on which ChirpStack Network Server can reach ChirpStack Application Server.</span>
+  <span class="c"># The port must be equal to the port configured by the 'bind' flag</span>
+  <span class="c"># above.</span>
+  <span class="nx">public_host</span><span class="p">=</span><span class="s2">"localhost:8001"</span>
+
+
+  <span class="c"># Settings for the "external api"</span>
+  <span class="c">#</span>
+  <span class="c"># This is the API and web-interface exposed to the end-user.</span>
+  <span class="p">[</span><span class="nx">application_server</span><span class="p">.</span><span class="nx">external_api</span><span class="p">]</span>
+  <span class="c"># ip:port to bind the (user facing) http server to (web-interface and REST / gRPC api)</span>
+  <span class="nx">bind</span><span class="p">=</span><span class="s2">"0.0.0.0:8080"</span>
+
+  <span class="c"># http server TLS certificate (optional)</span>
+  <span class="nx">tls_cert</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># http server TLS key (optional)</span>
+  <span class="nx">tls_key</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># JWT secret used for api authentication / authorization</span>
+  <span class="c"># You could generate this by executing 'openssl rand -base64 32' for example</span>
+  <span class="nx">jwt_secret</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># Allow origin header (CORS).</span>
+  <span class="c">#</span>
+  <span class="c"># Set this to allows cross-domain communication from the browser (CORS).</span>
+  <span class="c"># Example value: https://example.com.</span>
+  <span class="c"># When left blank (default), CORS will not be used.</span>
+  <span class="nx">cors_allow_origin</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># when set, existing users can't be re-assigned (to avoid exposure of all users to an organization admin)"</span>
+  <span class="nx">disable_assign_existing_users</span><span class="p">=</span><span class="kc">false</span>
+
+
+  <span class="c"># Settings for the remote multicast setup.</span>
+  <span class="p">[</span><span class="nx">application_server</span><span class="p">.</span><span class="nx">remote_multicast_setup</span><span class="p">]</span>
+  <span class="c"># Synchronization interval.</span>
+  <span class="nx">sync_interval</span><span class="p">=</span><span class="s2">"1s"</span>
+
+  <span class="c"># Synchronization retries.</span>
+  <span class="nx">sync_retries</span><span class="p">=</span><span class="mi">3</span>
+
+  <span class="c"># Synchronization batch-size.</span>
+  <span class="nx">sync_batch_size</span><span class="p">=</span><span class="mi">100</span>
+
+
+  <span class="c"># Settings for the fragmentation-session setup.</span>
+  <span class="p">[</span><span class="nx">application_server</span><span class="p">.</span><span class="nx">fragmentation_session</span><span class="p">]</span>
+  <span class="c"># Synchronization interval.</span>
+  <span class="nx">sync_interval</span><span class="p">=</span><span class="s2">"1s"</span>
+
+  <span class="c"># Synchronization retries.</span>
+  <span class="nx">sync_retries</span><span class="p">=</span><span class="mi">3</span>
+
+  <span class="c"># Synchronization batch-size.</span>
+  <span class="nx">sync_batch_size</span><span class="p">=</span><span class="mi">100</span>
+
+
+
+<span class="c"># Join-server configuration.</span>
+<span class="c">#</span>
+<span class="c"># ChirpStack Application Server implements a (subset) of the join-api specified by the</span>
+<span class="c"># LoRaWAN Backend Interfaces specification. This API is used by ChirpStack Network Server</span>
+<span class="c"># to handle join-requests.</span>
+<span class="p">[</span><span class="nx">join_server</span><span class="p">]</span>
+<span class="c"># ip:port to bind the join-server api interface to</span>
+<span class="nx">bind</span><span class="p">=</span><span class="s2">"0.0.0.0:8003"</span>
+
+<span class="c"># CA certificate (optional).</span>
+<span class="c">#</span>
+<span class="c"># When set, the server requires a client-certificate and will validate this</span>
+<span class="c"># certificate on incoming requests.</span>
+<span class="nx">ca_cert</span><span class="p">=</span><span class="s2">""</span>
+
+<span class="c"># TLS server-certificate (optional).</span>
+<span class="c">#</span>
+<span class="c"># Set this to enable TLS.</span>
+<span class="nx">tls_cert</span><span class="p">=</span><span class="s2">""</span>
+
+<span class="c"># TLS server-certificate key (optional).</span>
+<span class="c">#</span>
+<span class="c"># Set this to enable TLS.</span>
+<span class="nx">tls_key</span><span class="p">=</span><span class="s2">""</span>
+
+
+<span class="c"># Key Encryption Key (KEK) configuration.</span>
+<span class="c">#</span>
+<span class="c"># The KEK mechanism is used to encrypt the session-keys sent from the</span>
+<span class="c"># join-server to the network-server.</span>
+<span class="c">#</span>
+<span class="c"># The ChirpStack Application Server join-server will use the NetID of the requesting</span>
+<span class="c"># network-server as the KEK label. When no such label exists in the set,</span>
+<span class="c"># the session-keys will be sent unencrypted (which can be fine for</span>
+<span class="c"># private networks).</span>
+<span class="c">#</span>
+<span class="c"># Please refer to the LoRaWAN Backend Interface specification</span>
+<span class="c"># 'Key Transport Security' section for more information.</span>
+<span class="p">[</span><span class="nx">join_server</span><span class="p">.</span><span class="nx">kek</span><span class="p">]</span>
+
+  <span class="c"># Application-server KEK label.</span>
+  <span class="c">#</span>
+  <span class="c"># This defines the KEK label used to encrypt the AppSKey (note that the</span>
+  <span class="c"># AppSKey is signaled to the NS and on the first received uplink from the</span>
+  <span class="c"># NS to the AS).</span>
+  <span class="c">#</span>
+  <span class="c"># When left blank, the AppSKey will be sent unencrypted (which can be fine</span>
+  <span class="c"># for private networks).</span>
+  <span class="nx">as_kek_label</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># KEK set.</span>
+  <span class="c">#</span>
+  <span class="c"># Example (the [[join_server.kek.set]] can be repeated):</span>
+  <span class="c"># [[join_server.kek.set]]</span>
+  <span class="c"># # KEK label.</span>
+  <span class="c"># label="000000"</span>
+
+  <span class="c"># # Key Encryption Key.</span>
+  <span class="c"># kek="01020304050607080102030405060708"</span>
+
+
+<span class="c"># Metrics collection settings.</span>
+<span class="p">[</span><span class="nx">metrics</span><span class="p">]</span>
+<span class="c"># Timezone</span>
+<span class="c">#</span>
+<span class="c"># The timezone is used for correctly aggregating the metrics (e.g. per hour,</span>
+<span class="c"># day or month).</span>
+<span class="c"># Example: "Europe/Amsterdam" or "Local" for the the system's local time zone.</span>
+<span class="nx">timezone</span><span class="p">=</span><span class="s2">"Local"</span>
+
+  <span class="c"># Metrics stored in Redis.</span>
+  <span class="c">#</span>
+  <span class="c"># The following metrics are stored in Redis:</span>
+  <span class="c"># * gateway statistics</span>
+  <span class="p">[</span><span class="nx">metrics</span><span class="p">.</span><span class="nx">redis</span><span class="p">]</span>
+  <span class="c"># Aggregation intervals</span>
+  <span class="c">#</span>
+  <span class="c"># The intervals on which to aggregate. Available options are:</span>
+  <span class="c"># 'MINUTE', 'HOUR', 'DAY', 'MONTH'.</span>
+  <span class="nx">aggregation_intervals</span><span class="p">=[</span><span class="s2">"MINUTE"</span><span class="p">,</span> <span class="s2">"HOUR"</span><span class="p">,</span> <span class="s2">"DAY"</span><span class="p">,</span> <span class="s2">"MONTH"</span><span class="p">]</span>
+
+  <span class="c"># Aggregated statistics storage duration.</span>
+  <span class="nx">minute_aggregation_ttl</span><span class="p">=</span><span class="s2">"2h0m0s"</span>
+  <span class="nx">hour_aggregation_ttl</span><span class="p">=</span><span class="s2">"48h0m0s"</span>
+  <span class="nx">day_aggregation_ttl</span><span class="p">=</span><span class="s2">"2160h0m0s"</span>
+  <span class="nx">month_aggregation_ttl</span><span class="p">=</span><span class="s2">"17520h0m0s"</span>
+
+
+  <span class="c"># Metrics stored in Prometheus.</span>
+  <span class="c">#</span>
+  <span class="c"># These metrics expose information about the state of the ChirpStack Network Server</span>
+  <span class="c"># instance.</span>
+  <span class="p">[</span><span class="nx">metrics</span><span class="p">.</span><span class="nx">prometheus</span><span class="p">]</span>
+  <span class="c"># Enable Prometheus metrics endpoint.</span>
+  <span class="nx">endpoint_enabled</span><span class="p">=</span><span class="kc">false</span>
+
+  <span class="c"># The ip:port to bind the Prometheus metrics server to for serving the</span>
+  <span class="c"># metrics endpoint.</span>
+  <span class="nx">bind</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># API timing histogram.</span>
+  <span class="c">#</span>
+  <span class="c"># By setting this to true, the API request timing histogram will be enabled.</span>
+  <span class="c"># See also: https://github.com/grpc-ecosystem/go-grpc-prometheus#histograms</span>
+  <span class="nx">api_timing_histogram</span><span class="p">=</span><span class="kc">false</span>
+
+
+  <span class="c"># Monitoring settings.</span>
+  <span class="c">#</span>
+  <span class="c"># Note that this replaces the metrics.prometheus configuration. If a</span>
+  <span class="c"># metrics.prometheus if found in the configuration then it will fall back</span>
+  <span class="c"># to that and the monitoring section is ignored.</span>
+  <span class="p">[</span><span class="nx">monitoring</span><span class="p">]</span>
+
+  <span class="c"># IP:port to bind the monitoring endpoint to.</span>
+  <span class="c">#</span>
+  <span class="c"># When left blank, the monitoring endpoint will be disabled.</span>
+  <span class="nx">bind</span><span class="p">=</span><span class="s2">""</span>
+
+  <span class="c"># Prometheus metrics endpoint.</span>
+  <span class="c">#</span>
+  <span class="c"># When set to true, Prometheus metrics will be served at '/metrics'.</span>
+  <span class="nx">prometheus_endpoint</span><span class="p">=</span><span class="kc">false</span>
+
+  <span class="c"># Prometheus API timing histogram.</span>
+  <span class="c">#</span>
+  <span class="c"># By setting this to true, the API request timing histogram will be enabled.</span>
+  <span class="c"># See also: https://github.com/grpc-ecosystem/go-grpc-prometheus#histograms</span>
+  <span class="nx">prometheus_api_timing_histogram</span><span class="p">=</span><span class="kc">false</span>
+
+  <span class="c"># Health check endpoint.</span>
+  <span class="c">#</span>
+  <span class="c"># When set to true, the healthcheck endpoint will be served at '/health'.</span>
+  <span class="c"># When requesting, this endpoint will perform the following actions to</span>
+  <span class="c"># determine the health of this service:</span>
+  <span class="c">#   * Ping PostgreSQL database</span>
+  <span class="c">#   * Ping Redis database</span>
+  <span class="nx">healthcheck_endpoint</span><span class="p">=</span><span class="kc">false</span></code></pre></div>
+<h2 id="securing-the-application-server-internal-api">Securing the application-server internal API</h2>
+<p>In order to protect the application-server internal API (<code>[application_server.internal_api]</code>) against
+unauthorized access and to encrypt all communication, it is advised to use TLS
+certificates. Once the <code>ca_cert</code>, <code>tls_cert</code> and <code>tls_key</code> are set, the
+API will enforce client certificate validation on all incoming connections.
+This means that when configuring a network-server instance in ChirpStack Application Server,
+you must provide the CA and TLS client certificate in order to let the
+network-server to connect to ChirpStack Application Server. See also
+<a href="https://www.chirpstack.io/application-server/use/network-servers/">network-server management</a>.</p>
+<p>See <a href="https://github.com/brocaar/chirpstack-certificates">https://github.com/brocaar/chirpstack-certificates</a>
+for a set of script to generate such certificates.</p>
+<h2 id="securing-the-join-server-api">Securing the join-server API</h2>
+<p>In order to protect the join-server API (<code>[join_server]</code>) against
+unauthorized access and to encrypt all communication, it is advised to use TLS
+certificates. Once the <code>ca_cert</code>, <code>tls_cert</code> and <code>tls_key</code> are
+set, the API will enforce client certificate validation on all incoming connections.
+When the <code>ca_cert</code> is left blank, TLS will still be configured, but the server
+will not require and validate the client-certificate.</p>
+<p>Please note that you also need to configure ChirpStack Network Server so that it uses a
+client certificate for its join-server API client. See
+<a href="https://www.chirpstack.io/network-server/install/config/">ChirpStack Network Server configuration</a>.</p>
+<h2 id="securing-the-web-interface-and-external-api">Securing the web-interface and external API</h2>
+<p>The web-interface and public api (<code>[application_server.external_api]</code>) can be
+secured using a TLS certificate and key. Once the <code>tls_cert</code> and <code>tls_key</code>
+are set (<code>[application_server.external_api]</code>), TLS will be activated.</p>
+<h3 id="self-signed-certificate">Self-signed certificate</h3>
+<p>A self-signed certificate can be generated with the following command:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days <span class="m">90</span> -nodes</code></pre></div>
+<h3 id="lets-encrypt">Let’s Encrypt</h3>
+<p>For generating a certificate with <a href="https://letsencrypt.org/">Let’s Encrypt</a>,
+first follow the <a href="https://letsencrypt.org/getting-started/">getting started</a>
+instructions. When the <code>letsencrypt</code> cli tool has been installed, execute:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">letsencrypt certonly --standalone -d DOMAINNAME.HERE </code></pre></div>
+
+
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="./Configuration - ChirpStack Application Server documentation_files/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script><div id="ghostery-purple-box" class="ghostery-bottom ghostery-right ghostery-collapsed"><div id="ghostery-box"><div id="ghostery-count" style="background: none; color: rgb(255, 255, 255);">1</div><div id="ghostery-pb-icons-container"><span id="ghostery-breaking-tracker" class="ghostery-pb-tracker" title="mouchards de page brisée" style="background: url(&quot;data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+DQo8c3ZnIHdpZHRoPSIxOHB4IiBoZWlnaHQ9IjE4cHgiIHZpZXdCb3g9IjAgMCAxOCAxOCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4NCiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDQwICgzMzc2MikgLSBodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2ggLS0+DQogICAgPHRpdGxlPmJyZWFraW5ncGFnZTwvdGl0bGU+DQogICAgPGRlc2M+Q3JlYXRlZCB3aXRoIFNrZXRjaC48L2Rlc2M+DQogICAgPGRlZnM+PC9kZWZzPg0KICAgIDxnIGlkPSJQdXJwbGUtQm94IiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4NCiAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTQxNi4wMDAwMDAsIC00NTMuMDAwMDAwKSIgaWQ9ImJhbSEtYnJlYWtpbmctdGhlLXBhZ2UtY29weS0yIiBmaWxsPSIjRkNCQTMzIj4NCiAgICAgICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQxNi4wMDAwMDAsIDQ1My4wMDAwMDApIj4NCiAgICAgICAgICAgICAgICA8cGF0aCBkPSJNOSwwLjE5NTY1MjE3NCBDNC4xNDQzNjAyNSwwLjE5NTY1MjE3NCAwLjE5NTY1MjE3NCw0LjE0NDM2MDI1IDAuMTk1NjUyMTc0LDkgQzAuMTk1NjUyMTc0LDEzLjg1NTYzOTggNC4xNDQzNjAyNSwxNy44MDQzNDc4IDksMTcuODA0MzQ3OCBDMTMuODU1NjM5OCwxNy44MDQzNDc4IDE3LjgwNDM0NzgsMTMuODU1NjM5OCAxNy44MDQzNDc4LDkgQzE3LjgwNDM0NzgsNC4xNDQzNjAyNSAxMy44NTU2Mzk4LDAuMTk1NjUyMTc0IDksMC4xOTU2NTIxNzQgWiBNMTEuNDg1NTg5OSwxMy40MTA0NDQxIEwxMS4wNzcwNzk4LDEzLjAyMDY3NjggTDEyLjEwMDQ3MTEsMTIuMjE2OTU3OSBMMTEuMDQ2MjQ1MSwxMi4yMTY5NTc5IEwxMS4yMzQ0NzgxLDEwLjg3MDcwODcgTDkuODAzMTgxNDIsMTEuNzk1NzUxMiBMOS40MDMzMzczNCw5LjM0NTA5MzkyIEw4LjY5NDc0MjY5LDExLjA4NjU1MTkgTDcuMzI1NzIwMDksMTAuMTcwOTgxNSBMNy43NTI1Njk3NywxMS45Mjk1NyBMNi41NTQyNDY3MywxMi4zMTE0Nzc1IEw3Ljg4MjM1Nzg3LDEzLjQxMDQ0NDEgTDExLjQ4NTU4OTksMTMuNDEwNDQ0MSBaIE02LjcxNTY3NTcyLDEzLjQxMDQ0NDEgTDUuMDI4NjMxOTcsMTIuMDA2NzU3NiBMNi44Njg0Mzg3MywxMS40MzE5ODE4IEw2LjE2Mzg3NDc3LDguNDg4NTczMDkgTDguMzQ5MzEyODgsOS45NTk5NzUxMiBMOS43MDQwMjY1NCw2LjYxMjQ5MDE1IEwxMC4zNTAzNDcxLDEwLjU1NjcxODIgTDEyLjE5NDk5MDcsOS4zNzY1MzMyOCBMMTEuODk4OTM2OCwxMS40NzY5MjM5IEwxNC4yNjI5MzQzLDExLjQ3NjkyMzkgTDEyLjIxMjkyNzIsMTMuMDc4OTIwMiBMMTIuNTY3MjI0NSwxMy40MTA0NDQxIEwxNS4zMzEyNjc3LDEzLjQxMDQ0NDEgTDE0LjQ3Mzk0MDcsMTIuNTk4NjYzOSBMMTcuMjA3MzUwNiwxMC40NjY4MzM5IEwxMy4wNjA3ODIxLDEwLjQ2NjgzMzkgTDEzLjQ5NjI5NzcsNy4zNDg2OTUgTDExLjA5OTg1MzIsOC44Nzg5NDUwNSBMMTAuMTIxMjAyNiwyLjg5Mjc3MTMgTDcuODc3NzIyNTgsOC40MjU0OTI4NSBMNC41NzA1NDQ0Nyw2LjIwMzk4MDEgTDUuNjY1NDgwNDEsMTAuNzUwMzkyNyBMMi45NTEwMTQ3MiwxMS41OTgyNDc2IEw1LjEzNjQ1MjgzLDEzLjQxMDQ0NDEgTDYuNzE1Njc1NzIsMTMuNDEwNDQ0MSBaIiBpZD0iYnJlYWtpbmdwYWdlIj48L3BhdGg+DQogICAgICAgICAgICA8L2c+DQogICAgICAgIDwvZz4NCiAgICA8L2c+DQo8L3N2Zz4=&quot;); opacity: 0.5;"></span><span id="ghostery-slow-tracker" class="ghostery-pb-tracker" title="Afficher les mouchards" style="background: url(&quot;data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+DQo8c3ZnIHdpZHRoPSIxN3B4IiBoZWlnaHQ9IjE3cHgiIHZpZXdCb3g9IjAgMCAxNyAxNyIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4NCiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDQwICgzMzc2MikgLSBodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2ggLS0+DQogICAgPHRpdGxlPnNsb3d0cmFja2VyczwvdGl0bGU+DQogICAgPGRlc2M+Q3JlYXRlZCB3aXRoIFNrZXRjaC48L2Rlc2M+DQogICAgPGRlZnM+PC9kZWZzPg0KICAgIDxnIGlkPSJQdXJwbGUtQm94IiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4NCiAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTM5NS4wMDAwMDAsIC00NTQuMDAwMDAwKSIgaWQ9InNsb3d0cmFja2VycyIgZmlsbD0iI0ZDQkEzMyI+DQogICAgICAgICAgICA8cGF0aCBkPSJNNDAzLjUsNDU0IEMzOTguODEyMjEsNDU0IDM5NSw0NTcuODEyMjEgMzk1LDQ2Mi41IEMzOTUsNDY3LjE4Nzc5IDM5OC44MTIyMSw0NzEgNDAzLjUsNDcxIEM0MDguMTg3NzksNDcxIDQxMiw0NjcuMTg3NzkgNDEyLDQ2Mi41IEM0MTIsNDU3LjgxMjIxIDQwOC4xODc3OSw0NTQgNDAzLjUsNDU0IFogTTQwOS42MDk1ODQsNDY1LjE3ODY1NCBDNDA5LjUzMDI1OSw0NjUuMTU0MDkgNDA4LjY3NzI4Myw0NjQuNzQ2NDIgNDA3LjU2MTA5MSw0NjQuMzYyNjM3IEM0MDguNDg0Mzc4LDQ2My43NDU2MSA0MDkuMDk0NDE4LDQ2Mi42OTM2NDUgNDA5LjA5NDQxOCw0NjEuNTAxNzMzIEM0MDkuMDk0NDE4LDQ1OS42MDU1ODEgNDA3LjU1MTQwMSw0NTguMDYyMzM4IDQwNS42NTUyNDksNDU4LjA2MjMzOCBDNDAzLjc1OTA5Nyw0NTguMDYyMzM4IDQwMi4yMTU4NTQsNDU5LjYwNTU4MSA0MDIuMjE1ODU0LDQ2MS41MDE3MzMgQzQwMi4yMTU4NTQsNDYyLjA0OTM1IDQwMi4zNDUyMDgsNDYyLjU2Njc2OSA0MDIuNTczMjY5LDQ2My4wMjY0OTcgQzQwMi43ODgwMzQsNDYzLjA2ODYzOCA0MDMuMzQ0NDQsNDYzLjE3NTIzMiA0MDQuMjIzNzgyLDQ2My4zMjM5NjggQzQwNS4yMDQ1MzUsNDYzLjQ5MDI4MSA0MDUuODUyNDM2LDQ2My4zNTY0MTkgNDA2LjM5MTAzOSw0NjIuODc2NjM0IEM0MDYuNzI4MTcyLDQ2Mi41NzY0NTkgNDA2LjkyODA2NCw0NjIuMTYzNjA2IDQwNi45NTM1MjksNDYxLjcxMzc5NCBDNDA2Ljk4MDEyMSw0NjEuMjYzOTgxIDQwNi44Mjk1ODMsNDYwLjgyOTk0NCA0MDYuNTI5NDA4LDQ2MC40OTM3MTIgQzQwNi4wNDY5MTksNDU5Ljk1MjQwNSA0MDUuMjE1MTI3LDQ1OS45MDM5NTMgNDA0LjY3MjY5Myw0NjAuMzg1NTQxIEM0MDQuMjM5NTU3LDQ2MC43NzExMjYgNDA0LjE4NTAyMSw0NjEuNDQ0NDkyIDQwNC41NTIxMjcsNDYxLjg1NzM0NiBDNDA0Ljg0MDEzMyw0NjIuMTgwNTA3IDQwNS4zNjk5NDcsNDYyLjIxNzQ2NiA0MDUuNjg2Nzk5LDQ2MS45MzU3NyBDNDA1LjgwMzk4NCw0NjEuODMxODggNDA1Ljg3MzM5NCw0NjEuNjkyODM1IDQwNS44ODA2MDYsNDYxLjU0NDc3NiBDNDA1Ljg4NjY5LDQ2MS40MjQyMSA0MDUuODUwNjMzLDQ2MS4zMTA2MyA0MDUuNzgwOTk4LDQ2MS4yMzQwMDkgQzQwNS43MTg1NzQsNDYxLjE2NTUgNDA1LjYxOTE5Miw0NjEuMTI3NjQxIDQwNS41MTY4OCw0NjEuMTI4NTQyIEM0MDUuNDI5ODkyLDQ2MS4xMzEwMjEgNDA1LjMxNzIxNCw0NjEuMTY1NSA0MDUuMjQ0MTk4LDQ2MS4yMzc2MTUgQzQwNS4yMjYzOTUsNDYxLjI1NDI5MSA0MDUuMjA0NTM1LDQ2MS4yNjQ4ODMgNDA1LjE3OTc0Niw0NjEuMjY0ODgzIEM0MDUuMTI2MTExLDQ2MS4yNjQ4ODMgNDA1LjA4MzA2OCw0NjEuMjE2NDMxIDQwNS4wODMwNjgsNDYxLjE1NzYxMyBDNDA1LjA4MzA2OCw0NjEuMTIxMzMxIDQwNS4wOTc5NDEsNDYxLjA5NDk2NCA0MDUuMTE2NDIxLDQ2MS4wNjk0OTggQzQwNS4yMjYzOTUsNDYwLjkxODk2IDQwNS4zODE0NCw0NjAuODMxNzQ3IDQwNS41MzUzNTksNDYwLjgxODY3NiBDNDA1Ljc0NDAzOSw0NjAuODAxMDk5IDQwNS45MTMwNTcsNDYwLjg2MDgxOCA0MDYuMDQ2OTE5LDQ2MS4wMDc3NTEgQzQwNi4xNzk4NzksNDYxLjE1NDAwNyA0MDYuMjQ5Mjg5LDQ2MS4zNDg0OSA0MDYuMjM3MTIsNDYxLjU2MzI1NSBDNDA2LjIyMzgyNCw0NjEuODA2MTkgNDA2LjExMjk0OCw0NjIuMDMyNDQ4IDQwNS45MjM2NDksNDYyLjIwMDU2NCBDNDA1LjQ1NzE2LDQ2Mi42MTYxMjIgNDA0LjcwNzE3Myw0NjIuNTY2MDkzIDQwNC4yODU1Myw0NjIuMDkzMjk0IEM0MDMuNzg5NzQ1LDQ2MS41MzU5ODcgNDAzLjg1ODQ3OSw0NjAuNjMyMDgxIDQwNC40MzUxNjcsNDYwLjExNzgxNyBDNDA1LjEyMzQwNyw0NTkuNTA1Mjk3IDQwNi4xODI1ODQsNDU5LjU2NjgyIDQwNi43OTQyMDIsNDYwLjI1NTI4NCBDNDA3LjE1NzAyNiw0NjAuNjYyNzMgNDA3LjM0MDAxNiw0NjEuMTg4MjYyIDQwNy4zMDg0NjYsNDYxLjczMzE3NCBDNDA3LjI3NjY5MSw0NjIuMjc4OTg4IDQwNy4wMzQ2NTgsNDYyLjc3OTA1NSA0MDYuNjI2OTg3LDQ2My4xNDE2NTQgQzQwNi4xNjgzODYsNDYzLjU1MDIyNiA0MDUuNjMyMjYyLDQ2My43NDY1MTIgNDA0Ljk0NjUwMiw0NjMuNzQ2NTEyIEM0MDQuNzA1MzcsNDYzLjc0NjUxMiA0MDQuNDQ0ODU3LDQ2My43MjE3MjIgNDA0LjE2MzE2Miw0NjMuNjc0Mzk3IEM0MDMuMTkyMDk5LDQ2My41MDk2NjIgNDAyLjE1NTAwNyw0NjMuMzI0ODY5IDQwMi4wMTU5NjIsNDYzLjMwNTQ4OCBDNDAxLjMxNzEzMSw0NjMuMjEyMTkxIDQwMC43MzYxNjEsNDYyLjczNzU4OSA0MDAuNzE3NjgyLDQ2Mi4wMzk2NTkgTDQwMC44OTQ1ODcsNDU4Ljk4NzY1MyBDNDAwLjg5NDU4Nyw0NTguNzkxMzY3IDQwMC43MzUyNiw0NTguNjMxMTM4IDQwMC41MzgwNzIsNDU4LjYzMTEzOCBDNDAwLjM0MDg4NSw0NTguNjMxMTM4IDQwMC4xODE1NTgsNDU4Ljc5MDQ2NSA0MDAuMTgxNTU4LDQ1OC45ODc2NTMgQzQwMC4xODE1NTgsNDU4Ljk4NzY1MyA0MDAuMjg1NDQ3LDQ2MC44NDE0MzcgNDAwLjI5NzYxNyw0NjEuMDc1NTgzIEM0MDAuMzIwNjAzLDQ2MS41MjAyMTIgMzk5LjkxMTEzLDQ2MS44NzY3MjYgMzk5LjQ2MDQxNiw0NjEuODc2NzI2IEMzOTguOTk4NDM1LDQ2MS44NzY3MjYgMzk4LjU4NzE1OSw0NjEuNTAwODMxIDM5OC42MjM0NDEsNDYxLjAzOTUyNiBDMzk4LjY0MzQ5OCw0NjAuNzg0MTk3IDM5OC42NjQ2ODIsNDYwLjUyMDA3OSAzOTguNjg1ODY1LDQ2MC4yNzI4NjIgTDM5OC43NTk3ODIsNDU5LjAwOTUxMiBDMzk4Ljc1OTc4Miw0NTguODEzMjI2IDM5OC42MDA0NTUsNDU4LjY1Mjk5OCAzOTguNDAzMjY4LDQ1OC42NTI5OTggQzM5OC4yMDYwOCw0NTguNjUyOTk4IDM5OC4wNDY3NTMsNDU4LjgxMjMyNSAzOTguMDQ2NzUzLDQ1OS4wMDk1MTIgTDM5OC4yMjAyNzgsNDYxLjk5OTk5NyBMMzk4LjIyMDI3OCw0NjIuMDA1MTggQzM5OC4yMjAyNzgsNDY0LjA5NzYxNyAzOTkuNDE3MzczLDQ2NS44MDI4OTIgNDAxLjUxMDcxMiw0NjUuODAxMDg5IEM0MDMuNjIyNTMxLDQ2NS43OTgzODUgNDA5LjYwODY4Myw0NjUuODAxMDg5IDQwOS42MDg2ODMsNDY1LjgwMTA4OSBDNDA5Ljc4MTA4MSw0NjUuODAxMDg5IDQwOS45MjAzNTEsNDY1LjY2MTE0MyA0MDkuOTIwMzUxLDQ2NS40ODk0MjEgQzQwOS45MjAzNTEsNDY1LjMxNzAyMyA0MDkuNzczMTkzLDQ2NS4yMzA3MTEgNDA5LjYwOTU4NCw0NjUuMTc4NjU0IFoiPjwvcGF0aD4NCiAgICAgICAgPC9nPg0KICAgIDwvZz4NCjwvc3ZnPg==&quot;); opacity: 0.5;"></span><span id="ghostery-non-secure-tracker" class="ghostery-pb-tracker" title="mouchards non sécurisés" style="background: url(&quot;data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+DQo8c3ZnIHdpZHRoPSIxOHB4IiBoZWlnaHQ9IjE4cHgiIHZpZXdCb3g9IjAgMCAxOCAxOCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4NCiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDQwICgzMzc2MikgLSBodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2ggLS0+DQogICAgPHRpdGxlPndhcm5pbmc8L3RpdGxlPg0KICAgIDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPg0KICAgIDxkZWZzPjwvZGVmcz4NCiAgICA8ZyBpZD0iUHVycGxlLUJveCIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+DQogICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zNzMuMDAwMDAwLCAtNDUzLjAwMDAwMCkiIGlkPSJ3YXJuaW5nIiBmaWxsPSIjRkVCMDMyIj4NCiAgICAgICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDM3My4wMDAwMDAsIDQ1My4wMDAwMDApIj4NCiAgICAgICAgICAgICAgICA8cGF0aCBkPSJNOSwwLjYzMDQzNDc4MyBDNC4zODQxNDQ5MywwLjYzMDQzNDc4MyAwLjYzMDQzNDc4Myw0LjM4NDE0NDkzIDAuNjMwNDM0NzgzLDkgQzAuNjMwNDM0NzgzLDEzLjYxNTg1NTEgNC4zODQxNDQ5MywxNy4zNjk1NjUyIDksMTcuMzY5NTY1MiBDMTMuNjE1ODU1MSwxNy4zNjk1NjUyIDE3LjM2OTU2NTIsMTMuNjE1ODU1MSAxNy4zNjk1NjUyLDkgQzE3LjM2OTU2NTIsNC4zODQxNDQ5MyAxMy42MTU4NTUxLDAuNjMwNDM0NzgzIDksMC42MzA0MzQ3ODMgWiBNNC42NDI5MjgxMSwxMS43ODk4NTUxIEM1LjI1MDQxMTY1LDExLjc4OTg1NTEgNS43NTY5NTIzNCwxMS4zNjA3NTY3IDUuODc4NzE2OTMsMTAuODgxMzY5NSBDNi4wMDA0ODE1MiwxMS4zNjEyNDM3IDYuNTA3MDIyMjIsMTEuNzIzNzM2OSA3LjExNDM4NCwxMS43MjM3MzY5IEM3LjcyNDE4MTA2LDExLjcyMzczNjkgOC4yMzI2Njk5OSwxMS4zNjUwMTg0IDguMzUxNTEyMjMsMTAuODgyNzA4OSBDOC40NzA5NjMzLDExLjM2NTAxODQgOC45Nzk0NTIyMywxMS43MzY1MjIyIDkuNTg4NzYyMjQsMTEuNzM2NTIyMiBDMTAuMTk0NjYyOCwxMS43MzY1MjIyIDEwLjcwMTIwMzUsMTEuMzk0OTcyNSAxMC44MjM0NTUyLDEwLjkxNjU1OTQgQzEwLjk0NTcwNjgsMTEuMzk0OTcyNSAxMS40NTIyNDc1LDExLjc4OTM2OCAxMi4wNTgyNjk5LDExLjc4OTM2OCBDMTIuMzUzNjcwOCwxMS43ODkzNjggMTIuNjI0NzE4OCwxMS42OTkzODQgMTIuODM5NzU1LDExLjU1OTU5ODIgQzExLjAwOTUxMTUsOC43MTgwOTk3NSAxMi4xNDUzMzE2LDQuMTM3NjgxMTYgMTIuMTQ1MzMxNiw0LjEzNzY4MTE2IEM2Ljk0NjQ3MDYzLDUuMjMxNjE0MjQgNC42NjU4MTk4NSwxMC4xMDAzNzE0IDQuMDU3OTcxMDEsMTEuNjY2MTQyMiBDNC4yMzI5NDY3MywxMS43NDMyMTkyIDQuNDMxNzg4MzEsMTEuNzg5ODU1MSA0LjY0MjkyODExLDExLjc4OTg1NTEgWiIgaWQ9Indhcm5pbmd0cmFja2VycyI+PC9wYXRoPg0KICAgICAgICAgICAgPC9nPg0KICAgICAgICA8L2c+DQogICAgPC9nPg0KPC9zdmc+&quot;); opacity: 0.5;"></span></div><div id="ghostery-title">Mouchard</div><div id="ghostery-minimize"><span id="ghostery-minimize-icon"></span></div><span id="ghostery-close" style="background: url(&quot;data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+DQo8c3ZnIHdpZHRoPSIxNXB4IiBoZWlnaHQ9IjE1cHgiIHZpZXdCb3g9IjAgMCAxNSAxNSIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4NCiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDMuNy4yICgyODI3NikgLSBodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2ggLS0+DQogICAgPHRpdGxlPmNvbGxhcHNlIGNvcHkgMjwvdGl0bGU+DQogICAgPGRlc2M+Q3JlYXRlZCB3aXRoIFNrZXRjaC48L2Rlc2M+DQogICAgPGRlZnM+PC9kZWZzPg0KICAgIDxnIGlkPSJQdXJwbGUtQm94IiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4NCiAgICAgICAgPGcgaWQ9ImNvbGxhcHNlLWNvcHktMiI+DQogICAgICAgICAgICA8Y2lyY2xlIGlkPSJPdmFsLTMxNSIgZmlsbC1vcGFjaXR5PSIwLjI3MDE1Mzk4NiIgZmlsbD0iI0Q4RDhEOCIgY3g9IjcuNSIgY3k9IjcuNSIgcj0iNy41Ij48L2NpcmNsZT4NCiAgICAgICAgICAgIDxwYXRoIGQ9Ik00LjM2LDQuMzYgTDEwLjU3NDU2MzQsMTAuNTc0NTYzNCIgaWQ9IkxpbmUiIHN0cm9rZT0iI0ZGRkZGRiIgc3Ryb2tlLWxpbmVjYXA9InNxdWFyZSI+PC9wYXRoPg0KICAgICAgICAgICAgPHBhdGggZD0iTTQuMzYsNC4zNiBMMTAuNTc0NTYzNCwxMC41NzQ1NjM0IiBpZD0iTGluZS1Db3B5IiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS1saW5lY2FwPSJzcXVhcmUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDcuNjAwMDAwLCA3LjYwMDAwMCkgc2NhbGUoLTEsIDEpIHRyYW5zbGF0ZSgtNy42MDAwMDAsIC03LjYwMDAwMCkgIj48L3BhdGg+DQogICAgICAgIDwvZz4NCiAgICA8L2c+DQo8L3N2Zz4=&quot;);"></span></div><div id="ghostery-pb-background"><div id="ghostery-trackerList"><div class="ghostery-trackerContainer" category="site_analytics"><span id="ghostery-no-tracker" class="ghostery-pb-tracker-list"></span><span class="ghostery-tracker">Google Analytics</span></div></div></div></div>
+<script src="./Configuration - ChirpStack Application Server documentation_files/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="./Configuration - ChirpStack Application Server documentation_files/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-3512995-9', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async="" src="./Configuration - ChirpStack Application Server documentation_files/analytics.js"></script>
+
+
+
+
+</body></html>

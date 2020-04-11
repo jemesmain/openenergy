@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<!-- saved from url=(0056)https://www.chirpstack.io/network-server/install/debian/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="./Debian _ Ubuntu - ChirpStack Network Server documentation_files/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="./Debian _ Ubuntu - ChirpStack Network Server documentation_files/bootstrap.min(1).css">
+  <link rel="stylesheet" href="./Debian _ Ubuntu - ChirpStack Network Server documentation_files/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+  <link rel="stylesheet" href="./Debian _ Ubuntu - ChirpStack Network Server documentation_files/docs.css">
+  <link rel="stylesheet" href="./Debian _ Ubuntu - ChirpStack Network Server documentation_files/highlight.css">
+  <title>Debian / Ubuntu - ChirpStack Network Server documentation</title>
+<style>@media print {#ghostery-purple-box {display:none !important}}</style></head>
+
+<body>
+  <nav id="topnavrow" class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand" href="https://www.chirpstack.io/">
+        <img src="./Debian _ Ubuntu - ChirpStack Network Server documentation_files/logo.png" height="40">
+      </a>
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navcollapse" aria-controls="navcollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://forum.chirpstack.io/"><i class="fab fa-discourse"></i> forum.chirpstack.io</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <nav class="navbar navbar-expand-lg navbar-light py-0 navbar-components">
+    <div class="container">
+      <div id="navcollapse" class="collapse navbar-collapse my-0">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/">Home</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/overview/">Getting started</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/gateway-bridge/">Gateway Bridge</a>
+          <a class="nav-item nav-link px-3 mx-2 active" href="https://www.chirpstack.io/network-server/">Network Server</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/application-server/">Application Server</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/geolocation-server/">Geolocation Server</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/gateway-os/">Gateway OS</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+
+<section class="documentation">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+         <aside>
+  <div id="sidebar" class="nav-collapse">
+    <ul class="sidebar-menu">
+      
+      
+        
+          <li class="sub-menu">
+            <a href="https://www.chirpstack.io/network-server/overview/">
+              <i class="fas fa-hand-point-right"></i>
+              <span>Overview</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  
+                    <li><a href="https://www.chirpstack.io/network-server/overview/"> ChirpStack Network Server</a></li>
+                  
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/overview/downloads/"> Downloads</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/overview/changelog/"> Changelog</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+          <li class="sub-menu active">
+            <a href="https://www.chirpstack.io/network-server/install/">
+              <i class="fas fa-download"></i>
+              <span>Install</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/install/requirements/"> Requirements</a></li>
+                
+              
+                
+                  <li class="active"><a href="https://www.chirpstack.io/network-server/install/debian/"> Debian / Ubuntu</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/install/config/"> Configuration</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+          <li class="sub-menu">
+            <a href="https://www.chirpstack.io/network-server/backends/">
+              <i class="fas fa-cogs"></i>
+              <span>Gateway backends</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/backends/mqtt/"> MQTT</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/backends/amqp/"> AMQP / RabbitMQ</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/backends/azure-iot-hub/"> Azure IoT Hub</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/backends/gcp-pub-sub/"> GCP Pub/Sub</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+          <li class="sub-menu">
+            <a href="https://www.chirpstack.io/network-server/features/">
+              <i class="fas fa-check-double"></i>
+              <span>Features</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/activation/"> Activation</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/adaptive-data-rate/"> Adaptive data-rate (ADR)</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/channel-configuration/"> Channel (re)configuration</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/device-classes/"> Device Classes</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/device-profile/"> Device Profile</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/device-status/"> Device Status</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/device-time/"> Device Time</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/gateway-management/"> Gateway management</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/gateway-profile/"> Gateway Profile</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/geolocation/"> Geolocation</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/regions/"> LoRaWAN regions</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/lorawan-versions/"> LoRaWAN versions</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/multicast/"> Multicast</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/rejoin/"> Rejoin configuration</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/routing-profile/"> Routing Profile</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/rx-parameter-configuration/"> RX parameter (re)configuration</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/features/service-profile/"> Service Profile</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+          <li class="sub-menu">
+            <a href="https://www.chirpstack.io/network-server/integrate/">
+              <i class="fas fa-code"></i>
+              <span>Integrate</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/integrate/api/"> API</a></li>
+                
+              
+                
+                  
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/integrate/application-server/"> Application Server</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/integrate/network-controller/"> Network Controller</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+          <li class="sub-menu">
+            <a href="https://www.chirpstack.io/network-server/metrics/">
+              <i class="fas fa-chart-line"></i>
+              <span>Metrics</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/metrics/prometheus/"> Prometheus</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+          <li class="sub-menu">
+            <a href="https://www.chirpstack.io/network-server/community/">
+              <i class="fab fa-github"></i>
+              <span>Community &amp; support</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/community/support/"> Support</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/community/contribute/"> Contribute</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/network-server/community/source/"> Source</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+    </ul>
+  </div>
+</aside>
+
+      </div>
+      <div class="col-md-9 content">
+        
+    
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="https://www.chirpstack.io/network-server/install/debian/#creating-an-user-and-database">Creating an user and database</a></li>
+    <li><a href="https://www.chirpstack.io/network-server/install/debian/#chirpstack-network-server-debian-repository">ChirpStack Network Server Debian repository</a></li>
+    <li><a href="https://www.chirpstack.io/network-server/install/debian/#install-chirpstack-network-server">Install ChirpStack Network Server</a></li>
+    <li><a href="https://www.chirpstack.io/network-server/install/debian/#starting-chirpstack-network-server">Starting ChirpStack Network Server</a>
+      <ul>
+        <li><a href="https://www.chirpstack.io/network-server/install/debian/#initd">init.d</a></li>
+        <li><a href="https://www.chirpstack.io/network-server/install/debian/#systemd">systemd</a></li>
+      </ul>
+    </li>
+    <li><a href="https://www.chirpstack.io/network-server/install/debian/#chirpstack-network-server-log-output">ChirpStack Network Server log output</a>
+      <ul>
+        <li><a href="https://www.chirpstack.io/network-server/install/debian/#initd-1">init.d</a></li>
+        <li><a href="https://www.chirpstack.io/network-server/install/debian/#systemd-1">systemd</a></li>
+      </ul>
+    </li>
+    <li><a href="https://www.chirpstack.io/network-server/install/debian/#configuration">Configuration</a></li>
+  </ul>
+</nav>
+    
+<h1 id="debian--ubuntu-installation">Debian / Ubuntu installation</h1>
+<p>These steps have been tested on:</p>
+<ul>
+<li>Ubuntu 18.04 (LTS)</li>
+<li>Debian 10 (Stretch)</li>
+</ul>
+<h2 id="creating-an-user-and-database">Creating an user and database</h2>
+<p>ChirpStack Network Server needs its <strong>own</strong> database. To create a new database,
+start the PostgreSQL prompt as the <code>postgres</code> user:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo -u postgres psql</code></pre></div>
+<p>Within the the PostgreSQL prompt, enter the following queries:</p>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="c1">-- create the chirpstack_ns user with password 'dbpassword'
+</span><span class="c1"></span><span class="k">create</span> <span class="k">role</span> <span class="n">chirpstack_ns</span> <span class="k">with</span> <span class="n">login</span> <span class="n">password</span> <span class="s1">'dbpassword'</span><span class="p">;</span>
+
+<span class="c1">-- create the chirpstack_ns database
+</span><span class="c1"></span><span class="k">create</span> <span class="k">database</span> <span class="n">chirpstack_ns</span> <span class="k">with</span> <span class="k">owner</span> <span class="n">chirpstack_ns</span><span class="p">;</span>
+
+<span class="c1">-- exit the prompt
+</span><span class="c1"></span><span class="err">\</span><span class="n">q</span></code></pre></div>
+<p>To verify if the user and database have been setup correctly, try to connect
+to it:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">psql -h localhost -U chirpstack_ns -W chirpstack_ns</code></pre></div>
+<h2 id="chirpstack-network-server-debian-repository">ChirpStack Network Server Debian repository</h2>
+<p>ChirpStack provides pre-compiled binaries packaged as Debian (.deb)
+packages. In order to activate this repository, execute the following
+commands:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 1CE2AFD36DBCCA00
+
+sudo <span class="nb">echo</span> <span class="s2">"deb https://artifacts.chirpstack.io/packages/3.x/deb stable main"</span> <span class="p">|</span> sudo tee /etc/apt/sources.list.d/chirpstack.list
+sudo apt-get update</code></pre></div>
+<h2 id="install-chirpstack-network-server">Install ChirpStack Network Server</h2>
+<p>In order to install ChirpStack Network Server, execute the following command:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt-get install chirpstack-network-server</code></pre></div>
+<p>After installation, modify the configuration file which is located at
+<code>/etc/chirpstack-network-server/chirpstack-network-server.toml</code>.</p>
+<p>Settings you probably want to set / change:</p>
+<ul>
+<li><code>postgresql.dsn</code></li>
+<li><code>postgresql.automigrate</code></li>
+<li><code>network_server.net_id</code></li>
+<li><code>network_server.band.name</code></li>
+<li><code>metrics.timezone</code></li>
+</ul>
+<h2 id="starting-chirpstack-network-server">Starting ChirpStack Network Server</h2>
+<p>How you need to (re)start and stop ChirpStack Network Server depends on if your
+distribution uses init.d or systemd.</p>
+<h3 id="initd">init.d</h3>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo /etc/init.d/chirpstack-network-server <span class="o">[</span>start<span class="p">|</span>stop<span class="p">|</span>restart<span class="p">|</span>status<span class="o">]</span></code></pre></div>
+<h3 id="systemd">systemd</h3>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl <span class="o">[</span>start<span class="p">|</span>stop<span class="p">|</span>restart<span class="p">|</span>status<span class="o">]</span> chirpstack-network-server</code></pre></div>
+<h2 id="chirpstack-network-server-log-output">ChirpStack Network Server log output</h2>
+<p>Now you’ve setup ChirpStack Network Server, it is a good time to verify that ChirpStack Network Server
+is actually up-and-running. This can be done by looking at the ChirpStack Network Server
+log output.</p>
+<p>Like the previous step, which command you need to use for viewing the
+log output depends on if your distribution uses init.d or systemd.</p>
+<h3 id="initd-1">init.d</h3>
+<p>All logs are written to <code>/var/log/chirpstack-network-server/chirpstack-network-server.log</code>.
+To view and follow this logfile:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">tail -f /var/log/chirpstack-network-server/chirpstack-network-server.log</code></pre></div>
+<h3 id="systemd-1">systemd</h3>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">journalctl -u chirpstack-network-server -f -n <span class="m">50</span></code></pre></div>
+<p>Example output:</p>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">INFO[0000] starting ChirpStack Network Server                band=EU868 docs=https://www.chirpstack.io/network-server/ net_id=010203 version=3.1.0
+INFO[0000] setup redis connection pool                   url=redis://localhost:6379
+INFO[0000] backend/gateway: connecting to mqtt broker    server=tcp://localhost:1883
+INFO[0000] connecting to application-server              ca-cert= server=127.0.0.1:8001 tls-cert= tls-key=
+INFO[0000] backend/gateway: connected to mqtt server
+INFO[0000] backend/gateway: subscribing to rx topic      topic=gateway/+/rx
+INFO[0000] no network-controller configured
+INFO[0000] starting api server                           bind=0.0.0.0:8000 ca-cert= tls-cert= tls-key=</code></pre></div>
+<p>When you get the following log-messages, it means that ChirpStack Network Server can’t
+connect to the application-server.</p>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">INFO[0000] grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: dial tcp 127.0.0.1:8001: getsockopt: connection refused"; Reconnecting to {"127.0.0.1:8001" &lt;nil&gt;}
+INFO[0001] grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: dial tcp 127.0.0.1:8001: getsockopt: connection refused"; Reconnecting to {"127.0.0.1:8001" &lt;nil&gt;}
+INFO[0002] grpc: addrConn.resetTransport failed to create client transport: connection error: desc = "transport: dial tcp 127.0.0.1:8001: getsockopt: connection refused"; Reconnecting to {"127.0.0.1:8001" &lt;nil&gt;}</code></pre></div>
+<h2 id="configuration">Configuration</h2>
+<p>See <a href="https://www.chirpstack.io/network-server/install/config/">Configuration</a> for details on each config option.</p>
+
+
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="./Debian _ Ubuntu - ChirpStack Network Server documentation_files/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="./Debian _ Ubuntu - ChirpStack Network Server documentation_files/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="./Debian _ Ubuntu - ChirpStack Network Server documentation_files/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-3512995-9', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async="" src="./Debian _ Ubuntu - ChirpStack Network Server documentation_files/analytics.js"></script>
+
+
+
+
+</body></html>

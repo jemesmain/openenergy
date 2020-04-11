@@ -222,14 +222,69 @@ gateway+ 23060  0.1  2.1 214260 10664 ?        Ssl  Aug30  47:55 /usr/bin/chirps
 ```mosquitto_sub -v -t "gateway/#"```
 Si vous ne voyer aucun message lorsque le capteur envoie des données, il faut alors s'assurer que  ChirpStack Gateway Bridge est autorisé de publier des données sur le sujet MQTT et que le client  mosquitto_sub client est autorisé de souscrire à ce sujet MQTT Ce problème apparait habituellement lorsque vous avec configuré le MQTT Broker afin que les client doivent s'authentifier lors de la connexion.
 ##### Chirpstack server
-**DETAIL CONFIGURATION**
+Configuration file
+Par défaut chirpstack-network-server va regarder dans l'ordre les chemins suivant si l'instruction en comporte pas explicitement la spécification suivante --config:
+
+- chirpstack-network-server.toml (current working directory)
+- $HOME/.config/chirpstack-network-server/chirpstack-network-server.toml
+- /etc/chirpstack-network-server/chirpstack-network-server.toml
+
+Le fichier de configuration est présent dans la partie settings
+
+Dans le fichier de configuration le minimum a vérifier est le chemin vers la base de données postgres
+```# * verify-full - Always SSL (verify that the certification presented by the server was signed by a trusted CA and the server host name matches the one in the certificate)
+dsn="postgres://localhost/chirpstack_ns?sslmode=disable"
+```
+
+Le détail de toute les options est présent à l'adresse suivante https://www.chirpstack.io/network-server/install/config/
+
+
 ##### Chirpstack application server
-**DETAIL CONFIGURATION**
+Configuration file
+Par défaut chirpstack-application-server va regarder dans l'ordre les chemins suivant si l'instruction en comporte pas explicitement la spécification suivante --config:
+- chirpstack-application-server.toml (current working directory)
+- $HOME/.config/chirpstack-application-server/chirpstack-application-server.toml
+- /etc/chirpstack-application-server/chirpstack-application-server.toml
+
+Le fichier de configuration est présent dans la partie settings
+
+Dans le fichier de configuration le minimum a vérifier est le chemin vers la base de données postgres
+```# * verify-full - Always SSL (verify that the certification presented by the server was signed by a trusted CA and the server host name matches the one in the certificate)
+dsn="postgres://localhost/chirpstack_as?sslmode=disable"
+```
+Le uuid de l'application serveur ne doit pas être modifié à priori:
+```
+# Random UUID defining the id of the application-server installation (used by
+# ChirpStack Network Server as routing-profile id).
+# For now it is recommended to not change this id.
+id="6d5db27e-4ce2-4b2b-b5d7-91f069397978"
+```
+Le protocol mqtt écoute par défaut sur 1883
+```# MQTT server (e.g. scheme://host:port where scheme is tcp, ssl or ws)
+  server="tcp://localhost:1883"
+  ```
+Ceci peut rentrer en conflit avec un mqtt comme mosquito qui serait déja démarré sur votre machine ou avec celui qui est démarré par thingsboard. Les fichiers de configurations ou tout est installé sur le meme serveur contiennent des valeurs compatibles. (Cf technical data port list si dessous) Les mêmes conflit de port sont valable pour le port qui va etre utilisé sur votre explorateur web.
+
+Le port de l'explorateur web est le 8080 par défaut
+```
+# This is the API and web-interface exposed to the end-user.
+  [application_server.external_api]
+  # ip:port to bind the (user facing) http server to (web-interface and REST / gRPC api)
+  bind="0.0.0.0:8080"
+  ```
+Il ne faut pas oublier de remplir la partie JWT secret (cf chirpstack quickstart)
+```# JWT secret used for api authentication / authorization
+  # You could generate this by executing 'openssl rand -base64 32' for example
+  jwt_secret=""
+  ```
+Commme les différentes partie du serveur sont sur la même machine je ne me suis pas occupé de sécuriser la communication interne comme spécifié. La partie Nginx s'occupe de cela.
+
+Le détail de toute les options est présent à l'adresse suivante https://www.chirpstack.io/application-server/install/config/
 #### Thingsboard - on gère les tableaux de bord et les alertes
 **port et mosquitto conflit**
 #### Node-red - pour aider au décryptage des message
 
-    
+    PRE DECODAGE DU PAYLOAD PAR TTN OU CHIRPSTACK CONVERSION EN STRING...
 
 ## Securisation
 ### Certificat
