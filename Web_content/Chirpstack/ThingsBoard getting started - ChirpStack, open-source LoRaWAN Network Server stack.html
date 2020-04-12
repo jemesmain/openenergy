@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<!-- saved from url=(0045)https://www.chirpstack.io/guides/thingsboard/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="./ThingsBoard getting started - ChirpStack, open-source LoRaWAN Network Server stack_files/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="./ThingsBoard getting started - ChirpStack, open-source LoRaWAN Network Server stack_files/bootstrap.min(1).css">
+  <link rel="stylesheet" href="./ThingsBoard getting started - ChirpStack, open-source LoRaWAN Network Server stack_files/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+  <link rel="stylesheet" href="./ThingsBoard getting started - ChirpStack, open-source LoRaWAN Network Server stack_files/docs.css">
+  <link rel="stylesheet" href="./ThingsBoard getting started - ChirpStack, open-source LoRaWAN Network Server stack_files/highlight.css">
+  <title>ThingsBoard getting started - ChirpStack, open-source LoRaWAN Network Server stack</title>
+<style>@media print {#ghostery-purple-box {display:none !important}}</style></head>
+
+<body>
+  <nav id="topnavrow" class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand" href="https://www.chirpstack.io/">
+        <img src="./ThingsBoard getting started - ChirpStack, open-source LoRaWAN Network Server stack_files/logo.png" height="40">
+      </a>
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navcollapse" aria-controls="navcollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://forum.chirpstack.io/"><i class="fab fa-discourse"></i> forum.chirpstack.io</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <nav class="navbar navbar-expand-lg navbar-light py-0 navbar-components">
+    <div class="container">
+      <div id="navcollapse" class="collapse navbar-collapse my-0">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/">Home</a>
+          <a class="nav-item nav-link px-3 mx-2 active" href="https://www.chirpstack.io/overview/">Getting started</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/gateway-bridge/">Gateway Bridge</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/network-server/">Network Server</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/application-server/">Application Server</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/geolocation-server/">Geolocation Server</a>
+          <a class="nav-item nav-link px-3 mx-2 " href="https://www.chirpstack.io/gateway-os/">Gateway OS</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+
+<section class="documentation">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+         <aside>
+  <div id="sidebar" class="nav-collapse">
+    <ul class="sidebar-menu">
+      
+      
+        
+          <li class="sub-menu">
+            <a href="https://www.chirpstack.io/overview/">
+              <i class="fas fa-hand-point-right"></i>
+              <span>Overview</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  
+                    <li><a href="https://www.chirpstack.io/overview/"> Project</a></li>
+                  
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/overview/architecture/"> Architecture</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+          <li class="sub-menu active">
+            <a href="https://www.chirpstack.io/guides/">
+              <i class="fas fa-book-open"></i>
+              <span>Guides</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/guides/debian-ubuntu/"> Quickstart Debian / Ubuntu</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/guides/docker-compose/"> Quickstart Docker Compose</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/guides/google-cloud-platform/"> Quickstart Google Cloud Platform</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/guides/microsoft-azure/"> Quickstart Microsoft Azure</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/guides/ansible-vagrant/"> Ansible and Vagrant</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/guides/raspberry-pi/"> Raspberry Pi</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/guides/mqtt-authentication/"> MQTT authentication</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/guides/first-gateway-device/"> First gateway and device</a></li>
+                
+              
+                
+                  <li class="active"><a href="https://www.chirpstack.io/guides/thingsboard/"> ThingsBoard getting started</a></li>
+                
+              
+                
+                  
+                    <li><a href="https://www.chirpstack.io/guides/troubleshooting/"> Troubleshooting</a></li>
+                  
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+          <li class="sub-menu">
+            <a href="https://www.chirpstack.io/install/">
+              <i class="fas fa-download"></i>
+              <span>Install</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/install/requirements/"> Requirements</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/install/install/"> General installation</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/install/docker/"> Docker install</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/install/configuration/"> Configuration</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+        
+          <li class="sub-menu">
+            <a href="https://www.chirpstack.io/community/">
+              <i class="fab fa-github"></i>
+              <span>Community &amp; support</span>
+            </a>
+            <ul class="sub">
+              
+                
+                  
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/community/support/"> Support</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/community/contribute/"> Contribute</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/community/source/"> Source</a></li>
+                
+              
+                
+                  <li><a href="https://www.chirpstack.io/community/links/"> Links</a></li>
+                
+              
+            </ul>
+          </li>
+        
+      
+    </ul>
+  </div>
+</aside>
+
+      </div>
+      <div class="col-md-9 content">
+        
+    
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="https://www.chirpstack.io/guides/thingsboard/#installing-chirpstack-components">Installing ChirpStack components</a></li>
+    <li><a href="https://www.chirpstack.io/guides/thingsboard/#setting-up-gateway-and-device">Setting up gateway and device</a></li>
+    <li><a href="https://www.chirpstack.io/guides/thingsboard/#install-thingsboard">Install ThingsBoard</a>
+      <ul>
+        <li><a href="https://www.chirpstack.io/guides/thingsboard/#docker-compose-setup">Docker Compose setup</a></li>
+      </ul>
+    </li>
+    <li><a href="https://www.chirpstack.io/guides/thingsboard/#setup-thingsboard">Setup ThingsBoard</a></li>
+    <li><a href="https://www.chirpstack.io/guides/thingsboard/#integrate-chirpstack-application-server-with-thingsboard">Integrate ChirpStack Application Server with ThingsBoard</a>
+      <ul>
+        <li><a href="https://www.chirpstack.io/guides/thingsboard/#get-device-auth-token">Get Device Auth Token</a></li>
+        <li><a href="https://www.chirpstack.io/guides/thingsboard/#set-device-auth-token-in-chirpstack-application-server">Set Device Auth Token in ChirpStack Application Server</a></li>
+        <li><a href="https://www.chirpstack.io/guides/thingsboard/#setup-chirpstack-application-server-thingsboard-integration">Setup ChirpStack Application Server ThingsBoard integration</a></li>
+      </ul>
+    </li>
+    <li><a href="https://www.chirpstack.io/guides/thingsboard/#validate-integration">Validate integration</a></li>
+  </ul>
+</nav>
+    
+<h1 id="getting-started-with-thingsboard">Getting started with ThingsBoard</h1>
+<p><a href="https://www.thingsboard.io/">ThingsBoard</a> is an Open-source IoT Platform for
+Device management, data collection, processing and visualization for your IoT
+solution.</p>
+<p>This guide describes how to setup ChirpStack Application Server so that it forwards device-data
+to <a href="https://www.thingsboard.io/">ThingsBoard</a> for processing and visualization.</p>
+<h2 id="installing-chirpstack-components">Installing ChirpStack components</h2>
+<p>The installation of the ChirpStack components is not covered in this guide. There are
+different <a href="https://www.chirpstack.io/guides/">Guides</a> describing different deployment options. However,
+the easiest option is the <a href="https://www.chirpstack.io/guides/docker-compose/">Docker Compose</a>
+guide, when you are not sure where to start.</p>
+<h2 id="setting-up-gateway-and-device">Setting up gateway and device</h2>
+<p>The steps to setup your first gateway and device are covered in the
+<a href="https://www.chirpstack.io/guides/first-gateway-device/">First Gateway and Device</a> guide.</p>
+<p>It is also recommended to setup a Payload Codec. A Payload Codec will decode
+the received payload into “readable” information like <code>temperature: 21.5</code>.
+This is important, as this is the information that will be forwarded to
+ThingsBoard. The Payload Codec can be set up in the <a href="https://www.chirpstack.io/application-server/use/device-profiles/">Device Profile</a>.</p>
+<p>Before you continue, make sure everything works up to this point.</p>
+<h2 id="install-thingsboard">Install ThingsBoard</h2>
+<p>ThingsBoard can be installed in many different ways. Please refer to the
+<a href="https://thingsboard.io/docs/installation/">ThingsBoard Installation Documentation</a>
+for more information.</p>
+<h3 id="docker-compose-setup">Docker Compose setup</h3>
+<p>When you have installed the ChirpStack stack using the Docker Compose guide, the easiest
+option to integrate with ThingsBoard is by adding the Thingsboard Docker
+container to the ChirpStack <code>docker-compose.yml</code> file.</p>
+<p>After making the modifications mentioned below, ThingsBoard will be started
+together with all ChirpStack components when running a <code>docker-compose up</code>.</p>
+<p><strong>Note:</strong> The ThingsBoard server used in one of the next steps will be
+<code>http://thingsboard:9090/</code>.</p>
+<h4 id="service">Service</h4>
+<p>Add the following snippet under <code>services</code>:</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="w">  </span><span class="k">thingsboard</span><span class="p">:</span><span class="w">
+</span><span class="w"></span><span class="w">    </span><span class="k">image</span><span class="p">:</span><span class="w"> </span>thingsboard/tb-postgres<span class="w">
+</span><span class="w">    </span><span class="k">volumes</span><span class="p">:</span><span class="w">
+</span><span class="w"></span><span class="w">      </span>- thingsboarddata<span class="p">:</span>/data<span class="w">
+</span><span class="w">    </span><span class="k">ports</span><span class="p">:</span><span class="w">
+</span><span class="w"></span><span class="w">      </span>- <span class="m">9090</span><span class="p">:</span><span class="m">9090</span></code></pre></div>
+<p>Your <code>docker-compose.yml</code> file now looks like:</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="k">version</span><span class="p">:</span><span class="w"> </span><span class="s2">"3"</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span><span class="k">services</span><span class="p">:</span><span class="w">
+</span><span class="w"></span><span class="w">  </span><span class="k">networkserver</span><span class="p">:</span><span class="w">
+</span><span class="w"></span><span class="w">    </span><span class="k">image</span><span class="p">:</span><span class="w"> </span>chirpstack/chirpstack-network-server<span class="p">:</span><span class="m">3</span><span class="w">
+</span><span class="w">    </span><span class="k">volumes</span><span class="p">:</span><span class="w">
+</span><span class="w"></span><span class="w">      </span>- ./configuration/chirpstack-network-server<span class="p">:</span>/etc/chirpstack-network-server<span class="w">
+</span><span class="w">
+</span><span class="w">  </span><span class="p">[</span>...<span class="p">]</span><span class="w">
+</span><span class="w">
+</span><span class="w">  </span><span class="k">thingsboard</span><span class="p">:</span><span class="w">
+</span><span class="w"></span><span class="w">    </span><span class="k">image</span><span class="p">:</span><span class="w"> </span>thingsboard/tb-postgres<span class="w">
+</span><span class="w">    </span><span class="k">volumes</span><span class="p">:</span><span class="w">
+</span><span class="w"></span><span class="w">      </span>- thingsboarddata<span class="p">:</span>/data<span class="w">
+</span><span class="w">    </span><span class="k">ports</span><span class="p">:</span><span class="w">
+</span><span class="w"></span><span class="w">      </span>- <span class="m">9090</span><span class="p">:</span><span class="m">9090</span><span class="w">
+</span><span class="w">
+</span><span class="w">  </span><span class="p">[</span>...<span class="p">]</span></code></pre></div>
+<h4 id="volume">Volume</h4>
+<p>Add the following under <code>volumes</code>:</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="w">  </span>thingsboarddata<span class="p">:</span></code></pre></div>
+<p>Your <code>docker-compose.yml</code> file now looks like:</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="p">[</span>...<span class="p">]</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span><span class="k">volumes</span><span class="p">:</span><span class="w">
+</span><span class="w"></span><span class="w">  </span><span class="k">postgresqldata</span><span class="p">:</span><span class="w">
+</span><span class="w"></span><span class="w">  </span><span class="k">redisdata</span><span class="p">:</span><span class="w">
+</span><span class="w"></span><span class="w">  </span>thingsboarddata<span class="p">:</span></code></pre></div>
+<h2 id="setup-thingsboard">Setup ThingsBoard</h2>
+<p>For getting started with ThingsBoard, please refer to the
+<a href="https://thingsboard.io/docs/getting-started-guides/helloworld/">ThingsBoard Getting Started</a>
+guide. The important thing is that you have created Device within ThingsBoard.</p>
+<h2 id="integrate-chirpstack-application-server-with-thingsboard">Integrate ChirpStack Application Server with ThingsBoard</h2>
+<h3 id="get-device-auth-token">Get Device Auth Token</h3>
+<p>In order to let ChirpStack Application Server push data to your ThingsBoard device, you need
+to obtain the ThingsBoard Device <em>Access Token</em>. Within ThingsBoard, open your
+Device and click the <strong>Copy Access Token</strong> button. This will copy the
+<em>Access Token</em> to your clipboard.</p>
+<h3 id="set-device-auth-token-in-chirpstack-application-server">Set Device Auth Token in ChirpStack Application Server</h3>
+<p>Now open the ChirpStack Application Server web-interface and navigate to the Device. Click
+<strong>Configuration</strong>, then click <strong>Variables</strong>.</p>
+<p>Add a variable named <strong>ThingsBoardAccessToken</strong> and with as value the content
+from your clipboard (containing the ThingsBoard Device <em>Access Token</em>).
+This step is also documented in the ChirpStack Application Server <a href="https://www.chirpstack.io/application-server/integrate/sending-receiving/thingsboard/">ThingsBoard Integration</a>
+documentation.</p>
+<h3 id="setup-chirpstack-application-server-thingsboard-integration">Setup ChirpStack Application Server ThingsBoard integration</h3>
+<p>Still in the ChirpStack Application Server web-interface, navigate to the Application to
+which the Device belongs. Click <strong>Integrations</strong>, then click <strong>+ Create</strong>.</p>
+<ul>
+<li>Integration kind: <strong>ThingsBoard.io</strong>.</li>
+<li>ThingsBoard.io server: Usually this is <strong>http://host:9090</strong> (where <strong>host</strong>
+is replaced by the hostname of the server serving ThingsBoard). When you are
+using the Docker Compose instructions, set this to <strong>http://thingsboard:9090</strong>.</li>
+</ul>
+<h2 id="validate-integration">Validate integration</h2>
+<p>If you completed all the steps, then ThingsBoard is ready to receive uplink
+data (or telemetry) and ChirpStack Application Server is setup to forward data for your
+Device, using the <em>Access Token</em> for authentication.</p>
+<p>The last step is to let your device send some data and validate that this data
+is received by Thingsboard. You will find this data under the <em>Latest Telemetry</em>
+tab when navigating to the Device within Thingsboard.</p>
+
+
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="./ThingsBoard getting started - ChirpStack, open-source LoRaWAN Network Server stack_files/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="./ThingsBoard getting started - ChirpStack, open-source LoRaWAN Network Server stack_files/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="./ThingsBoard getting started - ChirpStack, open-source LoRaWAN Network Server stack_files/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-3512995-9', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async="" src="./ThingsBoard getting started - ChirpStack, open-source LoRaWAN Network Server stack_files/analytics.js"></script>
+
+
+
+
+</body></html>

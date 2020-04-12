@@ -3,6 +3,7 @@
 Un projet pour effectuer du suivi énergétique ouvert dans les bâtiments.
 ## Architecture
 **illustration**
+Se référer au diagramme suivant: openenergy_architecture.jpg
 ## Installation
 
 ### Capteur - les données sont recueillies
@@ -319,7 +320,8 @@ openjdk version "1.8.0_xxx"
 OpenJDK Runtime Environment (...)
 OpenJDK 64-Bit Server VM (build ...)
 ```
-** 2. Installation des services ThingsBoard**
+**2. Installation des services ThingsBoard**
+
 Télécharger les paquets d'installation
 ```
 wget https://github.com/thingsboard/thingsboard/releases/download/v2.4.3/thingsboard-2.4.3.deb
@@ -335,6 +337,7 @@ sudo dpkg -i thingsboard-2.4.3.deb
 L''équipe ThingsBoard recommande d'utiliser PostgreSQL pour le développement et des environnements de production avec une charge raisonable de  (< 5000 msg/sec).
 
 **- Installation PostgreSQL**
+
 Les instructions ci-dessous vous permettent l'installation de PostgreSQL.
 ```
 sudo apt-get update
@@ -354,7 +357,7 @@ psql -U postgres -d postgres -h 127.0.0.1 -W
 CREATE DATABASE thingsboard;
 \q
 ```
-    **  - Configuration ThingsBoard**
+    **- Configuration ThingsBoard**
 
 Editer le fichier de configuration ThingsBoard
 ```
@@ -372,6 +375,7 @@ export SPRING_DATASOURCE_USERNAME=postgres
 export SPRING_DATASOURCE_PASSWORD=PUT_YOUR_POSTGRESQL_PASSWORD_HERE
 ```
 **- 4. Limitation de la mémoire pour les machine de petite capacité (1GB of RAM)**
+
 Editer le fichier de configuration ThingsBoard
 ```
 sudo nano /etc/thingsboard/conf/thingsboard.conf
@@ -442,9 +446,41 @@ Vous pouvez toujours utiliser la commande suivante pour vérifier les erreur du 
 cat /var/log/thingsboard/thingsboard.log | grep ERROR
 ```
 
+#### Intégration Thingsboard - Chirpstack
+
+Le détail de l'intégration est présent à l'adresse suivante: https://www.chirpstack.io/guides/thingsboard/
+
+Pour l'installation de ThingsBoard se référer au partie adequat du guide de démarrrage. La parie importante est d'avaoir créer un capteur (device) au sein de Thingsboard.
+
+**Récuperer Device Auth Token**
+
+Il faut récuperer le Device Auth Token afin que Chirpstack puisse pousser les données vers le capteur Thingsboard. Dans ThingsBoard, ouvrez le capteur et cliquer sur le button Copy Access Token. This will copy the Access Token to your clipboard.
+
+** Regler Device Auth Token dans ChirpStack Application Server**
+
+Désormais ouvrez l'interface web du ChirpStack Application et rendez vous dans la partie du capteur / Device. Cliquez sur Configuration, puis sur  Variables.
+
+Ajoutez une variable nomée ThingsBoardAccessToken avec la valeur du ThingsBoard Device Access Token. Cette étape est aussi documentéedans la partie ChirpStack Application Server ThingsBoard Integration.
+
+**Réglage de ChirpStack Application Server ThingsBoard integration**
+
+Toujours dans l'interface web ChirpStack Application Server, naviguez vers l'application qui contient le capteur / Device. Cliquez sur intégration puis creer/ + Create.
+
+type d'intégration: ThingsBoard.io.
+
+ThingsBoard.io server: Pour OpenEnergy le réglage est http://host_name:8085 car l'installation de Thingsboard est sur le port 8085. Les réglages peuvent varier http://host:9090...
+
+**Valider l'integration**
+
+Si vous avez suivi toutes ces étapes alors ThingsBoard est pret à recevoire les données montantes aussi appelée  telemetry et ChirpStack Application Server est réglé pour faire suivre les données vers le capteur / Device, en utilisant Access Token for authentication.
+
+La dernière étape est de laisser le capteur / device envoyer des données et valider que ces données sont recu par Thingsboard. Vous trouverez les données dans l'onglet Latest Telemetry en navigant vers le capteur / Device au sein de Thingsboard.
 
 
-#### Node-red - pour aider au décryptage des message
+#### Node-red - pour aider au décryptage des messages
+
+Node-red peut permettre d'effectuer des opérations plus complexe sur les messages des capteurs. Chirpstack et The things network permettent d'écrire des éléments decoder et encoder afin de realiser cela. Openenergy utilise la partie decoder pour transformer le meassage payload d'hexadecimal en chaine de caractère (string)
+##### Installation
 
     PRE DECODAGE DU PAYLOAD PAR TTN OU CHIRPSTACK CONVERSION EN STRING...
 
