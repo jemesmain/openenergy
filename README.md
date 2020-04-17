@@ -6,6 +6,8 @@ Un projet pour effectuer du suivi énergétique ouvert dans les bâtiments.
 Se référer au diagramme suivant: openenergy_architecture.jpg
 ## Installation
 
+**Une copie locale de l'ensemble des pages internet référencées est présente dans le dossier web_content**
+
 ### Capteur - les données sont recueillies
 #### Adeunis
 La société Adeunis propose tout une série de capteur Lorawan avec une bibliothèque qui permet de décoder les messages dans de nombreux logiciel par un appel de la librairie de décodage.
@@ -37,7 +39,67 @@ Dans les fichiers lopy device de la partie setting vous avez un exemple de progr
 
 ### Gateway - les grandes oreilles sont à l'écoute
 #### Rakwireless RAK7246 LPWAN Developer Gateway - RAK7246 - EU868
+
+**ATTENTION AVANT LA MISE SOUS TENSION DE LA GATEWAY BIEN INSTALLER L ANTENNE LORA SINON IL Y A UN RISQUE D ENDOMAGEMENT**
+
+**Connexion SSH**
+
+https://docs.pycom.io/pymakr/installation/atom/
+
+Par défaut la gateway est en Wi-Fi AP Mode ce qui signifie qu'un réseau wifi avec le SSID nomé "Rakwireless_XXXX" peut être trouvé sur la liste des réseau wifi de votre PC.
+
+Le mot de passe est rakwireless et l'adresse par défaut est 192.168.230.1
+
+On se connecte en SSH sur le port 22 à cette adresse avec un outil tel que putty ou openssh.
+
+Une fois connecté le login par défaut est le suivant "pi" et le mot de passe "raspberry"
+
+**Réglage wifi**
+
+https://doc.rakwireless.com/rak7246g-lorawan-developer-gateway/accessing-the-internet
+
+Le réglage de la gateway s'effectue à partir de la commande suivante:
+```
+sudo gateway-config
+```
+***Recuperer Gateway ID encore appelé Geteway EUI qui est la chaine de caractère présente dans le tire de la fenetre immédiatement après ID:**
+
+-menu Set pi password - est utilisé pour changer le mot de passe de la Gateway.
+
+-menu New SSID pour le client - permet de définir les paramètre de votre réseau Wi-Fi Network. fonctionne uniquement en Wi-Fi Client mode.
+
+-menu Change Wi-Fi Country - utilisé pour correspondre aux standard Wi-Fi de votre pays.
+
+-**menu Enable Client Mode/Disable AP Mode permet de passer en mode wifi. Cette page contient la méthode pour revenir en arrière. Cette instruction est a affectuer en dernier lorque l'ensemble des réglages ont été effectué.**
+
+**Réglage de la gateway**
+
+https://doc.rakwireless.com/rak7246g-lorawan-developer-gateway/configuring-the-gateway
+
+-Menu 2 Setup RAK Gateway LoRa® concentrator: Pour Chirpstack choisir server is other server puis EU868 pour la gamme de fréquence Européenne. Ensuite vous pouvez entrer une adresse ip ou le dns de votre serveur chirpstack.
+
+** Connexion TTN ou Connexion Chirpstack**
+
+La connexion TTN est détaillée ici
+
+https://doc.rakwireless.com/rak7246g-lorawan-developer-gateway/connecting-to-the-things-network
+
+La connexion Chirpstack est détaillée ici
+
+https://doc.rakwireless.com/rak7246g-lorawan-developer-gateway/connect-the-gateway-with-chirpstack
+
+Il faut désormais effectuer les réglages de la gateway dans les pages chirpstack application server. Se rendre sur l'inteface web du server (sur le port par défaut 8080) chirpstack. Le login par défaut est admin/admin
+Se rendre dans la partie gateways puis create.
+**Reprendre les réglage de mac adress de la gateway et les copier dans gateway ID. cf partie ci-dessus sur Gateway ID/Gateway EUI**
+Lorsque tout fonctionne vous devriez apercevoir last seen few second ago.
+
+**Lors de mon installation j'ai résolu le fait que last seen few second ago n'apparaissait pas avec my_server:8000 dans la partie network-servers**
+En effet dans la documentation il est dit localhost:8000. Il faut lui préferer son nom dns sur le réseau.
+
+
+
 #### Lopy Nano Gateway
+
 
 ### Serveur - on stock et on affiche
 #### Chirpstack - on gère les élément de notre réseau
