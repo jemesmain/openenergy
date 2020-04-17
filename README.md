@@ -8,7 +8,32 @@ Se référer au diagramme suivant: openenergy_architecture.jpg
 
 ### Capteur - les données sont recueillies
 #### Adeunis
+La société Adeunis propose tout une série de capteur Lorawan avec une bibliothèque qui permet de décoder les messages dans de nombreux logiciel par un appel de la librairie de décodage.
+A partir de The Thing Network (TTN) ou Chirpstack il faut préalablement décodé les message en hexa vers un format de chaine de caractère qui est nécessaire pour l'appel de la librairie de décodage
+
+L'outil qui permet de décoder les messages est ici:
+http://codec-adeunis.com/decoder
+
+La librairie est accessible ici:
+
+http://codec-adeunis.com/download
+
 #### Lopy
+
+Le LoPy 4.0 est une carte de développement miniature dédiée aux objets connectés, basée sur le langage Python 3, de faible consommation et disposant de connectivité WiFi, Bluetooth (compatible BLE), LoRa et Sigfox.
+Une solution pour programmer le Lopy 4 est d'utiliser le Pymakr Plugin for Atom et d'interagir avec le Lopy via le port Usb de la carte PyMakr.
+Le plugin est désormais fiable et facile d'utilisation.
+https://docs.pycom.io/pymakr/installation/atom/
+
+Dans les fichiers lopy device de la partie setting vous avez un exemple de programmation:
+
+- Le fichier config.py:
+    -  défini une mac avec FFFE en sont centre pour le réseau TTN ou FFEE pour le réseau Chirpstack. Cette mac est l'identifiant du device pour chacun des deux réseaux
+    - myserver doit être remplacé par le DNS du réseau qui héberge votre serveur chirpstack.
+- le fichier main.py:
+    - gère la connexion au réseau lorawan
+    - envoie avec la boucle pour / for la valeur value = 22.5 pendant 60 itérations de 2 minutes afin de simuler une valeur de température
+- le fichier boot.py gère le démarrage du Lopy 4.
 
 ### Gateway - les grandes oreilles sont à l'écoute
 #### Rakwireless RAK7246 LPWAN Developer Gateway - RAK7246 - EU868
