@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<!-- saved from url=(0051)https://korben.info/nginx-rediriger-http-https.html -->
+<html lang="fr-FR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Nginx – Rediriger les requêtes en HTTP vers HTTPS – Korben</title>
+<link rel="dns-prefetch" href="https://s0.wp.com/">
+<link rel="dns-prefetch" href="https://code.jquery.com/">
+<link rel="alternate" type="application/rss+xml" title="Korben » Flux" href="https://korben.info/feed">
+<link rel="dns-prefetch" href="https://fastlane.rubiconproject.com/"><script src="./Nginx – Rediriger les requêtes en HTTP vers HTTPS – Korben_files/cmp.js" type="text/javascript"></script><script async="" src="./Nginx – Rediriger les requêtes en HTTP vers HTTPS – Korben_files/gtm.js"></script><script>
+						advanced_ads_ready=function(){var fns=[],listener,doc=typeof document==="object"&&document,hack=doc&&doc.documentElement.doScroll,domContentLoaded="DOMContentLoaded",loaded=doc&&(hack?/^loaded|^c/:/^loaded|^i|^c/).test(doc.readyState);if(!loaded&&doc){listener=function(){doc.removeEventListener(domContentLoaded,listener);window.removeEventListener("load",listener);loaded=1;while(listener=fns.shift())listener()};doc.addEventListener(domContentLoaded,listener);window.addEventListener("load",listener)}return function(fn){loaded?setTimeout(fn,0):fns.push(fn)}}();
+						</script>
+<link rel="stylesheet" href="./Nginx – Rediriger les requêtes en HTTP vers HTTPS – Korben_files/style.min.css">
+<link rel="stylesheet" href="./Nginx – Rediriger les requêtes en HTTP vers HTTPS – Korben_files/korben.css">
+<link rel="stylesheet" href="./Nginx – Rediriger les requêtes en HTTP vers HTTPS – Korben_files/fonts.css">
+<link rel="canonical" href="https://korben.info/nginx-rediriger-http-https.html">
+<script type="text/javascript">
+		;var advadsCfpExpHours = 3;
+		var advadsCfpClickLimit = 3;
+		var advadsCfpBan = 7;
+		var advadsCfpPath = '/wp';
+		var advadsCfpDomain = '';
+		</script><style>@media print {#ghostery-purple-box {display:none !important}}</style><script type="text/javascript">
+		var advadsCfpQueue = [];
+		var advadsCfpAd = function( adID ){
+			if ( 'undefined' == typeof advadsProCfp ) { advadsCfpQueue.push( adID ) } else { advadsProCfp.addElement( adID ) }
+		};
+		</script><script type="text/javascript">var algolia = {"debug":false,"application_id":"HANUR59R57","search_api_key":"aea411f692b318caedc67017a265bbf5","query":"","indices":{"searchable_posts":{"name":"production_searchable_posts","id":"searchable_posts","enabled":true,"replicas":[]}}};</script>
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx – Rediriger les requêtes en HTTP vers HTTPS">
+<meta property="og:url" content="https://korben.info/nginx-rediriger-http-https.html">
+<meta property="og:description" content="Si vous utilisez Nginx en reverse proxy et que vous cherchez la méthode pour rediriger de manière permanente (en 301) tout le trafic arrivant sur le HTTP vers du HTTPS pour apporter confort, sécuri…">
+<meta property="article:published_time" content="2012-12-11T13:12:41+00:00">
+<meta property="article:modified_time" content="2020-03-25T15:45:05+00:00">
+<meta property="og:site_name" content="Korben">
+<meta property="og:image" content="https://korben.info/app/uploads/2009/12/nginx.jpg">
+<meta property="og:image:width" content="650">
+<meta property="og:image:height" content="200">
+<meta property="og:image:alt" content="Logiciel Nginx">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:site" content="@korben">
+<meta name="twitter:text:title" content="Nginx – Rediriger les requêtes en HTTP vers HTTPS">
+<meta name="twitter:card" content="summary">
+
+<script data-ad-client="ca-pub-6695279778914898" async="" src="./Nginx – Rediriger les requêtes en HTTP vers HTTPS – Korben_files/f.txt"></script><link rel="icon" href="https://korben.info/app/uploads/2019/07/cropped-android-chrome-512x512-32x32.png" sizes="32x32">
+<link rel="icon" href="https://korben.info/app/uploads/2019/07/cropped-android-chrome-512x512-192x192.png" sizes="192x192">
+<link rel="apple-touch-icon-precomposed" href="https://korben.info/app/uploads/2019/07/cropped-android-chrome-512x512-180x180.png">
+<meta name="msapplication-TileImage" content="https://korben.info/app/uploads/2019/07/cropped-android-chrome-512x512-270x270.png">
+<link rel="apple-touch-icon" href="https://korben.info/app/themes/korben/dist/favicons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://korben.info/app/themes/korben/dist/favicons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://korben.info/app/themes/korben/dist/favicons/favicon-16x16.png">
+<link rel="manifest" href="https://korben.info/app/themes/korben/dist/favicons/korben.webmanifest">
+<link rel="mask-icon" color="#556d8d" href="https://korben.info/app/themes/korben/dist/favicons/safari-pinned-tab.svg">
+<link rel="shortcut icon" href="https://korben.info/app/themes/korben/dist/favicons/favicon.ico">
+<meta name="msapplication-config" content="https://korben.info/app/themes/korben/dist/favicons/browserconfig.xml">
+<meta name="theme-color" content="#556d8d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#556d8d">
+<meta name="apple-mobile-web-app-title" content="Korben">
+<meta name="author" content="Korben">
+<meta name="description" lang="fr" content="Si vous utilisez Nginx en reverse proxy et que vous cherchez la méthode pour rediriger de manière permanente (en 301) tout le trafic arrivant sur le HTTP vers du HTTPS pour apporter confort, sécurité et volupté à vos visiteurs, voici comment faire… Ouvrez votre nginx.conf (qui se trouve surement dans un répertoire comme /etc/nginx/) nano…">
+<meta name="keywords" lang="fr" content="korben, korben.info, hack, informatique, bidouille, astuces, tech, numérique, digital, hardware, software, web, internet, hacking, diy">
+<style type="text/css">.qc-cmp-ui-container.qc-cmp-showing{overflow:hidden !important;}</style><style type="text/css">.ea_t_containter{padding-top:0!important;}</style></head>
+<body class="app post-template-default single single-post postid-35720 single-format-standard wp-embed-responsive nginx-rediriger-http-https.html sidebar-primary app-data index-data singular-data single-data single-post-data single-post-nginx-rediriger-http-https-data" itemscope="" itemtype="https://schema.org/BlogPosting"><div role="dialog" aria-live="polite" aria-label="cookieconsent" aria-describedby="cookieconsent:desc" class="cc-window cc-banner cc-type-info cc-theme-block cc-bottom " style=""><!--googleoff: all--><span id="cookieconsent:desc" class="cc-message">En cliquant sur OK ou en poursuivant la navigation sur mon merveilleux site, vous acceptez les CGU / politique de confidentialité et les cookies nécessaires au bon fonctionnement de celui-ci. <a aria-label="learn more about cookies" role="button" tabindex="0" class="cc-link" href="https://korben.info/cgu" rel="noopener noreferrer nofollow" target="_blank">En savoir plus</a></span><div class="cc-compliance"><a aria-label="dismiss cookie message" role="button" tabindex="0" class="cc-btn cc-dismiss">OK</a></div><!--googleon: all--></div>
+<svg display="none">
+<defs>
+<g id="korben" fill="#fff">
+<path d="M28,23h7.19V39.5L45.13,23h8.46L43.78,39.33l9.9,20.47h-8L39.21,46.86l-4,6.68V59.8H28Z"></path><path d="M56.55,33.83c0-7.53,3.55-12.27,12.27-12.27S81.08,26.3,81.08,33.83V48.55c0,7.53-3.47,12.27-12.18,12.27-8.46,0-12.86-4.65-12.35-12.27ZM68.81,53.63c3.38,0,5.08-1.35,5.08-5.08V33.83c0-3.21-1.35-5-5.08-5s-5.08,1.78-5.08,5V48.55C63.74,51.85,65.09,53.63,68.81,53.63Z"></path><path d="M86.74,29.69V23H98.5c8.8.59,10.41,6.94,10.41,12.6,0,4.74-.85,8.12-4.65,10.41l7.36,13.87h-7.53L97.66,47.45H93.93V59.8H86.74V40.68H94.1l-5.67-11Zm9.05,0,5.08,9.81a6,6,0,0,0,1.35-4.23c0-4.57-2.2-5.58-5.67-5.58Z"></path><path d="M136.23,30.28c.17,1.78,0,5.16-2.45,6.85,2.79.09,4.48,3.3,4.91,4,1.69,2.62,3,9,.17,13.62s-9.05,5.08-9.05,5.08H116.35V23s12.27-.68,14.13.59C133.27,24.86,135.81,26,136.23,30.28ZM123.54,29v7.36h1.18c4.91,0,4.4-3,4.4-3.81,0-2.88-1.86-3.55-3.47-3.55Zm4.31,24.28s3.72.08,4.82-2.2a5.9,5.9,0,0,0-.09-5.75,5.31,5.31,0,0,0-4.15-2h-4.91v10Z"></path><path d="M144.6,59.8V23h18.19v7.19h-11v4.57h10.74V42H151.79V52.61h11V59.8Z"></path><path d="M183.77,53.54l-9-16.92V59.8h-7.19V23h7.19l9,17V23H191V59.8h-7.19Z"></path>
+</g>
+<g id="arrow">
+<polyline fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="5px" points="16.95 4.94 39.62 27.61 16.95 50.29"></polyline>
+</g>
+</defs>
+</svg>
+<header class="korben-bar app-header">
+<div class="app-header-container">
+<div class="app-header-left">
+<button class="button button-menu" type="button" name="Menu" aria-hidden="true" data-toggle=""><i class="menu-icon"></i></button>
+<section class="widget-sl"><ul class="menu"><li><a href="https://www.facebook.com/ManuelDorne" title="Facebook" class="button-icon facebook"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M4.54,8V5.4H4.9L6,5.36c0-.38,0-.77,0-1.15s0-.79,0-1.19A2.34,2.34,0,0,1,8.23.62a28.92,28.92,0,0,1,3-.12.26.26,0,0,1,.18.18c0,.76,0,1.53,0,2.29,0,.17-.1.2-.23.2H9.79c-.47,0-.64.17-.64.63s0,1,0,1.6h2.32L11.23,8h-.57c-.41,0-.83,0-1.24,0-.22,0-.29.07-.29.29,0,2.28,0,4.56,0,6.84,0,.4,0,.41-.4.41-.77,0-1.55,0-2.32,0-.27,0-.35-.08-.35-.35,0-2.25,0-4.5,0-6.76,0-.41,0-.41-.41-.41Z" fill-rule="nonzero"></path></svg>
+</a></li><li><a href="https://twitter.com/Korben" title="Twitter" class="button-icon twitter"><svg class="icon" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="1.414"><path d="M16 3.038c-.59.26-1.22.437-1.885.517.677-.407 1.198-1.05 1.443-1.816-.634.37-1.337.64-2.085.79-.598-.64-1.45-1.04-2.396-1.04-1.812 0-3.282 1.47-3.282 3.28 0 .26.03.51.085.75-2.728-.13-5.147-1.44-6.766-3.42C.83 2.58.67 3.14.67 3.75c0 1.14.58 2.143 1.46 2.732-.538-.017-1.045-.165-1.487-.41v.04c0 1.59 1.13 2.918 2.633 3.22-.276.074-.566.114-.865.114-.21 0-.41-.02-.61-.058.42 1.304 1.63 2.253 3.07 2.28-1.12.88-2.54 1.404-4.07 1.404-.26 0-.52-.015-.78-.045 1.46.93 3.18 1.474 5.04 1.474 6.04 0 9.34-5 9.34-9.33 0-.14 0-.28-.01-.42.64-.46 1.2-1.04 1.64-1.7z" fill-rule="nonzero"></path></svg>
+</a></li><li><a href="https://www.youtube.com/user/korben00" title="YouTube" class="button-icon youtube"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="1.414"><path d="M0 7.345c0-1.294.16-2.59.16-2.59s.156-1.1.636-1.587c.608-.637 1.408-.617 1.764-.684C3.84 2.36 8 2.324 8 2.324s3.362.004 5.6.166c.314.038.996.04 1.604.678.48.486.636 1.588.636 1.588S16 6.05 16 7.346v1.258c0 1.296-.16 2.59-.16 2.59s-.156 1.102-.636 1.588c-.608.638-1.29.64-1.604.678-2.238.162-5.6.166-5.6.166s-4.16-.037-5.44-.16c-.356-.067-1.156-.047-1.764-.684-.48-.487-.636-1.587-.636-1.587S0 9.9 0 8.605v-1.26zm6.348 2.73V5.58l4.323 2.255-4.32 2.24z"></path></svg></a></li><li><a href="https://www.instagram.com/korben00/" title="Instagram" class="button-icon instagram"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="1.414"><path d="M8 0C5.827 0 5.555.01 4.702.048 3.85.088 3.27.222 2.76.42c-.526.204-.973.478-1.417.923-.445.444-.72.89-.923 1.417-.198.51-.333 1.09-.372 1.942C.008 5.555 0 5.827 0 8s.01 2.445.048 3.298c.04.852.174 1.433.372 1.942.204.526.478.973.923 1.417.444.445.89.72 1.417.923.51.198 1.09.333 1.942.372.853.04 1.125.048 3.298.048s2.445-.01 3.298-.048c.852-.04 1.433-.174 1.942-.372.526-.204.973-.478 1.417-.923.445-.444.72-.89.923-1.417.198-.51.333-1.09.372-1.942.04-.853.048-1.125.048-3.298s-.01-2.445-.048-3.298c-.04-.852-.174-1.433-.372-1.942-.204-.526-.478-.973-.923-1.417-.444-.445-.89-.72-1.417-.923-.51-.198-1.09-.333-1.942-.372C10.445.008 10.173 0 8 0zm0 1.44c2.136 0 2.39.01 3.233.048.78.036 1.203.166 1.485.276.374.145.64.318.92.598.28.28.453.546.598.92.11.282.24.705.276 1.485.038.844.047 1.097.047 3.233s-.01 2.39-.05 3.233c-.04.78-.17 1.203-.28 1.485-.15.374-.32.64-.6.92-.28.28-.55.453-.92.598-.28.11-.71.24-1.49.276-.85.038-1.1.047-3.24.047s-2.39-.01-3.24-.05c-.78-.04-1.21-.17-1.49-.28-.38-.15-.64-.32-.92-.6-.28-.28-.46-.55-.6-.92-.11-.28-.24-.71-.28-1.49-.03-.84-.04-1.1-.04-3.23s.01-2.39.04-3.24c.04-.78.17-1.21.28-1.49.14-.38.32-.64.6-.92.28-.28.54-.46.92-.6.28-.11.7-.24 1.48-.28.85-.03 1.1-.04 3.24-.04zm0 2.452c-2.27 0-4.108 1.84-4.108 4.108 0 2.27 1.84 4.108 4.108 4.108 2.27 0 4.108-1.84 4.108-4.108 0-2.27-1.84-4.108-4.108-4.108zm0 6.775c-1.473 0-2.667-1.194-2.667-2.667 0-1.473 1.194-2.667 2.667-2.667 1.473 0 2.667 1.194 2.667 2.667 0 1.473-1.194 2.667-2.667 2.667zm5.23-6.937c0 .53-.43.96-.96.96s-.96-.43-.96-.96.43-.96.96-.96.96.43.96.96z"></path></svg></a></li><li><a href="https://www.snapchat.com/add/korben00" title="Snapchat" class="button-icon snapchat"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="1.414"><path d="M8.155.48c.662 0 2.903.185 3.96 2.552.354.797.27 2.15.2 3.237l-.002.04c-.008.12-.015.23-.02.34.05.03.135.06.268.06.2-.01.44-.08.69-.2.11-.06.23-.07.31-.07.12 0 .24.02.34.06.3.1.49.32.49.56.01.3-.26.56-.81.78-.06.02-.14.05-.23.08-.3.09-.76.24-.89.54-.06.15-.04.35.08.58l.01.01c.04.09 1.02 2.32 3.2 2.68.17.03.29.18.28.34 0 .05-.01.1-.03.15-.16.38-.85.66-2.1.85-.04.06-.08.25-.11.38-.02.12-.05.24-.09.37-.05.18-.18.27-.37.27h-.02c-.09 0-.21-.02-.36-.05-.24-.05-.51-.09-.85-.09-.2 0-.4.01-.61.05-.4.07-.75.31-1.15.59-.57.4-1.22.86-2.2.86-.04 0-.08-.01-.12-.01h-.1c-.98 0-1.62-.45-2.19-.86-.4-.28-.74-.52-1.14-.59-.21-.03-.42-.05-.62-.05-.36 0-.64.06-.85.1-.14.03-.26.05-.36.05-.25 0-.35-.15-.39-.28-.04-.13-.06-.26-.09-.38s-.07-.33-.11-.38C.89 12.9.2 12.62.04 12.23c-.02-.042-.034-.1-.036-.15-.01-.162.11-.31.28-.34 2.18-.36 3.16-2.59 3.2-2.684l.01-.02c.12-.23.15-.43.08-.58-.13-.29-.59-.44-.89-.54-.08-.02-.16-.05-.23-.08-.74-.29-.84-.62-.8-.85.06-.32.45-.53.78-.53.097 0 .18.02.256.05.28.13.527.2.737.2.156 0 .256-.04.31-.07l-.03-.38c-.065-1.086-.15-2.438.205-3.23C4.94.67 7.175.49 7.835.49l.28-.01h.04z"></path></svg></a></li></ul></section> </div>
+<a href="https://korben.info/" class="app-header-center brand">
+<svg class="brand-img brand-small" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 282.1 84.3">
+<title>Korben, roi d’internet, logo bébé avec des lunettes en mode thug life</title>
+<polygon fill="#f47b20" points="0.7,15.6 12.9,81.8 278,75.1 281.2,8.8 "></polygon>
+<use x="67.4" y="3.6" xlink:href="#korben"></use>
+<image width="95.9" height="81.6" x="-8.823" y="0.625" xlink:href="https://services.korben.info/images/assets/default/raster@1x.png"></image>
+</svg>
+<svg class="brand-img brand-large" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 219 296">
+<title>Korben, roi d’internet, logo bébé avec des lunettes en mode thug life</title>
+<image width="269" height="230" x="-52" y="0" xlink:href="https://services.korben.info/images/assets/default/raster@2x.png"></image>
+<path fill="#ff7b10" d="M44.5,224.37a11.34,11.34,0,0,1-2,3.48l-.61.82-.1.1a1.4,1.4,0,0,1-.6.69,1.51,1.51,0,0,1-2.05-.54,8.58,8.58,0,0,1-1-4.31L.5,226l3,69.71,211.75-7.4,3.25-70.6Z"></path>
+<use y="217" xlink:href="#korben"></use>
+</svg>
+<h1 class="screen-reader-text"><span class="blog-title" itemprop="name">Korben</span> <small>Upgrade your mind</small></h1>
+</a>
+<div class="app-header-right">
+<form role="search" method="get" class="search-form" action="https://korben.info/">
+<label class="input-group-label screen-reader-text" for="nav-search-field" id="nav-search-field-label">
+Rechercher&amp;nbsp;:
+</label>
+<input type="search" itemprop="query-input" class="search-field" id="nav-search-field" placeholder="Recherche…" value="" name="s" title="Rechercher&amp;nbsp;:" required="">
+<button type="submit" class="search-submit" value="Rechercher" aria-labelledby="nav-search-field-label">
+<svg class="icon icon-search" aria-hidden="true" role="img" viewBox="0 0 30 30"><path fill="#fff" d="M18.53,21.19a1.88,1.88,0,0,0,.24.35L25.43,29a1.89,1.89,0,0,0,2.82-2.51L21.6,19a1.86,1.86,0,0,0-.32-.28A6.4,6.4,0,0,1,18.53,21.19Z"></path><path fill="#fff" d="M4.9,3.08A10.83,10.83,0,1,0,20.18,4,10.84,10.84,0,0,0,4.9,3.08ZM16.78,16.44a7.05,7.05,0,1,1,.58-10A7.06,7.06,0,0,1,16.78,16.44Z"></path><path fill="#fff" d="M8,7A.94.94,0,1,0,9.24,8.45a4.47,4.47,0,0,1,6.31.37A.94.94,0,1,0,17,7.56,6.36,6.36,0,0,0,8,7Z"></path></svg>
+</button>
+</form>
+</div>
+</div>
+<div class="text-center">
+<nav class="nav-primary">
+<ul id="menu-principal" class="menu"><li class="menu-item menu-blog"><a href="https://korben.info/">Blog</a></li>
+<li class="menu-item menu-%f0%9f%9a%80-formations"><a href="https://formation.korben.info/">🚀 Formations</a></li>
+<li class="menu-item menu-videos"><a href="https://korben.info/type/video">Vidéos</a></li>
+<li class="menu-item menu-categories"><a href="https://korben.info/categories">Catégories</a></li>
+<li class="menu-item menu-services"><a href="https://services.korben.info/">Services</a></li>
+<li class="menu-item menu-communaute"><a href="https://tech.korben.info/">Communauté</a></li>
+</ul>
+</nav>
+</div>
+</header>
+<div class="app-container closed" role="document">
+<main class="app-main">
+<div class="page-divider"></div>
+<article class="post-35720 post type-post status-publish format-standard has-post-thumbnail hentry category-libre tag-https tag-nginx" itemscope="" itemtype="https://schema.org/Article">
+<div class="entry-thumbnail lozad" data-background-image="https://korben.info/app/uploads/2009/12/nginx.jpg" data-loaded="true" style="background-image: url(&quot;https://korben.info/app/uploads/2009/12/nginx.jpg&quot;);">
+<meta itemprop="thumbnailUrl" content="https://korben.info/app/uploads/2009/12/nginx.jpg">
+</div>
+<div class="entry-container">
+<header class="entry-header">
+<h1 itemprop="name" class="entry-title">Nginx – Rediriger les requêtes en HTTP vers HTTPS</h1>
+<div class="entry-meta">
+<a href="https://korben.info/author/korben" class="byline author vcard fn">
+@<span itemprop="author" rel="author">Korben</span>
+&nbsp;—&nbsp;
+<time class="updated" itemprop="datePublished" datetime="2012-12-11T13:12:41+00:00">
+11 décembre 2012
+</time>
+</a>
+</div>
+</header>
+<div class="entry-content" itemprop="articleBody">
+<p>Si vous utilisez <a href="https://www.nginx.com/">Nginx</a> en reverse proxy et que vous cherchez la méthode pour rediriger de manière permanente (en 301) tout le trafic arrivant sur le HTTP vers du HTTPS pour apporter confort, sécurité et volupté à vos visiteurs, voici comment faire…</p>
+<p>Ouvrez votre nginx.conf (qui se trouve surement dans un répertoire comme /etc/nginx/)</p>
+<blockquote><p>nano nginx.conf</p></blockquote>
+<p>Et faites en sorte d’y placer la ligne de reécriture mise en gras ci-dessous, dans la section réservée à la config HTTP. Les autres sections sont dédiées au HTTPS et à la config SSL.</p>
+<blockquote>
+<pre>## le serveur http sur le port 80
+server {
+      listen      1.2.3.4:80 default;
+      server_name example.com www.example.com;
+      ## Redirige le HTTP vers le HTTPS ##
+      <strong>return 301 https://$server_name$request_uri;</strong>
+}
+
+## Le serveur https sur le port 443. N'oubliez pas vote config SSL###
+server {
+      access_log  logs/example.com/ssl_access.log main;
+      error_log   logs/example.com/ssl_error.log;
+      index       index.html;
+      root        /usr/local/nginx/html;
+      
+      ## Début de la config SSL ##
+      listen      1.2.3.4:443 ssl;
+      server_name example.com www.example.com;
+      fastcgi_param HTTPS on;
+
+     ## Redirection de l url avec www vers une url sans www
+      if ($host = 'www.example.com' ) {
+         rewrite  ^/(.*)$  https://example.com/$1  permanent;
+      }
+
+    ### config SSL - A vous de jouer ###
+     ssl_certificate      ssl/example.com/example.com_combined.crt;
+     ssl_certificate_key  ssl/example.com/example.com.key_without_password;
+     ssl_protocols        SSLv3 TLSv1 TLSv1.1 TLSv1.2;
+     ssl_ciphers RC4:HIGH:!aNULL:!MD5;
+     ssl_prefer_server_ciphers on;
+     keepalive_timeout    70;
+     ssl_session_cache    shared:SSL:10m;
+     ssl_session_timeout  10m;
+
+    ## PROXY
+      location / {
+        add_header           Front-End-Https    on;
+        add_header  Cache-Control "public, must-revalidate";
+        add_header Strict-Transport-Security "max-age=2592000; includeSubdomains";
+        proxy_pass  http://exampleproxy;
+        proxy_next_upstream error timeout invalid_header http_500 http_502 http_503;
+        proxy_set_header        Host            $host;
+        proxy_set_header        X-Real-IP       $remote_addr;
+        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+      }
+}</pre>
+</blockquote>
+<p>Et voilà… Le tour est joué.<br>
+Sauvegardez le fichier et relancez nginx</p>
+<blockquote><p>nginx -s reload</p></blockquote>
+<p>Pour vérifier que tout fonctionne correctement, allez faire un tour sur la version HTTP de votre site. Si vous êtes rebasculé automatiquement sur la version en HTTPS et que tout fonctionne, vous avez réussi comme un ninja des bois !</p>
+<p><a href="http://www.cyberciti.biz/faq/linux-unix-nginx-redirect-all-http-to-https/">Source</a></p>
+<div id="D8Ca6Dw7-a182a463df47b711060f16fd0e46108e"></div> </div>
+<hr>
+<ul class="post-categories">
+<li><a href="https://korben.info/category/infos/libre" rel="category tag">Libre</a></li></ul> </div>
+<div id="sas_31712"></div><footer class="entry-footer">
+<a class="widget-action widget-random entry-footer-action" href="https://korben.info/?random">
+<div class="icon"><svg class="dices" aria-hidden="true" role="img" viewBox="0 0 145 114"><rect fill="#ff7b10" x="0.12" y="46.08" width="57.76" height="57.76" rx="6.79" ry="6.79"></rect><rect fill="#ff7b10" x="81.11" y="6.08" width="57.76" height="57.76" rx="6.79" ry="6.79" transform="translate(-5.38 37.88) rotate(-19.08)"></rect><path class="hover-move" fill="#181e2c" d="M59.73,53.54H17.18a8.94,8.94,0,0,0-8.93,8.93V105a8.94,8.94,0,0,0,8.93,8.93H59.73A8.94,8.94,0,0,0,68.65,105V62.46A9,9,0,0,0,59.73,53.54ZM63.4,105a3.69,3.69,0,0,1-3.68,3.68H17.18A3.69,3.69,0,0,1,13.51,105V62.46a3.69,3.69,0,0,1,3.68-3.68H59.73a3.69,3.69,0,0,1,3.68,3.68Z"></path><circle class="hover-move" fill="#181e2c" cx="24.01" cy="69.29" r="5.25"></circle><circle class="hover-move" fill="#181e2c" cx="52.9" cy="69.29" r="5.25"></circle><circle class="hover-move" fill="#181e2c" cx="24.01" cy="98.18" r="5.25"></circle><circle class="hover-move" fill="#181e2c" cx="52.9" cy="98.18" r="5.25"></circle><path class="hover-move" fill="#181e2c" d="M140,56.79,126,16.61a9,9,0,0,0-8.43-6,8.65,8.65,0,0,0-2.94.5l-40.18,14a8.93,8.93,0,0,0-5.49,11.37l14,40.18a9,9,0,0,0,8.43,6,8.65,8.65,0,0,0,2.94-.5l40.18-14a8.78,8.78,0,0,0,5.09-4.54A9.05,9.05,0,0,0,140,56.79Zm-5.12,4.54a3.59,3.59,0,0,1-2.1,1.86l-40.18,14a3.72,3.72,0,0,1-4.67-2.26l-14-40.18A3.73,3.73,0,0,1,74.06,32a3.59,3.59,0,0,1,2.1-1.86l40.18-14a3.77,3.77,0,0,1,1.21-.21A3.68,3.68,0,0,1,121,18.35l14,40.18A3.73,3.73,0,0,1,134.85,61.34Z"></path><circle class="hover-move" fill="#181e2c" cx="113.35" cy="28.25" r="5.25"></circle><circle class="hover-move" fill="#181e2c" cx="95.57" cy="65.04" r="5.25"></circle></svg>
+</div>
+<p class="lead">Découvrez un article au <span>hasard</span>…</p>
+</a>
+<a class="lead entry-footer-comment" href="https://tech.korben.info/t/nginx-rediriger-les-requetes-en-http-vers-https/15855">
+Démarrer la discussion sur <span>Korben Communauté</span>&nbsp;!
+</a>
+<div class="entry-footer-share">
+<p class="lead entry-footer-title">Partager<span> cet article</span></p>
+<a rel="nofollow noreferrer noopener" class="share-icon facebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkorben.info%2Fnginx-rediriger-http-https.html&amp;t=Nginx+%E2%80%93+Rediriger+les+requ%C3%AAtes+en+HTTP+vers+HTTPS" target="_blank" title="Partager sur Facebook">
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M4.54,8V5.4H4.9L6,5.36c0-.38,0-.77,0-1.15s0-.79,0-1.19A2.34,2.34,0,0,1,8.23.62a28.92,28.92,0,0,1,3-.12.26.26,0,0,1,.18.18c0,.76,0,1.53,0,2.29,0,.17-.1.2-.23.2H9.79c-.47,0-.64.17-.64.63s0,1,0,1.6h2.32L11.23,8h-.57c-.41,0-.83,0-1.24,0-.22,0-.29.07-.29.29,0,2.28,0,4.56,0,6.84,0,.4,0,.41-.4.41-.77,0-1.55,0-2.32,0-.27,0-.35-.08-.35-.35,0-2.25,0-4.5,0-6.76,0-.41,0-.41-.41-.41Z" fill-rule="nonzero"></path></svg>
+</a>
+<a rel="nofollow noreferrer noopener" class="share-icon twitter" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fkorben.info%2Fnginx-rediriger-http-https.html&amp;text=Nginx+%E2%80%93+Rediriger+les+requ%C3%AAtes+en+HTTP+vers+HTTPS&amp;via=Korben" target="_blank" title="Partager sur Twitter">
+<svg class="icon" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="1.414"><path d="M16 3.038c-.59.26-1.22.437-1.885.517.677-.407 1.198-1.05 1.443-1.816-.634.37-1.337.64-2.085.79-.598-.64-1.45-1.04-2.396-1.04-1.812 0-3.282 1.47-3.282 3.28 0 .26.03.51.085.75-2.728-.13-5.147-1.44-6.766-3.42C.83 2.58.67 3.14.67 3.75c0 1.14.58 2.143 1.46 2.732-.538-.017-1.045-.165-1.487-.41v.04c0 1.59 1.13 2.918 2.633 3.22-.276.074-.566.114-.865.114-.21 0-.41-.02-.61-.058.42 1.304 1.63 2.253 3.07 2.28-1.12.88-2.54 1.404-4.07 1.404-.26 0-.52-.015-.78-.045 1.46.93 3.18 1.474 5.04 1.474 6.04 0 9.34-5 9.34-9.33 0-.14 0-.28-.01-.42.64-.46 1.2-1.04 1.64-1.7z" fill-rule="nonzero"></path></svg>
+</a>
+<a rel="nofollow noreferrer noopener" class="share-icon mail" href="mailto:?subject=Nginx+%E2%80%93+Rediriger+les+requ%C3%AAtes+en+HTTP+vers+HTTPS&amp;body=https%3A%2F%2Fkorben.info%2Fnginx-rediriger-http-https.html+via+Korben" target="_blank" title="Partager sur E-Mail">
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M1.4 3.1A1.4 1.4 0 0 0 0 4.5v7a1.4 1.4 0 0 0 1.4 1.4h13.2a1.4 1.4 0 0 0 1.4-1.4v-7a1.4 1.4 0 0 0-1.4-1.4H1.4zm0 .7h13.2l-6 5.7a.7.7 0 0 1-1.1 0L1.4 3.8zm-.6.4l4 3.7-4 3.9a.7.7 0 0 1-.1-.3v-7a.7.7 0 0 1 0-.3zm14.4 0a.7.7 0 0 1 .1.3v7a.7.7 0 0 1 0 .3l-4-3.9 4-3.7zm-10 4.2L7 10a1.5 1.5 0 0 0 2 0l1.7-1.6 4 3.8H1.3l3.9-3.8z" fill-rule="nonzero"></path></svg>
+</a>
+</div>
+</footer>
+<div id="comments" class="comments-area">
+<div class="respond comment-respond">
+<h3 id="reply-title" class="comment-reply-title">
+Démarrer la discussion sur <a class="wpdc-discourse-topic-link" href="https://tech.korben.info/t/nginx-rediriger-les-requetes-en-http-vers-https/15855">Korben Communauté</a>
+</h3>
+</div>
+</div>
+</article>
+<div class="page-divider"></div>
+</main>
+<aside class="app-aside">
+<a class="widget-action widget-edito sidebar-app-aside-single" href="https://korben.info/edito-du-21-04-2020.html">
+<div class="icon"><svg class="megaphone" aria-hidden="true" role="img" viewBox="0 0 180 64"><defs><style>.cls-1{fill:#ff7b10;}.cls-2{fill:#fff;}.cls-3{fill:none;}.cls-4{fill:#e06000;}</style></defs><path class="cls-1" d="M177.33.13,73.41,18.65c-1.65-3.33-3.66-6-6-7.18a6,6,0,0,0-3.51-.64,5.53,5.53,0,0,0-1,.26L17.72,34.52A4.53,4.53,0,0,0,14.37,33H13.8L5.43,34.2c-2,.33-3.52,1.84-4.35,4.58a19.62,19.62,0,0,0-.4,8.12C1.27,50.65,3,55.67,6.21,57.29a4.51,4.51,0,0,0,2.63.48l8.37-1.2a1.86,1.86,0,0,0,.54-.11,4.91,4.91,0,0,0,2.84-2.38l6.63,1.27-.43,2a3.36,3.36,0,0,0,2.72,3.87L42,63.63A3.47,3.47,0,0,0,45.87,61l.4-1.9L70.5,63.8l.27,0a2.27,2.27,0,0,0,1-.07c3.09-.48,5.91-4.34,6.94-11.67l100.85-5.93ZM8.85,51.36a11.4,11.4,0,0,1-1.91-5.28,11,11,0,0,1,.39-5.64l4.16-.66a18.19,18.19,0,0,0,0,5.57,21.85,21.85,0,0,0,1.56,5.39Zm56-34.19a9.07,9.07,0,0,1,2,2.64l-3.33.59,0-.13A9.93,9.93,0,0,1,64.86,17.17Zm-45.36,30-.42-.12a11.46,11.46,0,0,1-.82-2.72,9.82,9.82,0,0,1,0-2.79L56.81,21.5A60.18,60.18,0,0,0,57,38.75a61.48,61.48,0,0,0,4.72,16.67ZM70.66,57.28c-.72-.45-1.9-2-3.12-4.52l4.69-.28A12.23,12.23,0,0,1,70.66,57.28Z"></path><path class="cls-2" d="M94.07,25.2l3.21-.41.94,7.37,3.48-7.93,3.78-.48L102,31.59l5.59,8.58-3.59.46-3.61-5.41L99,38.43l.36,2.8-3.21.41Z"></path><path class="cls-2" d="M107.41,28.41c-.43-3.36.89-5.68,4.78-6.18s5.75,1.41,6.18,4.78l.84,6.57c.43,3.36-.85,5.68-4.74,6.17s-6-1.34-6.21-4.77ZM114,36.55c1.51-.19,2.19-.89,2-2.56l-.84-6.57c-.18-1.44-.89-2.15-2.55-1.94s-2.16,1.08-2,2.52l.84,6.57A2,2,0,0,0,114,36.55Z"></path><path class="cls-2" d="M120.66,24.83l-.38-3,5.25-.67c4-.24,5,2.5,5.36,5,.27,2.12.09,3.68-1.48,4.91l4.08,5.77-3.36.43-3.58-5.19-1.66.21.7,5.52-3.21.41-1.09-8.54,3.29-.42-3.16-4.59Zm4-.52,2.83,4.09a2.71,2.71,0,0,0,.36-2c-.26-2-1.3-2.37-2.85-2.17Z"></path><path class="cls-2" d="M142.79,22.27a3.38,3.38,0,0,1-.7,3.2c1.25-.12,2.19,1.22,2.42,1.5a6.49,6.49,0,0,1,.85,6.07,5.5,5.5,0,0,1-3.75,2.78l-6,.77-2.1-16.43s5.44-1,6.34-.54C141.15,20,142.36,20.41,142.79,22.27Zm-5.74.16.42,3.29.53-.07c2.19-.28,1.8-1.57,1.75-2A1.42,1.42,0,0,0,138,22.31ZM140.36,33s1.67-.18,2-1.26A2.65,2.65,0,0,0,142,29.2a2.39,2.39,0,0,0-2-.67l-2.19.28.57,4.46Z"></path><path class="cls-2" d="M148.21,35l-2.1-16.43,8.12-1,.41,3.21-4.91.63.26,2,4.8-.61L155.2,26l-4.8.61.61,4.76,4.91-.63.41,3.21Z"></path><path class="cls-2" d="M165.34,29.94l-5-7,1.32,10.35-3.21.41-2.1-16.43,3.21-.41,5,7.08-1-7.59,3.21-.41,2.1,16.43-3.21.41Z"></path><path class="cls-2" d="M82.55,39.64l0,.53L80,40.5l.16-1.86.1-1.18.59-7.88,4.71-.6L88,36.36,90,36.11a7.29,7.29,0,0,0,0-2c-.54-4.2-2.88-7.37-7.08-6.84s-5.7,4.2-5.16,8.4,2.91,7.4,7.11,6.86a7.72,7.72,0,0,0,4.93-2.75l.4,3.14a10.27,10.27,0,0,1-5,2.12c-5.59.72-9.23-3.46-9.94-9.05S77,25.42,82.57,24.71s9.23,3.46,9.94,9.05A10,10,0,0,1,92,38.43Zm3-3L83.33,30.6,82.65,37Z"></path><path class="cls-3" d="M56.81,21.5,18.24,41.59a9.82,9.82,0,0,0,0,2.79,11.46,11.46,0,0,0,.82,2.72l.42.12,42.25,8.22A61.48,61.48,0,0,1,57,38.75,60.18,60.18,0,0,1,56.81,21.5Z"></path><path class="cls-3" d="M11.5,39.78l-4.16.66a11,11,0,0,0-.39,5.64,11.4,11.4,0,0,0,1.91,5.28l4.24-.62a21.85,21.85,0,0,1-1.56-5.39A18.19,18.19,0,0,1,11.5,39.78Z"></path><path class="cls-4" d="M63.33,37.84A51.42,51.42,0,0,0,67.15,52l.24.51,2.95-.13a68.1,68.1,0,0,1-3.11-9.61,46.72,46.72,0,0,1-.39-22.58l-3.24.13a25.89,25.89,0,0,0-.59,3A51.93,51.93,0,0,0,63.33,37.84Z"></path></svg>
+</div>
+<p class="lead"><span>Lire mon édito du moment&nbsp;!</span></p>
+</a>
+<section class="D8Ca6Dw7-widget"><div data-cfpa="113033" id="D8Ca6Dw7-1685501040"><iframe frameborder="0" height="470px" width="295px" src="./Nginx – Rediriger les requêtes en HTTP vers HTTPS – Korben_files/index.html"></iframe></div><script type="text/javascript">;new advadsCfpAd( 113033 );</script></section><section class="D8Ca6Dw7-widget"><div data-cfpa="114361" id="D8Ca6Dw7-2144604834"><script async="" src="./Nginx – Rediriger les requêtes en HTTP vers HTTPS – Korben_files/f.txt"></script>
+<ins class="adsbygoogle" style="display:block;" data-ad-client="ca-pub-6695279778914898" data-ad-slot="3441984931" data-ad-format="auto"></ins>
+<script> 
+(adsbygoogle = window.adsbygoogle || []).push({}); 
+</script>
+</div><script type="text/javascript">;new advadsCfpAd( 114361 );</script></section><a class="widget-action widget-sign-up sidebar-app-aside-single" href="https://tech.korben.info/signup">
+<div class="icon"><svg class="baby" aria-hidden="true" role="img" viewBox="0 0 130 129"><circle fill="#ff7b10" cx="57.77" cy="57.39" r="57.37"></circle><path class="hover-move" fill="#181e2c" d="M69.23,8.24A60.37,60.37,0,1,0,129.6,68.61,60.44,60.44,0,0,0,69.23,8.24Zm9.16,63c-1,1-2.37,1.87-3,3.09-2.63,5.47-6.87,7.54-12.73,6.55-3.1-.52-6.24-.94-9.26-1.76-2.83-.77-8-8.49-7.92-11.27,0-.4,0-1,.25-1.16,2.89-1.51,5.69-3.56,8.78-4.22s6.28,0,9.39.46c4.49.67,9.32.4,12.64,4.7.64.83,3.14.85,4.5.39,3.3-1.11,6.47-3.54,9.8-3.54s6.89,1,8.18,2.9c2.47,3.66,1.1,8.17-1.31,11.57s-6.42,3.94-10.43,3.2-5.7-3.84-7-7.32A26.22,26.22,0,0,0,78.39,71.21ZM93,115.83a26.68,26.68,0,0,0-.92-2.53A.79.79,0,0,1,92,113l-9.73-10.87c6.58-3.66,10.09-9.27,11.88-16.23a8,8,0,0,1,3-4.17c3.41-2.39,5.56-13.08,3-16.31-.33-.42-.81-1-1.23-1-5-.15-4.28-3.67-3.92-6.74,1.1-9.42-1.61-17.24-8.92-23.51C77.67,27,67.87,26.9,58,28.55c-11.93,2-17.49,8.85-18,20.91q-.37,8-.78,16a4.46,4.46,0,0,1-.3,2c-4.47,7.37-.94,13.33,3,19.2-3.93.17-6.7,2.77-6.59,6.3a15.84,15.84,0,0,1-4.45,11.93A52.86,52.86,0,1,1,93,115.83Z"></path></svg>
+</div>
+<p class="lead">Rejoignez la <span>communauté</span> des Korbenautes&nbsp;!</p>
+</a>
+<section class="D8Ca6Dw7-widget"><div id="D8Ca6Dw7-8efcd365071f89410e28d049ea257948"></div></section><a class="widget-action widget-random sidebar-app-aside-single" href="https://korben.info/?random">
+<div class="icon"><svg class="dices" aria-hidden="true" role="img" viewBox="0 0 145 114"><rect fill="#ff7b10" x="0.12" y="46.08" width="57.76" height="57.76" rx="6.79" ry="6.79"></rect><rect fill="#ff7b10" x="81.11" y="6.08" width="57.76" height="57.76" rx="6.79" ry="6.79" transform="translate(-5.38 37.88) rotate(-19.08)"></rect><path class="hover-move" fill="#181e2c" d="M59.73,53.54H17.18a8.94,8.94,0,0,0-8.93,8.93V105a8.94,8.94,0,0,0,8.93,8.93H59.73A8.94,8.94,0,0,0,68.65,105V62.46A9,9,0,0,0,59.73,53.54ZM63.4,105a3.69,3.69,0,0,1-3.68,3.68H17.18A3.69,3.69,0,0,1,13.51,105V62.46a3.69,3.69,0,0,1,3.68-3.68H59.73a3.69,3.69,0,0,1,3.68,3.68Z"></path><circle class="hover-move" fill="#181e2c" cx="24.01" cy="69.29" r="5.25"></circle><circle class="hover-move" fill="#181e2c" cx="52.9" cy="69.29" r="5.25"></circle><circle class="hover-move" fill="#181e2c" cx="24.01" cy="98.18" r="5.25"></circle><circle class="hover-move" fill="#181e2c" cx="52.9" cy="98.18" r="5.25"></circle><path class="hover-move" fill="#181e2c" d="M140,56.79,126,16.61a9,9,0,0,0-8.43-6,8.65,8.65,0,0,0-2.94.5l-40.18,14a8.93,8.93,0,0,0-5.49,11.37l14,40.18a9,9,0,0,0,8.43,6,8.65,8.65,0,0,0,2.94-.5l40.18-14a8.78,8.78,0,0,0,5.09-4.54A9.05,9.05,0,0,0,140,56.79Zm-5.12,4.54a3.59,3.59,0,0,1-2.1,1.86l-40.18,14a3.72,3.72,0,0,1-4.67-2.26l-14-40.18A3.73,3.73,0,0,1,74.06,32a3.59,3.59,0,0,1,2.1-1.86l40.18-14a3.77,3.77,0,0,1,1.21-.21A3.68,3.68,0,0,1,121,18.35l14,40.18A3.73,3.73,0,0,1,134.85,61.34Z"></path><circle class="hover-move" fill="#181e2c" cx="113.35" cy="28.25" r="5.25"></circle><circle class="hover-move" fill="#181e2c" cx="95.57" cy="65.04" r="5.25"></circle></svg>
+</div>
+<p class="lead">Découvrez un article au <span>hasard</span>…</p>
+</a>
+<section class="widget_recent_entries"><a class="entry-light entry-light-header lozad" href="https://korben.info/apprenez-a-reconnaitre-les-oiseaux.html" data-background-image="https://korben.info/app/uploads/2020/04/reconnaitre-un-oiseau.jpg" data-loaded="true" style="background-image: url(&quot;https://korben.info/app/uploads/2020/04/reconnaitre-un-oiseau.jpg&quot;);">
+<h5 itemprop="name">C’est quoi ce piaf dans le jardin ? Apprenez à reconnaitre les oiseaux</h5>
+</a>
+<a class="entry-light entry-light-header lozad" href="https://korben.info/lancement-des-formations-korben-%f0%9f%9a%80.html" data-background-image="https://korben.info/app/uploads/2020/04/domain.png" data-loaded="true" style="background-image: url(&quot;https://korben.info/app/uploads/2020/04/domain.png&quot;);">
+<h5 itemprop="name">Lancement des Formations Korben 🚀</h5>
+</a>
+<a class="entry-light entry-light-header lozad" href="https://korben.info/paralleles-s01e08-la-vulgarisation-scientifique-a-portee-de-main.html" data-background-image="https://korben.info/app/uploads/2020/01/ezgif-3-cc12c9e76376.gif" data-loaded="true" style="background-image: url(&quot;https://korben.info/app/uploads/2020/01/ezgif-3-cc12c9e76376.gif&quot;);">
+<h5 itemprop="name">Parallèles s01e08 – La vulgarisation scientifique à portée de main #podcast</h5>
+</a>
+<a class="entry-light entry-light-header lozad" href="https://korben.info/comment-gerer-les-partitions-et-volumes-dynamiques-sous-windows-raid-5.html" data-background-image="https://korben.info/app/uploads/2020/04/markus-spiske-5yEiCUynJ9w-unsplash-scaled.jpg" data-loaded="true" style="background-image: url(&quot;https://korben.info/app/uploads/2020/04/markus-spiske-5yEiCUynJ9w-unsplash-scaled.jpg&quot;);">
+<h5 itemprop="name">Comment gérer les partitions et volumes dynamiques sous Windows (RAID-5)</h5>
+</a>
+<a class="entry-light entry-light-header lozad" href="https://korben.info/curses-city-simcity-dans-votre-terminal.html" data-background-image="https://korben.info/app/uploads/2020/04/ncurses1.png" data-loaded="true" style="background-image: url(&quot;https://korben.info/app/uploads/2020/04/ncurses1.png&quot;);">
+<h5 itemprop="name">Curses City – SimCity dans votre terminal</h5>
+</a>
+</section><section class="D8Ca6Dw7-widget"><div data-cfpa="113532" id="D8Ca6Dw7-2105252623"><script async="" src="./Nginx – Rediriger les requêtes en HTTP vers HTTPS – Korben_files/f.txt"></script>
+<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-7539271723864834" data-ad-slot="1093551984"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></div><script type="text/javascript">;new advadsCfpAd( 113532 );</script></section><a class="widget-action widget-rss sidebar-app-aside-single" href="https://korben.info/flux-rss/">
+<div class="icon"><svg class="feed" aria-hidden="true" role="img" viewBox="0 0 87 88"><circle fill="#ff7b10" cx="48.17" cy="38.51" r="38.51"></circle><ellipse class="hover-move" fill="#181e2c" cx="11.29" cy="76.74" rx="10.96" ry="11.08"></ellipse><path class="hover-move" fill="#181e2c" d="M53.32,87.82H37.78A37.67,37.67,0,0,0,.32,49.95h0V34.25C29.59,34.25,53.32,58.23,53.32,87.82Z"></path><path class="hover-move" fill="#181e2c" d="M64.28,87.82c0-35.71-28.64-64.66-64-64.66V7c44.16,0,80,36.19,80,80.82Z"></path></svg>
+</div>
+<p class="lead">Suivez le <span>flux RSS</span>&nbsp;!</p>
+</a>
+<section class="D8Ca6Dw7-widget"><div data-cfpa="98877" id="D8Ca6Dw7-1054736069"><div id="cgdiv_19176"><div id="sas_19176" data-sas="19176"></div></div>
+</div><script type="text/javascript">;new advadsCfpAd( 98877 );</script></section><section class="widget-dtc show-for-large"><h4><svg class="dtc" aria-hidden="true" role="img" viewBox="0 0 107 88"><ellipse cx="53.5" cy="77.26" fill="#ff7b10" rx="10.5" ry="53.43" transform="rotate(-88.29 53.5 77.26)"></ellipse><path fill="#ff7b10" d="M19.07 4.52a5.48 5.48 0 0 1 2.45-.58A6.55 6.55 0 0 1 23.1 4a2.46 2.46 0 0 1 1 .62 2.84 2.84 0 0 1 .72.83A2.81 2.81 0 0 1 25 6.49a3.83 3.83 0 0 1-.61 2.22 3.75 3.75 0 0 1-1.8 1.4q-1.27.5-1.25.67t.64.6a8.81 8.81 0 0 1 1.74 1.79q1 1.29 1 1.65-.1 1.3-1.6-.19a8.49 8.49 0 0 1-.72-.78 8.76 8.76 0 0 0-1.59-1.68q-.15 0 .15 1.64a6.55 6.55 0 0 1 .16 1.39q0 .27-.45.38a.84.84 0 0 1-.45 0 .44.44 0 0 1-.3-.19q-.17-.32-.92-5.39l-.7-5zm4.15 1.25a2.24 2.24 0 0 0-.73-.34 3.43 3.43 0 0 0-.95-.15q-1.12 0-1.37.43a3.91 3.91 0 0 0 0 2.08l.31 1.68 1.22-.57a4.14 4.14 0 0 0 1.07-.69 2.72 2.72 0 0 0 .59-.95 2.83 2.83 0 0 0 .31-1c0-.08-.15-.26-.45-.49zm3.53 9.51a5.48 5.48 0 0 1 2.45-.58 6.55 6.55 0 0 1 1.58 0 2.46 2.46 0 0 1 1 .62 2.84 2.84 0 0 1 .72.83 2.81 2.81 0 0 1 .16 1.06 3.83 3.83 0 0 1-.66 2.26 3.75 3.75 0 0 1-1.8 1.4q-1.27.5-1.25.67t.64.6a8.81 8.81 0 0 1 1.74 1.79q1 1.29 1 1.65-.1 1.3-1.6-.19a8.49 8.49 0 0 1-.73-.79 8.76 8.76 0 0 0-1.59-1.68q-.15 0 .15 1.64a6.55 6.55 0 0 1 .16 1.39q0 .27-.45.38a.84.84 0 0 1-.45 0 .44.44 0 0 1-.3-.19q-.14-.33-.88-5.36l-.71-5zm4.15 1.25a2.24 2.24 0 0 0-.73-.34 3.43 3.43 0 0 0-.95-.15q-1.12 0-1.37.43a3.91 3.91 0 0 0 0 2.08l.31 1.68 1.22-.57a4.14 4.14 0 0 0 1.09-.66 2.72 2.72 0 0 0 .59-.95 2.83 2.83 0 0 0 .31-1c-.02-.11-.17-.29-.47-.52zM30.35.65a7.28 7.28 0 0 1 1.37-.5 1.36 1.36 0 0 1 .81.07 5.33 5.33 0 0 1 1.06.7 5.18 5.18 0 0 1 1.57 1.89 8.87 8.87 0 0 1 .56 2.86 11.3 11.3 0 0 1-.18 2.81 7.31 7.31 0 0 1-.81 2.27 5.66 5.66 0 0 1-1.33 1.58 3.14 3.14 0 0 1-1.72.71 4.53 4.53 0 0 1-2-.29 3.55 3.55 0 0 1-1.68-1.2 6.22 6.22 0 0 1-.8-2.32 10 10 0 0 1 .35-5.3 5.31 5.31 0 0 1 2.8-3.28zm2.94 1.95a2.32 2.32 0 0 0-.8-.61 2.36 2.36 0 0 0-1 0 3.31 3.31 0 0 0-.9.25 2.3 2.3 0 0 0-.68.41 5.82 5.82 0 0 0-1 2.22 10.2 10.2 0 0 0-.48 2.88 5.81 5.81 0 0 0 .45 2.43 2.65 2.65 0 0 0 1.45 1.22 3.84 3.84 0 0 0 1.15.34 2.36 2.36 0 0 0 .93-.48 2.91 2.91 0 0 0 .85-.83A6.68 6.68 0 0 0 33.9 9a7.49 7.49 0 0 0 .46-1.72 9.57 9.57 0 0 0-.09-1.92 9 9 0 0 0-.34-1.75 2.91 2.91 0 0 0-.64-1.01zm3.2 13.4a7.28 7.28 0 0 1 1.37-.5 1.36 1.36 0 0 1 .81.07 5.33 5.33 0 0 1 1.06.7 5.18 5.18 0 0 1 1.57 1.89 8.87 8.87 0 0 1 .57 2.84 11.3 11.3 0 0 1-.18 2.81 7.31 7.31 0 0 1-.81 2.27 5.66 5.66 0 0 1-1.33 1.58 3.14 3.14 0 0 1-1.72.71 4.53 4.53 0 0 1-2-.29 3.55 3.55 0 0 1-1.67-1.19 6.22 6.22 0 0 1-.8-2.32 10 10 0 0 1 .35-5.3A5.31 5.31 0 0 1 36.49 16zm2.94 2a2.32 2.32 0 0 0-.8-.61 2.36 2.36 0 0 0-1 0 3.31 3.31 0 0 0-.9.25A2.3 2.3 0 0 0 36 18a5.82 5.82 0 0 0-1 2.22 10.2 10.2 0 0 0-.48 2.88 5.81 5.81 0 0 0 .48 2.41 2.65 2.65 0 0 0 1.45 1.22 3.84 3.84 0 0 0 1.15.34 2.36 2.36 0 0 0 .93-.48 2.91 2.91 0 0 0 .85-.83 6.68 6.68 0 0 0 .68-1.41 7.49 7.49 0 0 0 .46-1.72 9.57 9.57 0 0 0-.09-1.92 9 9 0 0 0-.35-1.71 2.91 2.91 0 0 0-.65-1zm3.19-15.53c0-.08.09-.16.22-.23a1 1 0 0 1 .44-.11q.43 0 .52.23a5.5 5.5 0 0 1 .2 1.23 18.39 18.39 0 0 1-.06 2.56q-.13 1.54-.15 4a13 13 0 0 1-.22 3.46q-.58.72-1.87-.9a19.46 19.46 0 0 1-2.16-3.81q-.77-1.72-.91-1.71a16.53 16.53 0 0 0 .37 3.45 17.26 17.26 0 0 1 .34 3.29c0 .12-.15.2-.34.22q-.54.07-.91-1.45a46.11 46.11 0 0 1-.79-5.38 23.56 23.56 0 0 1-.3-3.89.51.51 0 0 1 .36-.33.67.67 0 0 1 .66.27A11.13 11.13 0 0 1 39.12 5q.92 1.58 1.7 3.14a21.57 21.57 0 0 0 1.1 2c.18.23.29.36.33.36s.09-.11.1-.32 0-.38 0-.77q0-1.09.1-2.8T42.57 4a12 12 0 0 1 .05-1.53zm6.15 12.29c0-.08.09-.16.22-.23a1 1 0 0 1 .44-.11q.43 0 .52.23a5.5 5.5 0 0 1 .18 1.24 18.39 18.39 0 0 1-.06 2.56q-.13 1.54-.15 4a13 13 0 0 1-.22 3.46q-.58.72-1.87-.9a19.46 19.46 0 0 1-2.16-3.81q-.77-1.72-.91-1.71a16.53 16.53 0 0 0 .36 3.49 17.26 17.26 0 0 1 .34 3.29c0 .12-.15.2-.34.22q-.54.07-.91-1.45a46.11 46.11 0 0 1-.79-5.38 23.56 23.56 0 0 1-.25-3.88.51.51 0 0 1 .36-.33.67.67 0 0 1 .66.27 11.13 11.13 0 0 1 1.07 1.66q.92 1.58 1.7 3.14a21.57 21.57 0 0 0 1.1 2c.18.23.29.36.33.36s.09-.11.1-.32 0-.38 0-.77q0-1.09.1-2.8t.1-2.66a12 12 0 0 1 .08-1.57zm20.61 21.33a5.15 5.15 0 0 1-1.62 3.17A5.15 5.15 0 0 1 66.38 36 5.15 5.15 0 0 1 68 32.81a5.15 5.15 0 0 1 1.38 3.28zm11.99.45a5.15 5.15 0 0 1-1.62 3.17 5.15 5.15 0 0 1-1.38-3.29A5.15 5.15 0 0 1 80 33.25a5.15 5.15 0 0 1 1.37 3.29z"></path><path fill="#fff" d="M87.66 69.35l1.85-50-7.46 6.93a15.07 15.07 0 0 0-15.59-.58l-6.93-7.46-.74 20A30 30 0 0 0 27.7 67.13a10 10 0 0 1 .74-20 5 5 0 0 0 .37-10 20 20 0 0 0-1.48 40l60 2.22a5 5 0 0 0 .37-10zM68.79 38.63l-2.5-.09a2.5 2.5 0 0 1 .19-5l2.5.09a2.5 2.5 0 0 1-.19 5zm12.49.46l-2.5-.09a2.5 2.5 0 0 1 .22-5l2.5.09a2.5 2.5 0 0 1-.19 5z"></path></svg>
+Dans ton chat</h4><pre>[Freeben666] tu serait pas blonde par hasard vanessa??
+[+Vanessa] on touche à ma brune aux planètes solides, un effet par hasard et à organiser les observe, qui les primates.
+[TigrOo`] Oo
+</pre><p><a href="https://danstonchat.com/1215.html">#1215</a></p></section> <div class="app-aside-delimiter show-for-large"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img"><pattern id="b" width="50" height="175" patternUnits="userSpaceOnUse"><circle id="a" r="25"></circle><use y="150" fill="#181e2c" xlink:href="#a"></use><use x="50" y="150" fill="#181e2c" xlink:href="#a"></use><use x="25" y="125" fill="#ff7b10" xlink:href="#a"></use><use y="100" fill="#181e2c" xlink:href="#a"></use><use x="50" y="100" fill="#181e2c" xlink:href="#a"></use><use x="25" y="75" fill="#ff7b10" xlink:href="#a"></use><use y="50" fill="#181e2c" xlink:href="#a"></use><use x="50" y="50" fill="#181e2c" xlink:href="#a"></use><use x="25" y="25" fill="#ff7b10" xlink:href="#a"></use><use fill="#181e2c" xlink:href="#a"></use><use x="50" fill="#181e2c" xlink:href="#a"></use></pattern><rect width="100%" height="100%" fill="url(#b)"></rect></svg>
+</div>
+<section class="app-aside-footer">
+<img src="./Nginx – Rediriger les requêtes en HTTP vers HTTPS – Korben_files/starwars.webp" alt="Korben, geek forever">
+</section>
+</aside>
+</div>
+<section>
+<div id="D8Ca6Dw7-1771368995" data-cfpa="100810"><div id="cgdiv_920"><div id="sas_920" data-sas="920"></div></div>
+</div><script type="text/javascript">;new advadsCfpAd( 100810 );</script></section>
+<section class="app-extra app-trending">
+<h4><svg class="icon icon-newspaper" aria-hidden="true" role="img" viewBox="0 0 39 35"><path fill="#fff" d="M34.9,16.46H22.7v1.85H34.9ZM20.7,4.57H8.81V6.42H20.7V4.57ZM34.9,24.26H22.7v1.85H34.9Zm0-3.94H22.7v1.85H34.9Zm-2.16,12.2H2.25V6.73h.7V4.57H.08V34.68H34.9V31.82H32.74v.7ZM34.67,4.57h-12V14.3h12Zm-14,19.69H8.81v1.85H20.7V24.26ZM4.56.32V30.43H38.92V.32ZM36.75,28.27h-30V2.41h30V28.27Zm-16.06-8H8.81v1.85H20.7V20.32Zm0-11.81H8.81v1.85H20.7V8.51Zm0,8H8.81v1.85H20.7V16.46Zm0-3.94H8.81v1.85H20.7V12.52Z"></path></svg>
+Les articles du moment</h4>
+<div id="jp-relatedposts" class="jp-relatedposts">
+<div class="jp-relatedposts-items jp-relatedposts-items-visual jp-relatedposts-grid "><div class="jp-relatedposts-post jp-relatedposts-post0 jp-relatedposts-post-thumbs" data-post-id="85868" data-post-format="false"><a class="jp-relatedposts-post-a" href="https://korben.info/installer-activer-http2-nginx.html" title="Installer et activer HTTP2 sur Nginx
+
+Dernier article de la série concernant le http2... Cette fois, on va apprendre à le mettre en place sur un serveur Nginx. Vous allez voir, c&#39;est un peu plus rapide qu&#39;avec Apache dont le tuto est ici. Première étape, vérifiez que vos fichiers de conf Nginx sont OK. Pour cela,…" rel="nofollow" data-origin="35720" data-position="0"><img class="jp-relatedposts-post-img" src="./Nginx – Rediriger les requêtes en HTTP vers HTTPS – Korben_files/http2-ok-1.jpg" width="350" alt="Installer et activer HTTP2 sur Nginx"></a><h4 class="jp-relatedposts-post-title"><a class="jp-relatedposts-post-a" href="https://korben.info/installer-activer-http2-nginx.html" title="Installer et activer HTTP2 sur Nginx
+
+Dernier article de la série concernant le http2... Cette fois, on va apprendre à le mettre en place sur un serveur Nginx. Vous allez voir, c&#39;est un peu plus rapide qu&#39;avec Apache dont le tuto est ici. Première étape, vérifiez que vos fichiers de conf Nginx sont OK. Pour cela,…" rel="nofollow" data-origin="35720" data-position="0">Installer et activer HTTP2 sur Nginx</a></h4><p class="jp-relatedposts-post-excerpt">Dernier article de la série concernant le http2... Cette fois, on va apprendre à le mettre en place sur un serveur Nginx. Vous allez voir, c'est un peu plus rapide qu'avec Apache dont le tuto est ici. Première étape, vérifiez que vos fichiers de conf Nginx sont OK. Pour cela,…</p><p class="jp-relatedposts-post-date" style="display: block;">13 mars 2017</p><p class="jp-relatedposts-post-context">Dans "Administration Systeme Réseau"</p></div><div class="jp-relatedposts-post jp-relatedposts-post1 jp-relatedposts-post-thumbs" data-post-id="106273" data-post-format="false"><a class="jp-relatedposts-post-a" href="https://korben.info/nginx-un-generateur-de-fichier-de-configuration.html" title="NGINX - Un générateur de fichier de configuration
+
+Si vous débutez et que la configuration NGINX vous pose quelques soucis, je vous invite à vous rendre sur nginxconfig.io. Ce service dont les sources sont également disponibles ici, permet à tout le monde, de générer un fichier de config Nginx en fonction des informations entrées dans le formulaire. Informations…" rel="nofollow" data-origin="35720" data-position="1"><img class="jp-relatedposts-post-img" src="./Nginx – Rediriger les requêtes en HTTP vers HTTPS – Korben_files/NGINX.png" width="350" alt="NGINX - Un générateur de fichier de configuration"></a><h4 class="jp-relatedposts-post-title"><a class="jp-relatedposts-post-a" href="https://korben.info/nginx-un-generateur-de-fichier-de-configuration.html" title="NGINX - Un générateur de fichier de configuration
+
+Si vous débutez et que la configuration NGINX vous pose quelques soucis, je vous invite à vous rendre sur nginxconfig.io. Ce service dont les sources sont également disponibles ici, permet à tout le monde, de générer un fichier de config Nginx en fonction des informations entrées dans le formulaire. Informations…" rel="nofollow" data-origin="35720" data-position="1">NGINX - Un générateur de fichier de configuration</a></h4><p class="jp-relatedposts-post-excerpt">Si vous débutez et que la configuration NGINX vous pose quelques soucis, je vous invite à vous rendre sur nginxconfig.io. Ce service dont les sources sont également disponibles ici, permet à tout le monde, de générer un fichier de config Nginx en fonction des informations entrées dans le formulaire. Informations…</p><p class="jp-relatedposts-post-date" style="display: block;">19 novembre 2018</p><p class="jp-relatedposts-post-context">Dans "Administration Systeme Réseau"</p></div><div class="jp-relatedposts-post jp-relatedposts-post2 jp-relatedposts-post-thumbs" data-post-id="9677" data-post-format="false"><a class="jp-relatedposts-post-a" href="https://korben.info/configurer-nginx-reverse-proxy.html" title="Mettre en place un Reverse Proxy Nginx sur son serveur
+
+A cause (ou grâce) au petit concours que j&#39;ai lancé pour gagner le Nokia N900, vous êtes trèèèèèèès nombreux à être sur le site, à laisser un commentaire puis après aller vous ballader sur mes autres articles. C&#39;est bien (yeah!) sauf que du coup l&#39;Apache qui fait tourner le site…" rel="nofollow" data-origin="35720" data-position="2"><img class="jp-relatedposts-post-img" src="./Nginx – Rediriger les requêtes en HTTP vers HTTPS – Korben_files/nginx.jpg" width="350" alt="Mettre en place un Reverse Proxy Nginx sur son serveur"></a><h4 class="jp-relatedposts-post-title"><a class="jp-relatedposts-post-a" href="https://korben.info/configurer-nginx-reverse-proxy.html" title="Mettre en place un Reverse Proxy Nginx sur son serveur
+
+A cause (ou grâce) au petit concours que j&#39;ai lancé pour gagner le Nokia N900, vous êtes trèèèèèèès nombreux à être sur le site, à laisser un commentaire puis après aller vous ballader sur mes autres articles. C&#39;est bien (yeah!) sauf que du coup l&#39;Apache qui fait tourner le site…" rel="nofollow" data-origin="35720" data-position="2">Mettre en place un Reverse Proxy Nginx sur son serveur</a></h4><p class="jp-relatedposts-post-excerpt">A cause (ou grâce) au petit concours que j'ai lancé pour gagner le Nokia N900, vous êtes trèèèèèèès nombreux à être sur le site, à laisser un commentaire puis après aller vous ballader sur mes autres articles. C'est bien (yeah!) sauf que du coup l'Apache qui fait tourner le site…</p><p class="jp-relatedposts-post-date" style="display: block;">24 décembre 2009</p><p class="jp-relatedposts-post-context">Dans "Infos"</p></div><div class="jp-relatedposts-post jp-relatedposts-post3 jp-relatedposts-post-thumbs" data-post-id="87076" data-post-format="false"><a class="jp-relatedposts-post-a" href="https://korben.info/gixy-analysez-configuration-de-nginx-detecter-problemes.html" title="Gixy - Analysez la configuration de Nginx pour détecter les problèmes
+
+Si vous utilisez nginx pour votre site web, sachez qu&#39;une mauvaise configuration peut conduire à d&#39;éventuels problèmes de sécurité. Heureusement, pour contrer cela, il y a Gixy. Gixy est un script Python qui analyse votre fichier nginx.conf à la recherche de problèmes éventuels comme : [ssrf] Server Side Request Forgery…" rel="nofollow" data-origin="35720" data-position="3"><img class="jp-relatedposts-post-img" src="./Nginx – Rediriger les requêtes en HTTP vers HTTPS – Korben_files/nginx.jpg" width="350" alt="Gixy - Analysez la configuration de Nginx pour détecter les problèmes"></a><h4 class="jp-relatedposts-post-title"><a class="jp-relatedposts-post-a" href="https://korben.info/gixy-analysez-configuration-de-nginx-detecter-problemes.html" title="Gixy - Analysez la configuration de Nginx pour détecter les problèmes
+
+Si vous utilisez nginx pour votre site web, sachez qu&#39;une mauvaise configuration peut conduire à d&#39;éventuels problèmes de sécurité. Heureusement, pour contrer cela, il y a Gixy. Gixy est un script Python qui analyse votre fichier nginx.conf à la recherche de problèmes éventuels comme : [ssrf] Server Side Request Forgery…" rel="nofollow" data-origin="35720" data-position="3">Gixy - Analysez la configuration de Nginx pour détecter les problèmes</a></h4><p class="jp-relatedposts-post-excerpt">Si vous utilisez nginx pour votre site web, sachez qu'une mauvaise configuration peut conduire à d'éventuels problèmes de sécurité. Heureusement, pour contrer cela, il y a Gixy. Gixy est un script Python qui analyse votre fichier nginx.conf à la recherche de problèmes éventuels comme : [ssrf] Server Side Request Forgery…</p><p class="jp-relatedposts-post-date" style="display: block;">16 mai 2017</p><p class="jp-relatedposts-post-context">Dans "Administration Systeme Réseau"</p></div><div class="jp-relatedposts-post jp-relatedposts-post4 jp-relatedposts-post-thumbs" data-post-id="84363" data-post-format="status"><a class="jp-relatedposts-post-a" href="https://korben.info/securiser-wordpress-forcer-login-https.html" title="Sécuriser Wordpress - Forcer le login en https
+
+Je continue ma série sur la sécurisation Wordpress et aujourd&#39;hui, je vais vous parler de HTTPS. Si votre serveur est configuré pour proposer du HTTP et du HTTPS, il est possible de forcer l&#39;utilisation du SSL pour la page de login afin d&#39;éviter les connexions en clair. Cela aura pour…" rel="nofollow" data-origin="35720" data-position="4"><img class="jp-relatedposts-post-img" src="./Nginx – Rediriger les requêtes en HTTP vers HTTPS – Korben_files/bridge-1.jpg" width="350" alt="Sécuriser Wordpress - Forcer le login en https"></a><h4 class="jp-relatedposts-post-title"><a class="jp-relatedposts-post-a" href="https://korben.info/securiser-wordpress-forcer-login-https.html" title="Sécuriser Wordpress - Forcer le login en https
+
+Je continue ma série sur la sécurisation Wordpress et aujourd&#39;hui, je vais vous parler de HTTPS. Si votre serveur est configuré pour proposer du HTTP et du HTTPS, il est possible de forcer l&#39;utilisation du SSL pour la page de login afin d&#39;éviter les connexions en clair. Cela aura pour…" rel="nofollow" data-origin="35720" data-position="4">Sécuriser Wordpress - Forcer le login en https</a></h4><p class="jp-relatedposts-post-excerpt">Je continue ma série sur la sécurisation Wordpress et aujourd'hui, je vais vous parler de HTTPS. Si votre serveur est configuré pour proposer du HTTP et du HTTPS, il est possible de forcer l'utilisation du SSL pour la page de login afin d'éviter les connexions en clair. Cela aura pour…</p><p class="jp-relatedposts-post-date" style="display: block;">9 décembre 2016</p><p class="jp-relatedposts-post-context">Dans "Bidouilleurs"</p></div><div class="jp-relatedposts-post jp-relatedposts-post5 jp-relatedposts-post-thumbs" data-post-id="86376" data-post-format="false"><a class="jp-relatedposts-post-a" href="https://korben.info/securiser-facilement-gratuitement-site-https.html" title="Sécuriser facilement et gratuitement un site avec HTTPS
+
+Vous connaissez sans doute tous, Let&#39;s encrypt qui permet d&#39;avoir un certificat SSL gratuit pour basculer son site en HTTPS. Mais connaissez-vous Certbot, un outil proposé par l&#39;EFF (Electronic Frontier Foundation) qui permet d&#39;obtenir en une ligne de commande son certificat et de configurer dans la foulée son serveur web…" rel="nofollow" data-origin="35720" data-position="5"><img class="jp-relatedposts-post-img" src="./Nginx – Rediriger les requêtes en HTTP vers HTTPS – Korben_files/capture-decran-2017-03-20-14-20-43.jpg" width="350" alt="Sécuriser facilement et gratuitement un site avec HTTPS"></a><h4 class="jp-relatedposts-post-title"><a class="jp-relatedposts-post-a" href="https://korben.info/securiser-facilement-gratuitement-site-https.html" title="Sécuriser facilement et gratuitement un site avec HTTPS
+
+Vous connaissez sans doute tous, Let&#39;s encrypt qui permet d&#39;avoir un certificat SSL gratuit pour basculer son site en HTTPS. Mais connaissez-vous Certbot, un outil proposé par l&#39;EFF (Electronic Frontier Foundation) qui permet d&#39;obtenir en une ligne de commande son certificat et de configurer dans la foulée son serveur web…" rel="nofollow" data-origin="35720" data-position="5">Sécuriser facilement et gratuitement un site avec HTTPS</a></h4><p class="jp-relatedposts-post-excerpt">Vous connaissez sans doute tous, Let's encrypt qui permet d'avoir un certificat SSL gratuit pour basculer son site en HTTPS. Mais connaissez-vous Certbot, un outil proposé par l'EFF (Electronic Frontier Foundation) qui permet d'obtenir en une ligne de commande son certificat et de configurer dans la foulée son serveur web…</p><p class="jp-relatedposts-post-date" style="display: block;">30 mars 2017</p><p class="jp-relatedposts-post-context">Dans "Administration Systeme Réseau"</p></div></div></div>
+<section class="widget_recent_entries"><a class="entry-light entry-light-header lozad" href="https://korben.info/apprenez-a-reconnaitre-les-oiseaux.html" data-background-image="https://korben.info/app/uploads/2020/04/reconnaitre-un-oiseau.jpg">
+<h5 itemprop="name">C’est quoi ce piaf dans le jardin ? Apprenez à reconnaitre les oiseaux</h5>
+</a>
+<a class="entry-light entry-light-header lozad" href="https://korben.info/lancement-des-formations-korben-%f0%9f%9a%80.html" data-background-image="https://korben.info/app/uploads/2020/04/domain.png">
+<h5 itemprop="name">Lancement des Formations Korben 🚀</h5>
+</a>
+<a class="entry-light entry-light-header lozad" href="https://korben.info/paralleles-s01e08-la-vulgarisation-scientifique-a-portee-de-main.html" data-background-image="https://korben.info/app/uploads/2020/01/ezgif-3-cc12c9e76376.gif">
+<h5 itemprop="name">Parallèles s01e08 – La vulgarisation scientifique à portée de main #podcast</h5>
+</a>
+</section><section class="D8Ca6Dw7-widget"><div id="D8Ca6Dw7-596709261" data-cfpa="101051"><center>
+<div id="cgdiv_19175"><div id="sas_19175" data-sas="19175"></div></div>
+</center>
+</div><script type="text/javascript">;new advadsCfpAd( 101051 );</script></section></section>
+<footer class="app-footer">
+<div class="app-footer-container" itemscope="" itemtype="https://schema.org/WebSite">
+<section class="app-footer-center">
+<a itemprop="url" class="logo" href="https://korben.info/" title="Korben">
+<svg class="logo" aria-hidden="true" role="img" viewBox="0 0 255 336"><path fill="#fff" d="M2,277.25H13.14v25.62l15.37-25.62H41.65L26.41,302.6l15.37,31.79H29.3l-10-20.1-6.17,10.38v9.72H2Z"></path><path fill="#fff" d="M46.24,294.06c0-11.69,5.52-19,19-19s19,7.36,19,19v22.86c0,11.69-5.39,19-18.92,19-13.14,0-20-7.22-19.18-19Zm19,30.74c5.25,0,7.88-2.1,7.88-7.88V294.06c0-5-2.1-7.75-7.88-7.75s-7.88,2.76-7.88,7.75v22.86C57.41,322,59.51,324.8,65.29,324.8Z"></path><path fill="#fff" d="M93.13,287.63V277.25h18.26c13.66.92,16.16,10.77,16.16,19.57,0,7.36-1.31,12.61-7.22,16.16l11.43,21.54H120.06l-10-19.31H104.3v19.18H93.13V304.7h11.43l-8.8-17.08Zm14.05,0,7.88,15.24c1.31-1.45,2.1-3.55,2.1-6.57,0-7.09-3.41-8.67-8.8-8.67Z"></path><path fill="#fff" d="M170,288.55c.26,2.76,0,8-3.81,10.64,4.33.13,7,5.12,7.62,6.17,2.63,4.07,4.6,13.92.26,21.15S160,334.39,160,334.39H139.1V277.25s19-1.05,21.94.92C165.37,280.14,169.32,282,170,288.55Zm-19.7-2V298h1.84c7.62,0,6.83-4.6,6.83-5.91,0-4.47-2.89-5.52-5.38-5.52Zm6.7,37.7s5.78.13,7.49-3.42,1.18-7-.13-8.93a8.25,8.25,0,0,0-6.44-3.15h-7.62v15.5Z"></path><path fill="#fff" d="M183,334.39V277.25h28.24v11.17H194.14v7.09h16.68v11.16H194.14v16.55h17.08v11.17Z"></path><path fill="#fff" d="M243.79,324.67,229.87,298.4v36H218.7V277.25h11.17l13.92,26.4v-26.4H255v57.14H243.79Z"></path><path fill="#fff" d="M124.52,0A124.48,124.48,0,1,0,249,124.51,124.62,124.62,0,0,0,124.52,0Zm18.88,129.84c-2.07,2.1-4.88,3.86-6.09,6.37-5.41,11.28-14.17,15.54-26.25,13.5-6.39-1.08-12.86-1.94-19.09-3.64-5.84-1.59-16.55-17.5-16.33-23.24,0-.83,0-2.15.51-2.39,6-3.11,11.73-7.35,18.11-8.7,6.12-1.3,13,0,19.36,1,9.25,1.38,19.21.83,26.06,9.69,1.33,1.72,6.48,1.75,9.28.81,6.8-2.29,13.34-7.31,20.21-7.31s14.2,2,16.88,6c5.09,7.54,2.27,16.85-2.69,23.86s-13.24,8.12-21.51,6.6-11.74-7.92-14.37-15.1C146.51,134.66,144.78,132.33,143.41,129.87Zm30.09,92a55,55,0,0,0-1.9-5.21,1.63,1.63,0,0,1-.13-.59l-20.05-22.42c13.57-7.54,20.81-19.11,24.49-33.47a16.48,16.48,0,0,1,6.13-8.6c7-4.93,11.45-27,6.14-33.63-.68-.86-1.67-2.06-2.54-2.09-10.23-.32-8.82-7.56-8.08-13.9,2.28-19.42-3.32-35.55-18.4-48.48-17.23-14.77-37.44-15-57.86-11.57C76.71,46,65.23,60.15,64.1,85q-.76,16.52-1.61,33c-.07,1.38,0,3-.61,4.09-9.22,15.19-1.93,27.49,6.22,39.59-8.11.36-13.82,5.72-13.58,13a32.65,32.65,0,0,1-9.18,24.6A109,109,0,1,1,173.5,221.88Z"></path></svg>
+</a>
+<p class="lead">Rejoignez les <span>90 000</span> Korbenautes</p>
+<a class="register" href="https://tech.korben.info/signup">Je m’inscris</a>
+</section>
+<section class="app-footer-left">
+<section class="widget-sl"><h3>Retrouvez-moi</h3><ul class="menu"><li><a href="https://www.facebook.com/ManuelDorne" title="Facebook" class="button-icon facebook"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M4.54,8V5.4H4.9L6,5.36c0-.38,0-.77,0-1.15s0-.79,0-1.19A2.34,2.34,0,0,1,8.23.62a28.92,28.92,0,0,1,3-.12.26.26,0,0,1,.18.18c0,.76,0,1.53,0,2.29,0,.17-.1.2-.23.2H9.79c-.47,0-.64.17-.64.63s0,1,0,1.6h2.32L11.23,8h-.57c-.41,0-.83,0-1.24,0-.22,0-.29.07-.29.29,0,2.28,0,4.56,0,6.84,0,.4,0,.41-.4.41-.77,0-1.55,0-2.32,0-.27,0-.35-.08-.35-.35,0-2.25,0-4.5,0-6.76,0-.41,0-.41-.41-.41Z" fill-rule="nonzero"></path></svg>
+</a></li><li><a href="https://twitter.com/Korben" title="Twitter" class="button-icon twitter"><svg class="icon" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="1.414"><path d="M16 3.038c-.59.26-1.22.437-1.885.517.677-.407 1.198-1.05 1.443-1.816-.634.37-1.337.64-2.085.79-.598-.64-1.45-1.04-2.396-1.04-1.812 0-3.282 1.47-3.282 3.28 0 .26.03.51.085.75-2.728-.13-5.147-1.44-6.766-3.42C.83 2.58.67 3.14.67 3.75c0 1.14.58 2.143 1.46 2.732-.538-.017-1.045-.165-1.487-.41v.04c0 1.59 1.13 2.918 2.633 3.22-.276.074-.566.114-.865.114-.21 0-.41-.02-.61-.058.42 1.304 1.63 2.253 3.07 2.28-1.12.88-2.54 1.404-4.07 1.404-.26 0-.52-.015-.78-.045 1.46.93 3.18 1.474 5.04 1.474 6.04 0 9.34-5 9.34-9.33 0-.14 0-.28-.01-.42.64-.46 1.2-1.04 1.64-1.7z" fill-rule="nonzero"></path></svg>
+</a></li><li><a href="https://www.youtube.com/user/korben00" title="YouTube" class="button-icon youtube"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="1.414"><path d="M0 7.345c0-1.294.16-2.59.16-2.59s.156-1.1.636-1.587c.608-.637 1.408-.617 1.764-.684C3.84 2.36 8 2.324 8 2.324s3.362.004 5.6.166c.314.038.996.04 1.604.678.48.486.636 1.588.636 1.588S16 6.05 16 7.346v1.258c0 1.296-.16 2.59-.16 2.59s-.156 1.102-.636 1.588c-.608.638-1.29.64-1.604.678-2.238.162-5.6.166-5.6.166s-4.16-.037-5.44-.16c-.356-.067-1.156-.047-1.764-.684-.48-.487-.636-1.587-.636-1.587S0 9.9 0 8.605v-1.26zm6.348 2.73V5.58l4.323 2.255-4.32 2.24z"></path></svg></a></li><li><a href="https://www.instagram.com/korben00/" title="Instagram" class="button-icon instagram"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="1.414"><path d="M8 0C5.827 0 5.555.01 4.702.048 3.85.088 3.27.222 2.76.42c-.526.204-.973.478-1.417.923-.445.444-.72.89-.923 1.417-.198.51-.333 1.09-.372 1.942C.008 5.555 0 5.827 0 8s.01 2.445.048 3.298c.04.852.174 1.433.372 1.942.204.526.478.973.923 1.417.444.445.89.72 1.417.923.51.198 1.09.333 1.942.372.853.04 1.125.048 3.298.048s2.445-.01 3.298-.048c.852-.04 1.433-.174 1.942-.372.526-.204.973-.478 1.417-.923.445-.444.72-.89.923-1.417.198-.51.333-1.09.372-1.942.04-.853.048-1.125.048-3.298s-.01-2.445-.048-3.298c-.04-.852-.174-1.433-.372-1.942-.204-.526-.478-.973-.923-1.417-.444-.445-.89-.72-1.417-.923-.51-.198-1.09-.333-1.942-.372C10.445.008 10.173 0 8 0zm0 1.44c2.136 0 2.39.01 3.233.048.78.036 1.203.166 1.485.276.374.145.64.318.92.598.28.28.453.546.598.92.11.282.24.705.276 1.485.038.844.047 1.097.047 3.233s-.01 2.39-.05 3.233c-.04.78-.17 1.203-.28 1.485-.15.374-.32.64-.6.92-.28.28-.55.453-.92.598-.28.11-.71.24-1.49.276-.85.038-1.1.047-3.24.047s-2.39-.01-3.24-.05c-.78-.04-1.21-.17-1.49-.28-.38-.15-.64-.32-.92-.6-.28-.28-.46-.55-.6-.92-.11-.28-.24-.71-.28-1.49-.03-.84-.04-1.1-.04-3.23s.01-2.39.04-3.24c.04-.78.17-1.21.28-1.49.14-.38.32-.64.6-.92.28-.28.54-.46.92-.6.28-.11.7-.24 1.48-.28.85-.03 1.1-.04 3.24-.04zm0 2.452c-2.27 0-4.108 1.84-4.108 4.108 0 2.27 1.84 4.108 4.108 4.108 2.27 0 4.108-1.84 4.108-4.108 0-2.27-1.84-4.108-4.108-4.108zm0 6.775c-1.473 0-2.667-1.194-2.667-2.667 0-1.473 1.194-2.667 2.667-2.667 1.473 0 2.667 1.194 2.667 2.667 0 1.473-1.194 2.667-2.667 2.667zm5.23-6.937c0 .53-.43.96-.96.96s-.96-.43-.96-.96.43-.96.96-.96.96.43.96.96z"></path></svg></a></li><li><a href="https://www.snapchat.com/add/korben00" title="Snapchat" class="button-icon snapchat"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="1.414"><path d="M8.155.48c.662 0 2.903.185 3.96 2.552.354.797.27 2.15.2 3.237l-.002.04c-.008.12-.015.23-.02.34.05.03.135.06.268.06.2-.01.44-.08.69-.2.11-.06.23-.07.31-.07.12 0 .24.02.34.06.3.1.49.32.49.56.01.3-.26.56-.81.78-.06.02-.14.05-.23.08-.3.09-.76.24-.89.54-.06.15-.04.35.08.58l.01.01c.04.09 1.02 2.32 3.2 2.68.17.03.29.18.28.34 0 .05-.01.1-.03.15-.16.38-.85.66-2.1.85-.04.06-.08.25-.11.38-.02.12-.05.24-.09.37-.05.18-.18.27-.37.27h-.02c-.09 0-.21-.02-.36-.05-.24-.05-.51-.09-.85-.09-.2 0-.4.01-.61.05-.4.07-.75.31-1.15.59-.57.4-1.22.86-2.2.86-.04 0-.08-.01-.12-.01h-.1c-.98 0-1.62-.45-2.19-.86-.4-.28-.74-.52-1.14-.59-.21-.03-.42-.05-.62-.05-.36 0-.64.06-.85.1-.14.03-.26.05-.36.05-.25 0-.35-.15-.39-.28-.04-.13-.06-.26-.09-.38s-.07-.33-.11-.38C.89 12.9.2 12.62.04 12.23c-.02-.042-.034-.1-.036-.15-.01-.162.11-.31.28-.34 2.18-.36 3.16-2.59 3.2-2.684l.01-.02c.12-.23.15-.43.08-.58-.13-.29-.59-.44-.89-.54-.08-.02-.16-.05-.23-.08-.74-.29-.84-.62-.8-.85.06-.32.45-.53.78-.53.097 0 .18.02.256.05.28.13.527.2.737.2.156 0 .256-.04.31-.07l-.03-.38c-.065-1.086-.15-2.438.205-3.23C4.94.67 7.175.49 7.835.49l.28-.01h.04z"></path></svg></a></li></ul></section> </section>
+<section class="app-footer-right">
+<ul id="menu-pied-de-page" class="menu app-footer-menu"><li class="menu-item menu-%f0%9f%9a%80-mes-formations"><a href="https://formation.korben.info/">🚀 Mes formations</a></li>
+<li class="menu-item menu-%f0%9f%93%9a-mon-livre-sur-laddiction-au-smartphone"><a href="https://korben.info/livres">📚 Mon livre sur l’addiction au smartphone</a></li>
+<li class="menu-item menu-liens"><a href="https://korben.info/category/liens">Liens</a></li>
+<li class="menu-item menu-cgu"><a href="https://korben.info/cgu">CGU</a></li>
+<li class="menu-item menu-contact"><a href="https://korben.info/auteur">Contact</a></li>
+</ul>
+</section>
+</div>
+<button class="button to-top" style="display: none;"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 57 57"><polyline fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="5px" points="16.95 4.94 39.62 27.61 16.95 50.29"></polyline></svg>
+</button>
+<p class="app-license" role="contentinfo">
+©&nbsp;<span>2003-</span>2020 <a itemprop="publisher" href="https://korben.info/">Korben</a> —
+<a rel="license" href="https://korben.info/cgu" itemprop="license">
+C<span>reative </span>C<span>ommons License</span> BY-NC-ND 4.0
+</a>
+</p>
+</footer>
+<script defer="defer" src="./Nginx – Rediriger les requêtes en HTTP vers HTTPS – Korben_files/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var related_posts_js_options = {"post_heading":"h4"};
+/* ]]> */
+</script>
+<script defer="defer" src="./Nginx – Rediriger les requêtes en HTTP vers HTTPS – Korben_files/related-posts.min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var wp_sentry = {"dsn":"https:\/\/02402da4e0ad49fc8b6e4e7241cf0d5b@sentry.io\/181871","release":"db27977a8c4d31fb3dcbe2a38f55f231aa9987e8","environment":"production","content":{"tags":{"wordpress":"5.3.2","language":"fr-FR"}},"whitelistUrls":["regex::\\\/\\\/[\\w\\.\\-]*korben\\.info"]};
+/* ]]> */
+</script>
+<script defer="defer" src="./Nginx – Rediriger les requêtes en HTTP vers HTTPS – Korben_files/sentry-browser-5.12.4.min.js"></script>
+<script defer="defer" src="./Nginx – Rediriger les requêtes en HTTP vers HTTPS – Korben_files/devicepx-jetpack.js"></script>
+<script defer="defer" src="./Nginx – Rediriger les requêtes en HTTP vers HTTPS – Korben_files/advanced.js"></script>
+<script defer="defer" src="./Nginx – Rediriger les requêtes en HTTP vers HTTPS – Korben_files/advanced-ads-pro.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var advanced_ads_pro_ajax_object = {"ajax_url":"https:\/\/korben.info\/wp\/wp-admin\/admin-ajax.php","lazy_load_module_enabled":"","lazy_load":{"default_offset":0,"offsets":[]},"moveintohidden":""};
+/* ]]> */
+</script>
+<script defer="defer" src="./Nginx – Rediriger les requêtes en HTTP vers HTTPS – Korben_files/base.min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var advadsTracking = {"ajaxurl":"https:\/\/korben.info\/wp\/wp-admin\/admin-ajax.php?action=advanced-ads-tracking-track","method":"onrequest","blogId":"1"};
+/* ]]> */
+</script>
+<script defer="defer" src="./Nginx – Rediriger les requêtes en HTTP vers HTTPS – Korben_files/script.js"></script>
+<script defer="defer" src="./Nginx – Rediriger les requêtes en HTTP vers HTTPS – Korben_files/manifest.js"></script>
+<script defer="defer" src="./Nginx – Rediriger les requêtes en HTTP vers HTTPS – Korben_files/vendor.js"></script>
+<script defer="defer" src="./Nginx – Rediriger les requêtes en HTTP vers HTTPS – Korben_files/korben.js"></script>
+<div id="D8Ca6Dw7-190408436" data-cfpa="99014"><div id="sas_32325" data-sas="32325"></div>
+<div id="sas_1391" data-sas="1391"></div>
+<div id="sas_928" data-sas="928"></div>
+<script defer="defer" src="./Nginx – Rediriger les requêtes en HTTP vers HTTPS – Korben_files/smart.js"></script>
+<script defer="defer">
+    var sas = sas || {};
+    sas.cmd = sas.cmd || [];
+    sas.cmd.push(function() {
+        sas.setup({ networkid: 104, domain: '//www.smartadserver.com', async: true });
+    });
+    sas.cmd.push(function() {
+        sas.call('onecall', {
+            siteId: 120606,
+            pageId: document.location.pathname === '/' ? 708231 : 708232,
+            formatId: '920,922,928,1391,19175,19176,21999,31712,32033,32325,41464,41614,48059',
+            target: ''
+        });
+    });
+	sas.cmd.push(function() {
+        var els = document.querySelectorAll('div[data-sas]');
+		for (var el of els) {
+			sas.render(el.getAttribute('data-sas'));
+		}
+    });
+</script>
+
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-5ZWTWZ');</script>
+
+</div><script type="text/javascript">;new advadsCfpAd( 99014 );</script><div id="D8Ca6Dw7-0c3a56818e7e66698f406fcff3028c4a"></div> <script>
+          window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;
+        ga('create','UA-94076-1','auto');
+            ga('set', 'transport', 'beacon');
+    ga('send','pageview')
+  </script>
+<script src="./Nginx – Rediriger les requêtes en HTTP vers HTTPS – Korben_files/analytics.js" async="" defer=""></script>
+<script>window.advads_ajax_queries = [{"id":"sous-article","method":"placement","params":{"cache-busting":"auto","ad_label":"default","placement_position":"","pro_minimum_length":"","previous_method":"placement","previous_id":"sous-article","post":{"id":35720,"author":"1","post_type":"post"},"wp_the_query":{"term_id":"","taxonomy":"","is_main_query":true,"is_rest_api":false,"page":1,"numpages":1,"is_archive":false,"is_search":false,"is_home":false,"is_404":false,"is_attachment":false,"is_singular":true,"is_front_page":false,"is_feed":false},"url_parameter":"\/nginx-rediriger-http-https.html","placement_type":"post_bottom","output":{"class":["D8Ca6Dw7-sous-article"],"placement_id":"sous-article"},"global_output":true},"elementid":"D8Ca6Dw7-a182a463df47b711060f16fd0e46108e","blog_id":1},{"id":"sous-article","method":"placement","params":{"cache-busting":"auto","ad_label":"default","placement_position":"","pro_minimum_length":"","previous_method":"placement","previous_id":"sous-article","post":{"id":35720,"author":"1","post_type":"post"},"wp_the_query":{"term_id":"","taxonomy":"","is_main_query":true,"is_rest_api":false,"page":1,"numpages":1,"is_archive":false,"is_search":false,"is_home":false,"is_404":false,"is_attachment":false,"is_singular":true,"is_front_page":false,"is_feed":false},"url_parameter":"\/nginx-rediriger-http-https.html","placement_type":"post_bottom","output":{"class":["D8Ca6Dw7-sous-article"],"placement_id":"sous-article"},"global_output":true},"elementid":"D8Ca6Dw7-70b343b86d903b74d647a136a718d5f5","blog_id":1},{"id":"sidebar-culture-g","method":"placement","params":{"previous_method":"placement","previous_id":"sidebar-culture-g","post":{"id":35720,"author":"1","post_type":"post"},"wp_the_query":{"term_id":"","taxonomy":"","is_main_query":true,"is_rest_api":false,"page":1,"numpages":1,"is_archive":false,"is_search":false,"is_home":false,"is_404":false,"is_attachment":false,"is_singular":true,"is_front_page":false,"is_feed":false},"url_parameter":"\/nginx-rediriger-http-https.html","placement_type":"sidebar_widget","cache-busting":"auto","ad_label":"default","output":{"class":["D8Ca6Dw7-sidebar-culture-g"],"placement_id":"sidebar-culture-g"},"global_output":true},"elementid":"D8Ca6Dw7-8efcd365071f89410e28d049ea257948","blog_id":1},{"id":"podcast","method":"placement","params":{"cache-busting":"auto","inject_by":"pro_custom_element","pro_custom_element":"main.app-main > div.page-divider:eq(2) > div.widget-discover","pro_custom_position":"insertBefore","container_id":"#cac9cef765e0dbf0bda625b3d1d3b446d","ad_label":"default","placement_position":"","placement":{"type":"custom_position"},"previous_method":"placement","previous_id":"podcast","post":{"id":35720,"author":"1","post_type":"post"},"wp_the_query":{"term_id":"","taxonomy":"","is_main_query":true,"is_rest_api":false,"page":1,"numpages":1,"is_archive":false,"is_search":false,"is_home":false,"is_404":false,"is_attachment":false,"is_singular":true,"is_front_page":false,"is_feed":false},"url_parameter":"\/nginx-rediriger-http-https.html","placement_type":"custom_position","output":{"class":["D8Ca6Dw7-podcast"],"placement_id":"podcast"},"global_output":true},"elementid":"D8Ca6Dw7-0c3a56818e7e66698f406fcff3028c4a","blog_id":1}];
+
+window.advads_has_ads = [["100810","ad",null],["101051","ad",null],["113033","ad",null],["114361","ad",null],["113532","ad",null],["98877","ad",null],["99014","ad",null]];
+
+( window.advanced_ads_ready || jQuery( document ).ready ).call( null, function() {if ( window.advanced_ads_pro ) {advanced_ads_pro.process_passive_cb();} else if ( window.console && window.console.log ) {console.log('Advanced Ads Pro: cache-busting can not be initialized');} });</script><script type="text/javascript">var advads_tracking_ads = {};var advads_tracking_urls = {"1":"https:\/\/korben.info\/wp\/wp-admin\/admin-ajax.php?action=advanced-ads-tracking-track"};var advads_gatracking_uids = {"1":""};var advads_tracking_methods = {"1":"onrequest"};var advads_tracking_parallel = {"1":false};var advads_tracking_linkbases = {"1":"https:\/\/korben.info\/kbn_\/"};var advads_gatracking_allads = {"1":{"114733":{"title":"Adsense test","target":false},"114643":{"title":"Adsense in-feed 3 titre up article","target":false},"114612":{"title":"Honor 9X Pro - Y a-t-il une vie apr\u00e8s Google ?","target":false},"114589":{"title":"Oneplus 8","target":false},"114586":{"title":"Oneplus 8 native stream","target":false},"114510":{"title":"Macpaw cleanmymac","target":false},"114507":{"title":"Offrez un coup de jeune \u00e0 votre Mac avec CleanMyMac X","target":false},"114442":{"title":"New pix test","target":false},"114440":{"title":"New-pix","target":"https:\/\/korben.info\/app\/uploads\/2020\/04\/new-pix-test.png"},"114365":{"title":"Olover native stream","target":false},"114364":{"title":"Culture g prog haut home sidebar article","target":false},"114363":{"title":"Culture g native stream","target":false},"114362":{"title":"Adsense display article 2","target":false},"114361":{"title":"Adsense display article 1","target":false},"114258":{"title":"Beopinion editorial article","target":false},"114216":{"title":"Test de l'aspirateur sans fil Dreame XR premium","target":false},"114206":{"title":"Dreame xr premium","target":false},"114129":{"title":"Laou native stream mars","target":false},"113893":{"title":"Cyberghost display native article","target":false},"113891":{"title":"Cyberghost display native","target":false},"113705":{"title":"SAFRAN new 1000x200 article","target":false},"113704":{"title":"SAFRAN new 1000x200 home","target":false},"113702":{"title":"SAFRAN new 300x600 article","target":false},"113701":{"title":"SAFRAN new 300x600 home","target":false},"113700":{"title":"SAFRAN new 300x250 article","target":false},"113699":{"title":"SAFRAN new 300x250 home","target":false},"113641":{"title":"Data Scientist dans l\u2019industrie a\u00e9ronautique, \u00e7a vous tente ?","target":false},"113615":{"title":"Amz raspberry pi native stream","target":false},"113576":{"title":"Test Ecovacs Deebot Ozmo 920","target":false},"113546":{"title":"Adsense old in-article article 2","target":false},"113535":{"title":"Podcast parallele horizontal","target":false},"113532":{"title":"Adsense old in-article article","target":false},"113377":{"title":"Cr\u00e9ez et \u00e9ditez vos GIF anim\u00e9s avec la boite \u00e0 outils compl\u00e8te Ezgif","target":false},"113374":{"title":"Comment installer Visual Studio Code sur Chromebook et Raspberry Pi ?","target":false},"113370":{"title":"Un d\u00e9tecteur de Web Shell de hackers pour votre serveur","target":false},"113297":{"title":"Laou native stream 3","target":false},"113237":{"title":"Template design native stream","target":false},"113165":{"title":"Talent native stream 4 pix","target":"https:\/\/rebrand.ly\/8ojpcoa"},"113163":{"title":"Talent native stream 4","target":false},"113087":{"title":"Adsense in-article 1 side home","target":false},"113059":{"title":"Adsense in-article 1 side article","target":false},"113053":{"title":"Adsense in-feed 2 article","target":false},"113033":{"title":"Podcast paralleles sidebar article","target":false},"113031":{"title":"Podcast parall\u00e8les sidebar home","target":false},"113030":{"title":"Podcast webausaures home","target":false},"113022":{"title":"Adsense in-article home 2","target":false},"113018":{"title":"Adsense in-article home 1","target":false},"112969":{"title":"Adsense in-feed 1 article","target":false},"112968":{"title":"Adsense in-feed 1 home","target":false},"112921":{"title":"Laou native stream 2","target":false},"112838":{"title":"Safran display 1000*200 article","target":false},"112837":{"title":"Safran display 1000*200 home","target":false},"112836":{"title":"Safran display 300*250 article","target":false},"112835":{"title":"Safran display 300*250 home","target":false},"112834":{"title":"Safran display 300*600 article","target":false},"112833":{"title":"Safran display 300*600 home","target":false},"112811":{"title":"Adsense display home 2","target":false},"112810":{"title":"Adsense display home 1","target":false},"112790":{"title":"Laou display 1 article","target":false},"112776":{"title":"Laou native stream 1","target":false},"112778":{"title":"Laou native stream 1 pix","target":"https:\/\/rebrand.ly\/67p4h4k"},"112774":{"title":"Laou display 1 home","target":false},"112775":{"title":"Laou display 1 pix","target":"https:\/\/rebrand.ly\/acdonln"},"112660":{"title":"Talent.io article sous article","target":false},"112662":{"title":"Salaire des d\u00e9veloppeurs : France vs Royaume-Uni : rester ou s'expatrier \u00e0 l\u2019heure du Brexit ?","target":false},"112661":{"title":"Talent article pix","target":"https:\/\/rebrand.ly\/9z2yuvn"},"112659":{"title":"Talent.io 2-b","target":false},"112658":{"title":"Talent.io pix 2-b","target":"https:\/\/rebrand.ly\/9aqxmg6"},"112576":{"title":"Kelkoo batman game bkqt article","target":false},"112282":{"title":"Laou 2 pix","target":"https:\/\/rebrand.ly\/9tvxdx"},"112267":{"title":"Logitech guide pix","target":"https:\/\/rebrand.ly\/guide-logi"},"112256":{"title":"L'importance de l'ergonomie pour les travailleurs du web","target":false},"112254":{"title":"Logitech logi super article 3 pix","target":"https:\/\/rebrand.ly\/logi-3"},"112248":{"title":"A la d\u00e9couverte du clavier MX Keys et de la souris MX Master 3 de Logitech","target":false},"112238":{"title":"Ipitaka chargeur coque","target":false},"112236":{"title":"Gamesir manette native stream","target":false},"112234":{"title":"Amazfit gtr native stream","target":false},"112232":{"title":"Ecovacs deebot 502 native stream","target":false},"112230":{"title":"Ecovacs deebot ozmo 920 native stream","target":false},"112228":{"title":"Huawei freebuds 2 pro native stream","target":false},"112227":{"title":"Creative casque sxfi air native stream","target":false},"112225":{"title":"Langsdom ecouteur 2","target":false},"112223":{"title":"Langsdom ecouteurs","target":false},"112102":{"title":"Logitech guide pix","target":"https:\/\/rebrand.ly\/j4s8izguide"},"112072":{"title":"Logitech et sa gamme MX pour les devs","target":false},"112070":{"title":"Clavier et souris Logitech pour une productivit\u00e9 am\u00e9lior\u00e9e","target":false},"111987":{"title":"Crucial MX500 et le soucis du d\u00e9tail","target":false},"111876":{"title":"Schneider electric energie","target":false},"111874":{"title":"Schneider electric datas","target":false},"111510":{"title":"Cyberghost cyber monday","target":false},"111508":{"title":"Cyberghost cyber monday native stream","target":false},"111472":{"title":"Creative ecouteurs","target":false},"111461":{"title":"Udemy hacking secu reseau native stream","target":false},"111442":{"title":"Logitech super article 2 img pix","target":"https:\/\/rebrand.ly\/logi-2"},"111366":{"title":"k-see-bit","target":"http:\/\/bitly.com\/2OHYKko"},"111363":{"title":"k-see","target":"http:\/\/j.mp\/2pOHemi"},"111328":{"title":"Talent.io native stream 3","target":false},"111326":{"title":"Talent.io native stream 2","target":false},"111162":{"title":"Revolut native stream","target":false},"111125":{"title":"Logitech mx keys native 1 native stream","target":false},"111127":{"title":"MX keys native 1 pix","target":"https:\/\/rebrand.ly\/mx-keys-native-1"},"111082":{"title":"Cyberghost halloween native stream","target":false},"111080":{"title":"Cyberghost halloween","target":false},"111029":{"title":"Test de l\u2019aspirateur Xiaomi Jimmy JV 53","target":false},"110970":{"title":"Logitech super article img pix","target":"https:\/\/rebrand.ly\/be8aep"},"110963":{"title":"Logitech mx et masters super article 1 pix","target":"https:\/\/rebrand.ly\/n8d82n"},"110955":{"title":"Xgimi mogo projecteur native stream","target":false},"110796":{"title":"Talent.io","target":false},"110742":{"title":"Talent.io pix","target":"https:\/\/rebrand.ly\/94bbbf"},"110739":{"title":"Test de l'aspirateur Xiaomi Jimmy JV 53 Plus","target":false},"110604":{"title":"SQLI display 300x600 article","target":false},"110585":{"title":"Combin","target":false},"110555":{"title":"SQLI display 1000x200 home","target":false},"110554":{"title":"SQLI display 300x600 home","target":false},"110550":{"title":"SQLI display 300x250 article","target":false},"110534":{"title":"Logitech amz promos","target":false},"110531":{"title":"Logitech mx keys lien article pix","target":"https:\/\/amzn.to\/2lY6sMv"},"110529":{"title":"Logitech mx 3 master amz liens article pix","target":"https:\/\/amzn.to\/2keIxbc"},"110395":{"title":"Laou","target":false},"110393":{"title":"Laou pix","target":"https:\/\/rebrand.ly\/clprfq"},"110382":{"title":"Amazon fire tv native stream","target":false},"110348":{"title":"A la recherche d'un job dans le num\u00e9rique et envie de changer de r\u00e9gion ? Laou vous facilite la vie !","target":false},"110242":{"title":"SQLI technical lead","target":false},"110241":{"title":"SQLI dev angular","target":false},"109756":{"title":"Shadow native 1 awin pix","target":"https:\/\/www.awin1.com\/cread.php?awinmid=15850&awinaffid=325289&clickref=https%3A%2F%2Fshadow.tech%2F%3Futm_source%3Dkorben%26utm_medium%3D&p=%5B%5Bhttps%3A%2F%2Fshadow.tech%2F%3Futm_source%3Dkorben%26utm_medium%3Daffiliate%26utm_campaign%3Dkorben_october%26utm_content%3Darticle%5D%5D"},"109520":{"title":"Apprenez les bases de la s\u00e9curit\u00e9 informatique et partez \u00e0 la d\u00e9couverte du machine learning","target":false},"109405":{"title":"SQLI chef de projet digital","target":false},"109403":{"title":"SQLI directeur projet","target":false},"109246":{"title":"Schneider electric lien video pix","target":"https:\/\/rebrand.ly\/cxp5gw"},"109067":{"title":"Udemy promo","target":false},"109057":{"title":"Udemy python pix","target":"http:\/\/bit.ly\/2K2QTOH"},"109013":{"title":"MMA article native editorial","target":false},"108636":{"title":"MMA livre blanc native stream","target":false},"108623":{"title":"Airbus job native stream","target":false},"108463":{"title":"Make ebook","target":false},"108413":{"title":"Udemy cours dev native editorial","target":false},"108370":{"title":"Cyberghost netflix article native editorial","target":false},"108264":{"title":"Rhinoshield now native stream","target":false},"108261":{"title":"SQLI java 1 job","target":false},"108237":{"title":"MMA livre blanc pix","target":"https:\/\/rebrand.ly\/psf3ij"},"108123":{"title":"Cyberghost general pix","target":"http:\/\/bit.ly\/2WOsq1A"},"107865":{"title":"SQLI native editoriale","target":false},"107832":{"title":"Crucial ssd guide native stream","target":false},"107829":{"title":"Crucial ssd guide pix","target":"http:\/\/bit.ly\/2JmJmL6"},"107512":{"title":"Schneider electric resi9 native stream","target":false},"107511":{"title":"Schneider electric resi9 pix","target":"http:\/\/bit.ly\/2SkEiWz"},"106933":{"title":"Kelkoo box leaderboard dis","target":false},"106929":{"title":"Kelkoo box dis","target":false},"106760":{"title":"Oui SNCF native stream","target":false},"106759":{"title":"Oui SNCF native stream pix","target":"https:\/\/rebrand.ly\/ouisncfdd1371"},"106633":{"title":"Cyberghost netflix pix","target":"http:\/\/bit.ly\/2EE9Sw1"},"106601":{"title":"Cyberghost torrent","target":false},"106600":{"title":"Cyberghost torrent pix","target":"http:\/\/bit.ly\/2QHf88D"},"106511":{"title":"Cyberghost vpn privacy native stream","target":false},"106500":{"title":"Cyberghost vpn privacy","target":false},"106499":{"title":"Cyberghost vpn privacy pix","target":"http:\/\/bit.ly\/2QNVY05"},"106380":{"title":"Udemy cours en ligne securite native editorial","target":false},"106308":{"title":"Amazon music amz native stream","target":false},"106282":{"title":"Amazon music amz pix","target":"https:\/\/amzn.to\/2S1f67J"},"106259":{"title":"Adgoal smartlinks","target":false},"106198":{"title":"Beopinion widget homepage","target":false},"106165":{"title":"Surface go amz dis modeles","target":false},"105818":{"title":"Audible promo native stream","target":false},"105814":{"title":"Oui.SNCF display 300*600 semaine 2","target":false},"105813":{"title":"Oui.SNCF display 300*250 semaine 2","target":false},"105812":{"title":"Oui.SNCF display 1000*200 semaine 2","target":false},"105799":{"title":"Audible promo","target":false},"105797":{"title":"Audible promo pix","target":"https:\/\/amzn.to\/2xf1zkc"},"105757":{"title":"Beopinion widget sous article","target":false},"105756":{"title":"Beopinion load SDK","target":false},"105606":{"title":"Guide edc geek dis","target":false},"105605":{"title":"Guide edc geek dis pix","target":"http:\/\/bitly.com\/2MgpWb1"},"105494":{"title":"Promo bidouilleurs","target":false},"105492":{"title":"Idees cadeaux du moment pix","target":"http:\/\/bitly.com\/2O5v7rw"},"105453":{"title":"Articles selection native stream stack 1 post only","target":false},"103936":{"title":"Oui.SNCF display 300*600","target":false},"103935":{"title":"Oui.SNCF display 300*250","target":false},"104252":{"title":"Separateur rotation article","target":false},"104250":{"title":"Separateur rotation","target":false},"103934":{"title":"Oui.SNCF display 1000*200","target":false},"103666":{"title":"ESET distribution 1","target":false},"103019":{"title":"Guide teletravailleur","target":false},"103020":{"title":"Guide teletravailleur pix","target":"http:\/\/bitly.com\/2H3fQ6n"},"103001":{"title":"Bitdefender BOX native stream","target":false},"103000":{"title":"Bitdefender BOX","target":false},"102999":{"title":"Developpement jeu unity tech.korben","target":false},"102991":{"title":"Developpement jeu tech.korben pix","target":"http:\/\/bitly.com\/2GYpK9k"},"102894":{"title":"Bitdefender native editorial","target":false},"102890":{"title":"Bitdefender native editorial post only","target":false},"101964":{"title":"Bitdefender BOX pix","target":"http:\/\/bitly.com\/2HHAf2V"},"101279":{"title":"Culture g masthead haut","target":false},"101051":{"title":"Culture g masthead bas toutes pages","target":false},"100810":{"title":"Culture g masthead haut pages articles","target":false},"100400":{"title":"Idees cadeaux du moment ld","target":false},"99195":{"title":"Blog see 2","target":false},"99016":{"title":"Blog see 1","target":false},"99014":{"title":"Script Culture G","target":false},"98877":{"title":"Culture g prog bas home sidebar","target":false},"98875":{"title":"Culture g prog haut home sidebar","target":false},"97819":{"title":"SSD crucial mx500 code promo pix clics","target":"http:\/\/bit.ly\/2C4xqZO"},"97817":{"title":"SSD crucial mx50 code promo","target":false}}};var advads_gatracking_anonym = true;</script> 
+
+<script type="text/javascript" id="">cgMobileCheck=function(){var b=!1,a=navigator.userAgent||navigator.vendor||window.opera;if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0,
+4)))b=!0;return b};var elem=document.createElement("script");elem.src="https://quantcast.mgr.consensu.org/cmp.js";elem.type="text/javascript";var scpt=document.getElementsByTagName("script")[0];scpt.parentNode.insertBefore(elem,scpt);
+(function(){function b(){if(!window.frames.__cmpLocator)if(document.body){var a=document.body,e=document.createElement("iframe");e.style="display:none";e.name="__cmpLocator";a.appendChild(e)}else setTimeout(b,5)}function a(a){var b="string"===typeof a.data;var c=b?-1!=a.data.indexOf("__cmpCall")?JSON.parse(a.data):{}:a.data;if(c.__cmpCall){var d=c.__cmpCall;window.__cmp(d.command,d.parameter,function(e,c){var f={__cmpReturn:{returnValue:e,success:c,callId:d.callId}};a.source.postMessage(b?JSON.stringify(f):
+f,"*")})}}var c=!1;b();window.__cmp=function(a){var b=arguments;if(b.length)if("ping"===b[0])b[2]({gdprAppliesGlobally:c,cmpLoaded:!1},!0);else{if("__cmp"==a)return!1;"undefined"===typeof __cmp.a&&(__cmp.a=[]);__cmp.a.push([].slice.apply(b))}else return __cmp.a};window.__cmp.gdprAppliesGlobally=c;window.__cmp.msgHandler=a;window.addEventListener?window.addEventListener("message",a,!1):window.attachEvent("onmessage",a)})();
+if(cgMobileCheck())var cgLayout="popup",cgTitle="Utilisation des cookies",cgConsentButton="Activer",cgExitButton="Valider",cgVendorTitle="Utilisation des cookies",cgOkButton="Oui",cgNotOkButton="Non";else{cgLayout="banner";cgTitle="Utilisation des donn\u00e9es";cgConsentButton="Tout Accepter";cgExitButton="Enregistrer et quitter";cgVendorTitle="Utilisation des donn\u00e9es";cgOkButton="Tout Accepter";cgNotOkButton="Tout Refuser";try{(function(b,a,c,d){a=document.createElement(a);a.type=c;a.styleSheet?
+a.styleSheet.cssText=d:a.appendChild(document.createTextNode(d));b.parentNode.appendChild(a)})(top.document.getElementsByTagName("script")[0],"style","text/css",".qc-cmp-ui-container.qc-cmp-showing{overflow:hidden !important;}")}catch(b){}}var cgCookieDomain=document.location.host.split("."),length=cgCookieDomain.length;cgCookieDomain=cgCookieDomain[length-2]+"."+cgCookieDomain[length-1];
+window.__cmp("init",{Language:"fr","Initial Screen Title Text":cgTitle,"Initial Screen Reject Button Text":"Je refuse","Initial Screen Accept Button Text":"J\x26#039;accepte","Initial Screen Purpose Link Text":"Afficher toutes les utilisations pr\u00e9vues","Purpose Screen Title Text":cgTitle,"Purpose Screen Header Title Text":"Param\u00e8tres de Gestion de la Confidentialit\u00e9","Purpose Screen Body Text":"Vous pouvez configurer vos r\u00e9glages et choisir comment vous souhaitez que vos donn\u00e9es personnelles soient utilis\u00e9e en fonction des objectifs ci-dessous. Vous pouvez configurer les r\u00e9glages de mani\u00e8re ind\u00e9pendante pour chaque partenaire. Vous trouverez une description de chacun des objectifs sur la fa\u00e7on dont nos partenaires et nous-m\u00eames utilisons vos donn\u00e9es personnelles.",
+"Purpose Screen Enable All Button Text":cgConsentButton,"Purpose Screen Vendor Link Text":"Afficher la liste compl\u00e8te des partenaires","Purpose Screen Cancel Button Text":"Annuler","Purpose Screen Save and Exit Button Text":cgExitButton,"Vendor Screen Title Text":cgVendorTitle,"Vendor Screen Body Text":"Vous pouvez configurer vos r\u00e9glages ind\u00e9pendamment pour chaque partenaire list\u00e9 ci-dessous. Afin de faciliter votre d\u00e9cision, vous pouvez d\u00e9velopper la liste de chaque entreprise pour voir \u00e0 quelles fins il utilise les donn\u00e9es. Dans certains cas, les entreprises peuvent r\u00e9v\u00e9ler qu\x26#039;elles utilisent vos donn\u00e9es sans votre consentement, en fonction de leurs int\u00e9r\u00eats l\u00e9gitimes. Vous pouvez cliquer sur leurs politiques de confidentialit\u00e9 pour obtenir plus d\x26#039;informations et pour vous d\u00e9sinscrire.",
+"Vendor Screen Accept All Button Text":cgOkButton,"Vendor Screen Reject All Button Text":cgNotOkButton,"Vendor Screen Purposes Link Text":"Revenir aux Objectifs","Vendor Screen Cancel Button Text":"Annuler","Vendor Screen Save and Exit Button Text":cgExitButton,"Initial Screen Body Text":'Nos partenaires et nous-m\u00eames utilisons diff\u00e9rentes technologies, telles que les cookies, pour personnaliser les contenus et les publicit\u00e9s, proposer des fonctionnalit\u00e9s sur les r\u00e9seaux sociaux et analyser le trafic. Merci de cliquer sur le bouton "J\x26#039;accepte" pour donner votre accord. Vous pouvez changer d\u2019avis et modifier vos choix \u00e0 tout moment',
+"Initial Screen Body Text Option":1,"Publisher Name":document.location.host,"Display UI":"inEU","Publisher Purpose IDs":[1,2,3,4,5],"UI Layout":cgLayout,"No Option":!0,"Non-Consent Display Frequency":180,"Default Value for Toggles":"on","Cookie Domain":cgCookieDomain});window.__cmp("setConsentUiCallback",cgSetConsentData);
+function cgSetCookie(b){window.__cmp("getConsentData",null,function(a){});var a=new Date;a.setTime(a.getTime()+31104E6);a="expires\x3d"+a.toUTCString();top.document.cookie=b+"\x3d"+cgConsentData+";"+a+";path\x3d/;"}function cgCheckConsent(){window.__cmp("getConsentData",null,function(b){cgConsentData=b.consentData});return cgConsentData?!0:!1}function cgSetConsentData(){setTimeout(function(){try{cgCheckConsent()&&(cgSetCookie("euconsent"),cgSetCookie("sas_euconsent"))}catch(b){}},5E3)}
+var cgInterval=setInterval(cgCheckLogo,500);function cgCheckLogo(){try{""!=document.getElementsByClassName("qc-cmp-qc-link-container")[0].innerHTML?document.getElementsByClassName("qc-cmp-qc-link-container")[0].innerHTML="":clearInterval(cgInterval)}catch(b){}};</script><iframe name="__cmpLocator" style="display: none;" src="./Nginx – Rediriger les requêtes en HTTP vers HTTPS – Korben_files/saved_resource.html"></iframe>
+
+  
+<style>
+.qc-cmp-ui {
+	background-color: #009ac7 !important;
+}
+.qc-cmp-ui-container a:hover{
+	text-decoration:none !important;
+	color: #ffffff !important;
+}
+
+.qc-cmp-ui-content{
+	overflow : hidden !important;
+	padding : 20px !important;
+}
+.qc-cmp-ui {
+	min-height:0 !important;
+}
+
+#qcCmpUi{
+	overflow:hidden !important;
+	font-family: Arial,Verdana,Geneva,sans-serif;
+	text-align: left !important;
+}
+
+.qc-cmp-title, .qc-cmp-sub-title, .qc-cmp-bold-messaging, .qc-cmp-table-header{
+	font-family: Arial,Verdana,Geneva,sans-serif;
+	text-align: left !important;
+}
+
+.qc-cmp-sub-title{
+	color: #ffffff !important;
+}
+
+.qc-cmp-initial-info .qc-cmp-title{
+	font-size: 25px !important;
+}
+
+#qc-cmp-purpose-button{
+	position: absolute;
+	bottom: 10px !important;
+	left: 10px !important;
+	color: #FFF !important;
+}
+.qc-cmp-alt-action{
+	color: #FFF !important;
+}
+
+#qcCmpUi a{
+	text-decoration: underline !important;
+}
+
+#qcCmpUi h1, #qcCmpUi h2{
+	text-shadow : none !important;
+}
+
+#qcCmpUi a:hover{
+	text-decoration: none !important;
+	color : #fff !important;
+}
+
+.qc-cmp-title,.qc-cmp-main-messaging,.qc-cmp-messaging,.qc-cmp-bold-messaging,.qc-cmp-table-header,.qc-cmp-table-row,.qc-cmp-vendor-list-title,.qc-cmp-vendor-list-title{
+	color: #fff !important;
+}
+.qc-cmp-button,.qc-cmp-button.qc-cmp-button-small.qc-cmp-secondary-button.qc-cmp-enable-button,.qc-cmp-button.qc-cmp-button-small.qc-cmp-disable-button,.qc-cmp-button.qc-cmp-save-and-exit{
+	border: 1px solid #000 !important;
+	background-color: #fff !important;
+	color: #000 !important;
+}
+.qc-cmp-button:hover,.qc-cmp-button.qc-cmp-button-small.qc-cmp-secondary-button.qc-cmp-enable-button:hover,.qc-cmp-button.qc-cmp-button-small.qc-cmp-disable-button:hover,.qc-cmp-button.qc-cmp-save-and-exit:hover{
+	background-color: #009ac7 !important;
+	color: #fff !important;
+}
+
+.qc-cmp-table{
+	color: #fff !important;
+	background-color: #009ac7 !important;
+}
+
+.qc-cmp-table h4, .qc-cmp-table p{
+	color: #fff !important;
+	background-color: #009ac7 !important;
+	font-family: Arial,Verdana,Geneva,sans-serif;
+	text-align: left !important;
+}
+
+.qc-cmp-table-row{
+	border-top: 1px solid hsla(0,0%,100%,.3) !important;
+}
+
+.qc-cmp-table-row:last-child{
+	border-bottom: 1px solid hsla(0,0%,100%,.3) !important;
+}
+
+.qc-cmp-ui-content .qc-cmp-qc-link-container{
+	display:none !important;
+}
+
+.qc-cmp-scrolling-section table tr:hover, .qc-cmp-scrolling-section table tr, .qc-cmp-scrolling-section table th, .qc-cmp-scrolling-section table td, .qc-cmp-table-header{
+	background-color: #009ac7 !important;
+}
+.qc-cmp-persistent-link {display:none !important;}
+@media screen and (max-width: 600px){
+	.qc-cmp-main-messaging{
+		font-size: 14px !important;
+		padding: 25px 0 !important;
+	}
+	.qc-cmp-title,.qc-cmp-sub-title{
+		 font-size: 22px !important;
+	}
+	
+	.qc-cmp-alt-action.qc-cmp-cancel,.qc-cmp-alt-action.qc-cmp-left-nav-link{
+		text-align:center !important;
+		margin:0 !important;
+	}
+	
+	#qc-cmp-purpose-button{
+		position: inherit !important;
+	}
+}
+</style><script type="text/javascript" id="">try{(function(a,c,d){var b=document.createElement("link");""!=c&&(b.rel=c);b.href=d;a.parentNode.insertBefore(b,a)})(top.document.getElementsByTagName("script")[0],"dns-prefetch",(top.location.protocol?"https":"http")+"://fastlane.rubiconproject.com/")}catch(a){};</script>
+<script type="text/javascript" id="" src="./Nginx – Rediriger les requêtes en HTTP vers HTTPS – Korben_files/seg"></script><script type="text/javascript" id="">try{(function(b,c){var a=document.createElement("style");a.type="text/css";a.styleSheet?a.styleSheet.cssText=c:a.appendChild(document.createTextNode(c));b.parentNode.appendChild(a)})(top.document.getElementsByTagName("script")[0],".ea_t_containter{padding-top:0!important;}")}catch(b){};</script>
+<script type="text/javascript" id="">try{(function(b,a,c){a=document.createElement(a);a.id=c;b.parentNode.insertBefore(a,b)})(top.document.getElementsByClassName("entry-footer")[0],"div","sas_31712")}catch(b){};</script>
+<script type="text/javascript" id="quantx-embed-tag" src="./Nginx – Rediriger les requêtes en HTTP vers HTTPS – Korben_files/nativeEmbed.gz.js"></script><script type="text/javascript" id="">if(/hero-academia|mha|my-hero-ones-justice|one-piece|naruto|boruto/.test(top.location.href)||/My Hero Academia|MHA|My Hero One's Justice|One Piece|Naruto|Boruto/.test(top.document.title)){var pxMHOJ=new Image(1,1);pxMHOJ.src="//www.smartadserver.com/diffx/track/compgb.ashx?keyword\x3dmhoj\x26exptime\x3d365";document.body.appendChild(pxMHOJ)};</script>
+<a class="qc-cmp-persistent-link" style="cursor: pointer; position: fixed; background-color: rgb(54, 139, 214); padding: 5px 15px; color: rgb(255, 255, 255); display: flex; align-items: center; max-height: 30px; z-index: 2147483640; bottom: 0px; right: 0px; border-top-left-radius: 3px; border-top-right-radius: 3px;"><svg width="16px" height="17px" viewBox="0 0 16 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin-right: 5px; height: 17px;"><g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="cog" fill="#FFFFFF" fill-rule="nonzero"><path d="M15.596917,9.98326938 L14.5041079,9.33798816 C14.5728064,8.7815386 14.5728064,8.2184614 14.5041079,7.66201184 L15.596917,7.01673062 C15.9178229,6.82726259 16.0726124,6.43742732 15.9670848,6.0741546 C15.5912871,4.78033611 14.9223646,3.61573153 14.0390021,2.66061113 C13.7831755,2.38401797 13.3749053,2.32348965 13.0525249,2.51384881 L11.9613243,3.15813608 C11.5248519,2.81840117 11.0481221,2.53648663 10.542482,2.31910255 L10.542482,1.02991108 C10.542482,0.648438733 10.2860522,0.316869683 9.92305592,0.229024792 C8.66155,-0.07632446 7.33871809,-0.0763587342 6.07694408,0.229024792 C5.71398131,0.316869683 5.457518,0.648404458 5.457518,1.02991108 L5.457518,2.31910255 C4.95187406,2.53647872 4.47514334,2.81839382 4.03867572,3.15813608 L2.94747511,2.51384881 C2.62506122,2.32348965 2.21679094,2.38401797 1.96099786,2.66061113 C1.07763542,3.61573153 0.40871289,4.78037038 0.0329152236,6.0741546 C-0.072612407,6.43742732 0.0821770899,6.82722832 0.403082962,7.01673062 L1.49589212,7.66201184 C1.42719356,8.2184614 1.42719356,8.7815386 1.49589212,9.33798816 L0.403082962,9.98326938 C0.0821770899,10.1727374 -0.072612407,10.5625727 0.0329152236,10.9258454 C0.40871289,12.2196296 1.07763542,13.3842685 1.96099786,14.3393889 C2.21682445,14.615982 2.62509474,14.6765103 2.94747511,14.4861855 L4.03867572,13.8418982 C4.47514096,14.1816349 4.95187243,14.4635389 5.457518,14.6808975 L5.457518,15.9700889 C5.457518,16.3515613 5.7139478,16.6831303 6.07694408,16.7709752 C7.33848351,17.0763245 8.66128191,17.0763587 9.92305592,16.7709752 C10.2860187,16.6831303 10.542482,16.3515955 10.542482,15.9700889 L10.542482,14.6808975 C11.0481183,14.4635198 11.5248475,14.1816171 11.9613243,13.8418982 L13.0525249,14.4861855 C13.3749053,14.6765446 13.7831755,14.6160163 14.0390021,14.3393889 C14.9223646,13.3842685 15.5912871,12.2196296 15.9670848,10.9258454 C16.0726124,10.5625727 15.9178229,10.1727717 15.596917,9.98326938 Z M13.4026193,13.4264943 L11.8507364,12.510001 C10.9463288,13.3007421 10.6255905,13.4997041 9.47011484,13.9172673 L9.47011484,15.7502196 C8.50024808,15.9548373 7.49975192,15.9548373 6.52988516,15.7502196 L6.52988516,13.9172673 C5.4031959,13.5101235 5.07699522,13.3210668 4.14926358,12.510001 L2.59738075,13.4264943 C1.9368696,12.6693763 1.43490124,11.7817076 1.12525522,10.8230912 L2.67780828,9.90659789 C2.4588108,8.69270694 2.45871027,8.30790999 2.67780828,7.09340211 L1.12525522,6.17690879 C1.43490124,5.21829242 1.93690311,4.33058946 2.59738075,3.57312864 L4.14926358,4.49030745 C5.0667072,3.68712478 5.39129933,3.4941265 6.52988516,3.08269846 L6.52988516,1.24978037 C7.49971774,1.04482059 8.50028226,1.04482059 9.47011484,1.24978037 L9.47011484,3.08273274 C10.6087677,3.49419505 10.9333933,3.6872276 11.8507364,4.49034172 L13.4026193,3.57316291 C14.0630969,4.33058946 14.5650988,5.21829242 14.8747448,6.17694306 L13.3221917,7.09343638 C13.5412227,8.3076358 13.5412897,8.69212428 13.3221917,9.90663217 L14.8747448,10.8231255 C14.5650988,11.7817076 14.0631304,12.6694105 13.4026193,13.4264943 Z M8,5.20968958 C6.22607014,5.20968958 4.78289853,6.68570996 4.78289853,8.50001714 C4.78289853,10.3143243 6.22607014,11.7903447 8,11.7903447 C9.77392986,11.7903447 11.2171015,10.3143243 11.2171015,8.50001714 C11.2171015,6.68570996 9.77392986,5.20968958 8,5.20968958 Z M8,10.6935688 C6.81738009,10.6935688 5.85526568,9.70955526 5.85526568,8.50001714 C5.85526568,7.29047902 6.81738009,6.30646543 8,6.30646543 C9.18261991,6.30646543 10.1447343,7.29047902 10.1447343,8.50001714 C10.1447343,9.70955526 9.18261991,10.6935688 8,10.6935688 Z" id="Shape"></path></g></g></svg>Confidentialité</a></body></html>

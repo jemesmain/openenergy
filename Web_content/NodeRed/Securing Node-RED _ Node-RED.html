@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<!-- saved from url=(0061)https://nodered.org/docs/user-guide/runtime/securing-node-red -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Securing Node-RED : Node-RED</title>
+	<link href="./Securing Node-RED _ Node-RED_files/css" rel="stylesheet" type="text/css">
+	<link href="./Securing Node-RED _ Node-RED_files/css(1)" rel="stylesheet" type="text/css">
+	<link href="./Securing Node-RED _ Node-RED_files/css(2)" rel="stylesheet">
+
+	<link href="./Securing Node-RED _ Node-RED_files/font-awesome.min.css" rel="stylesheet">
+	<script async="" src="./Securing Node-RED _ Node-RED_files/analytics.js"></script><script src="./Securing Node-RED _ Node-RED_files/jquery-1.9.1.js"></script><style>@media print {#ghostery-purple-box {display:none !important}}</style>
+	<link href="./Securing Node-RED _ Node-RED_files/simplegrid.css" rel="stylesheet" media="screen">
+	<link href="./Securing Node-RED _ Node-RED_files/style.css" rel="stylesheet" media="screen">
+	<link href="./Securing Node-RED _ Node-RED_files/front.css" rel="stylesheet" media="screen">
+	<link href="./Securing Node-RED _ Node-RED_files/docs.css" rel="stylesheet" media="screen">
+	<link href="./Securing Node-RED _ Node-RED_files/blog.css" rel="stylesheet" media="screen">
+	<link href="./Securing Node-RED _ Node-RED_files/syntax.css" rel="stylesheet" media="screen">
+	<link type="application/atom+xml" rel="alternate" href="https://nodered.org/feed.xml">
+	
+</head>
+<body>
+
+<div class="header">
+    <div class="header-content">
+        <div class="brand"><a href="https://nodered.org/">Node-RED</a></div>
+        <ul class="navigation">
+            <li><a href="https://nodered.org/">home</a></li>
+            <li><a href="https://nodered.org/about/">about</a></li>
+            <li><a href="https://nodered.org/blog/">blog</a></li>
+            <li class="current"><a href="https://nodered.org/docs/">documentation</a></li>
+            <li><a href="https://discourse.nodered.org/">forum</a></li>
+            <li><a href="https://flows.nodered.org/">flows</a></li>
+            <li><a href="https://github.com/node-red">github</a></li>
+        </ul>
+        <a href="https://nodered.org/docs/user-guide/runtime/securing-node-red#" class="menu"><i class="fa fa-reorder fa-2x"></i></a>
+    </div>
+</div>
+
+<div class="docs">
+    <div class="breadcrumbs">
+    <div class="grid">
+        
+        <a href="https://nodered.org/docs">docs</a>
+        
+         • <a href="https://nodered.org/docs/user-guide">user guide</a>
+        • <a class="active" href="https://nodered.org/docs/user-guide/runtime/securing-node-red">security</a>
+
+    </div>
+</div>
+
+    <div class="grid">
+
+        <div id="toc-column" class="col-3-12">
+            <ul class="toc fixed-toc" style="width: 257px;">
+    <li class="toc-expander"><div>V</div></li>
+    <li class="tocheader">
+        <ul id="page-toc">
+        <li id="toc-item-editor--admin-api-security" class="toctitle"><a href="https://nodered.org/docs/user-guide/runtime/securing-node-red#editor--admin-api-security">Editor &amp; Admin API security</a></li><li id="toc-item-usernamepassword-based-authentication" class=""><a href="https://nodered.org/docs/user-guide/runtime/securing-node-red#usernamepassword-based-authentication">Username/password based authentication</a></li><li id="toc-item-oauthopenid-based-authentication" class="active"><a href="https://nodered.org/docs/user-guide/runtime/securing-node-red#oauthopenid-based-authentication">OAuth/OpenID based authentication</a></li><li id="toc-item-setting-a-default-user" class=""><a href="https://nodered.org/docs/user-guide/runtime/securing-node-red#setting-a-default-user">Setting a default user</a></li><li id="toc-item-user-permissions"><a href="https://nodered.org/docs/user-guide/runtime/securing-node-red#user-permissions">User permissions</a></li><li id="toc-item-token-expiration"><a href="https://nodered.org/docs/user-guide/runtime/securing-node-red#token-expiration">Token expiration</a></li><li id="toc-item-accessing-the-admin-api"><a href="https://nodered.org/docs/user-guide/runtime/securing-node-red#accessing-the-admin-api">Accessing the Admin API</a></li><li id="toc-item-custom-user-authentication"><a href="https://nodered.org/docs/user-guide/runtime/securing-node-red#custom-user-authentication">Custom user authentication</a></li><li id="toc-item-http-node-security" class="toctitle"><a href="https://nodered.org/docs/user-guide/runtime/securing-node-red#http-node-security">HTTP Node security</a></li></ul>
+    </li>
+</ul>
+<script>
+    $(function() {
+        $(".docs-content h3, .docs-content h4").each(function() {
+            var li = $('<li id="toc-item-'+$(this).attr('id')+'"><a href="#'+$(this).attr('id')+'">'+$(this).text()+'</a></li>').appendTo("#page-toc");
+            if ($(this)[0].nodeName === "H3") {
+                li.addClass("toctitle")
+            }
+        })
+    })
+</script>
+
+            &nbsp;
+<script>
+$(function() {
+    var TOC = $("ul.toc");
+
+    $(".toc-expander").click(function() {
+        if (TOC.hasClass('open')) {
+            TOC.removeClass('open');
+        } else {
+            TOC.addClass('open');
+        }
+    })
+
+    var fixed = false;
+    $(window).on("scroll", function(e) {
+        if ($(window).scrollTop() > 140) {
+            if (!fixed) {
+                TOC.addClass("fixed-toc");
+                TOC.width(TOC.parent().width());
+                fixed = true;
+            }
+        } else {
+            if (fixed) {
+                TOC.removeClass("fixed-toc");
+                TOC.width(TOC.parent().width());
+                fixed = false;
+            }
+        }
+
+    });
+
+    var positions = [];
+    var windowHeight;
+    var currentItem;
+
+
+    function resizeWindow() {
+        TOC.width(TOC.parent().width());
+        calculatePositions();
+        windowHeight = $(window).height();
+    }
+    function calculatePositions() {
+        positions = [];
+        $(".docs-content > div >  h3,.docs-content > div >  h4").each(function() {
+            positions.push({
+                el: $("#toc-item-"+$(this).attr('id')),
+                orig: $(this),
+                pos: $(this).offset().top +parseInt($(this).css("marginTop"))
+            });
+        });
+    }
+
+    function getCurrentItem() {
+        if (positions.length === 0) {
+            return;
+        }
+        var top = $(window).scrollTop();
+        var previous = positions[0].el;
+        for (var i=0;i<positions.length;i++) {
+            if (positions[i].pos > top) {
+                if (positions[i].pos-top < windowHeight/2 ) {
+                    return positions[i].el;
+                } else {
+                    return previous;
+                }
+            }
+            previous = positions[i].el;
+        }
+    }
+    function scrollWindow() {
+        var targetItem = getCurrentItem();
+        if (targetItem !== currentItem) {
+            if (currentItem) {
+                currentItem.removeClass("active");
+            }
+            currentItem = targetItem;
+            currentItem.addClass("active");
+        }
+    }
+    $(window).resize(resizeWindow);
+    $(window).on("scroll",scrollWindow);
+    setTimeout(function() {
+        resizeWindow();
+        scrollWindow();
+    },500);
+
+});
+</script>
+
+        </div>
+        <div class="col-9-12">
+
+            <div class="docs-content">
+                <h1 class="docs-title">Securing Node-RED</h1>
+                <div><p>By default, the Node-RED editor is not secured - anyone who can access its IP address
+can access the editor and deploy changes.</p>
+
+<p>This is only suitable if you are running on a trusted network.</p>
+
+<p>This guide describes how you can secure Node-RED. The security is split into
+two parts:</p>
+
+<ul>
+  <li><a href="https://nodered.org/docs/user-guide/runtime/securing-node-red#editor--admin-api-security">Securing the editor and admin API</a></li>
+  <li><a href="https://nodered.org/docs/user-guide/runtime/securing-node-red#http-node-security">Securing the HTTP Nodes and Node-RED Dashboard</a></li>
+</ul>
+
+<h3 id="editor--admin-api-security">Editor &amp; Admin API security</h3>
+
+<p>The Editor and Admin API supports two types of authentication:</p>
+
+<ul>
+  <li>username/password credential based authentication</li>
+  <li>authentication against any OAuth/OpenID provider such as Twitter or GitHub</li>
+</ul>
+
+<h4 id="usernamepassword-based-authentication">Username/password based authentication</h4>
+
+<p>To enable user authentication on the Editor and Admin API, uncomment the <code class="language-plaintext highlighter-rouge">adminAuth</code>
+property in your <a href="https://nodered.org/docs/user-guide/runtime/settings-file">settings file</a>:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">adminAuth</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nl">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">credentials</span><span class="dl">"</span><span class="p">,</span>
+    <span class="nx">users</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="na">username</span><span class="p">:</span> <span class="dl">"</span><span class="s2">admin</span><span class="dl">"</span><span class="p">,</span>
+            <span class="na">password</span><span class="p">:</span> <span class="dl">"</span><span class="s2">$2a$08$zZWtXTja0fB1pzD4sHCMyOCMYz2Z6dNbM6tl8sJogENOMcxWV9DN.</span><span class="dl">"</span><span class="p">,</span>
+            <span class="na">permissions</span><span class="p">:</span> <span class="dl">"</span><span class="s2">*</span><span class="dl">"</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="na">username</span><span class="p">:</span> <span class="dl">"</span><span class="s2">george</span><span class="dl">"</span><span class="p">,</span>
+            <span class="na">password</span><span class="p">:</span> <span class="dl">"</span><span class="s2">$2b$08$wuAqPiKJlVN27eF5qJp.RuQYuy6ZYONW7a/UWYxDTtwKFCdB8F19y</span><span class="dl">"</span><span class="p">,</span>
+            <span class="na">permissions</span><span class="p">:</span> <span class="dl">"</span><span class="s2">read</span><span class="dl">"</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">users</code> property is an array of user objects. This allows you to define
+multiple users, each of whom can have different permissions.</p>
+
+<p>This example configuration above defines two users. One called <code class="language-plaintext highlighter-rouge">admin</code> who has
+permission to do everything within the editor and has a password of <code class="language-plaintext highlighter-rouge">password</code>.
+The other called <code class="language-plaintext highlighter-rouge">george</code> who is given read-only access.</p>
+
+<p>Note that the passwords are securely hashed using the bcrypt algorithm.</p>
+
+<div class="doc-callout">
+<em>Note</em> : in previous releases of Node-RED, the setting <code>httpAdminAuth</code>
+could be used to enable HTTP Basic Authentication on the editor. This option is
+deprecated and should not be used.
+</div>
+
+<h5 id="generating-the-password-hash">Generating the password hash</h5>
+
+<p>To generate a suitable password hash, you can use the <code class="language-plaintext highlighter-rouge">node-red-admin</code>
+command-line tool. Instructions for installing the tool are available <a href="https://nodered.org/docs/user-guide/node-red-admin">here</a>.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>node-red-admin hash-pw
+</code></pre></div></div>
+
+<p>The tool will prompt you for the password you wish to use and then print out
+the hash that can be copied into the settings file.</p>
+
+<p>Alternative, you can run the following command from within the Node-RED install
+directory:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>node -e "console.log(require('bcryptjs').hashSync(process.argv[1], 8));" your-password-here
+</code></pre></div></div>
+
+<h4 id="oauthopenid-based-authentication">OAuth/OpenID based authentication</h4>
+
+<p>To use an external authentication source, Node-RED can take use a wide range of
+the strategies provided by <a href="http://passportjs.org/">Passport</a>.</p>
+
+<p>Node-RED authentication modules are available for both <a href="https://www.npmjs.com/package/node-red-auth-twitter">Twitter</a>
+and <a href="https://www.npmjs.com/package/node-red-auth-github">GitHub</a>. They wrap up
+some of the strategy-specific detail to make it easier to use. But they can also
+be used as a template for authenticating with other similar strategies.</p>
+
+<p>The following example shows how to configure to authenticate against Twitter
+<em>without</em> using the auth module we provide.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">adminAuth</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nl">type</span><span class="p">:</span><span class="dl">"</span><span class="s2">strategy</span><span class="dl">"</span><span class="p">,</span>
+    <span class="nx">strategy</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nl">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">twitter</span><span class="dl">"</span><span class="p">,</span>
+        <span class="nx">label</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Sign in with Twitter</span><span class="dl">'</span><span class="p">,</span>
+        <span class="nx">icon</span><span class="p">:</span><span class="dl">"</span><span class="s2">fa-twitter</span><span class="dl">"</span><span class="p">,</span>
+        <span class="nx">strategy</span><span class="p">:</span> <span class="nx">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">passport-twitter</span><span class="dl">"</span><span class="p">).</span><span class="nx">Strategy</span><span class="p">,</span>
+        <span class="nx">options</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nl">consumerKey</span><span class="p">:</span> <span class="nx">TWITTER_APP_CONSUMER_KEY</span><span class="p">,</span>
+            <span class="nx">consumerSecret</span><span class="p">:</span> <span class="nx">TWITTER_APP_CONSUMER_SECRET</span><span class="p">,</span>
+            <span class="nx">callbackURL</span><span class="p">:</span> <span class="dl">"</span><span class="s2">http://example.com/auth/strategy/callback</span><span class="dl">"</span><span class="p">,</span>
+            <span class="nx">verify</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">token</span><span class="p">,</span> <span class="nx">tokenSecret</span><span class="p">,</span> <span class="nx">profile</span><span class="p">,</span> <span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">done</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">profile</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+    <span class="nx">users</span><span class="p">:</span> <span class="p">[</span>
+       <span class="p">{</span> <span class="na">username</span><span class="p">:</span> <span class="dl">"</span><span class="s2">knolleary</span><span class="dl">"</span><span class="p">,</span><span class="na">permissions</span><span class="p">:</span> <span class="p">[</span><span class="dl">"</span><span class="s2">*</span><span class="dl">"</span><span class="p">]}</span>
+    <span class="p">]</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">strategy</code> property takes the following options:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">name</code> - the name of the passport strategy being used</li>
+  <li><code class="language-plaintext highlighter-rouge">strategy</code> - the passport strategy module</li>
+  <li><code class="language-plaintext highlighter-rouge">label</code>/<code class="language-plaintext highlighter-rouge">icon</code> - used on the login page. <code class="language-plaintext highlighter-rouge">icon</code> can be any FontAwesome icon name.</li>
+  <li><code class="language-plaintext highlighter-rouge">options</code> - an options object passed to the passport strategy when it is created.
+Refer to the strategy’s own documentation for what it requires. See below for a
+node on the <code class="language-plaintext highlighter-rouge">callbackURL</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">verify</code> - the verify function used by the strategy. It must call <code class="language-plaintext highlighter-rouge">done</code> with
+a user profile as the second argument if the user is valid. This is expected
+to have a <code class="language-plaintext highlighter-rouge">username</code> property that is used to check against the list of valid
+users. Passport attempts to standardize the user profile object, so most strategies
+provide this property.</li>
+</ul>
+
+<p>The <code class="language-plaintext highlighter-rouge">callbackURL</code> used by a strategy is where the authentication provider will
+redirect to following an auth attempt. It must be the URL of your Node-RED editor
+with <code class="language-plaintext highlighter-rouge">/auth/strategy/callback</code> added to the path. For example, if you access the
+editor at <code class="language-plaintext highlighter-rouge">http://localhost:1880</code>, you would use <code class="language-plaintext highlighter-rouge">http://localhost:1880/auth/strategy/callback</code>.</p>
+
+<h4 id="setting-a-default-user">Setting a default user</h4>
+
+<p>The example configuration above will prevent anyone from accessing the editor
+unless they log in.</p>
+
+<p>In some cases, it is desirable to allow everyone some level of access.
+Typically, this will be giving read-only access to the editor. To do this,
+the <code class="language-plaintext highlighter-rouge">default</code> property can be added to the <code class="language-plaintext highlighter-rouge">adminAuth</code> setting to define
+the default user:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">adminAuth</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nl">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">credentials</span><span class="dl">"</span><span class="p">,</span>
+    <span class="nx">users</span><span class="p">:</span> <span class="p">[</span> <span class="cm">/* list of users */</span> <span class="p">],</span>
+    <span class="k">default</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nl">permissions</span><span class="p">:</span> <span class="dl">"</span><span class="s2">read</span><span class="dl">"</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="user-permissions">User permissions</h4>
+
+<p>Prior to Node-RED 0.14, users could have one of two permissions:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">*</code> - full access</li>
+  <li><code class="language-plaintext highlighter-rouge">read</code> - read-only access</li>
+</ul>
+
+<p>From Node-RED 0.14 the permissions can be much finer grained and to support that,
+the property can either be a single string as before, or an array containing multiple permissions.</p>
+
+<p>Each method of the <a href="https://nodered.org/docs/api/admin">Admin API</a> defines what permission level is needed to access it.
+The permission model is resource based. For example, to get the current flow configuration,
+a user will require the <code class="language-plaintext highlighter-rouge">flows.read</code> permission. But to update the flows they will require
+the <code class="language-plaintext highlighter-rouge">flows.write</code> permission.</p>
+
+<h4 id="token-expiration">Token expiration</h4>
+
+<p>By default, access tokens expire after 7 days after they are created. We do not
+currently support refreshing the token to extend this period.</p>
+
+<p>The expiration time can be customised by setting the <code class="language-plaintext highlighter-rouge">sessionExpiryTime</code> property
+of the <code class="language-plaintext highlighter-rouge">adminAuth</code> setting. This defines, in seconds, how long a token is valid
+for. For example, to set the tokens to expire after 1 day:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">adminAuth</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nl">sessionExpiryTime</span><span class="p">:</span> <span class="mi">86400</span><span class="p">,</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="accessing-the-admin-api">Accessing the Admin API</h4>
+
+<p>With the <code class="language-plaintext highlighter-rouge">adminAuth</code> property set, the <a href="https://nodered.org/docs/api/admin/oauth">Admin API documentation</a>
+describes how to access the API.</p>
+
+<h4 id="custom-user-authentication">Custom user authentication</h4>
+
+<p>Rather than hardcode users into the settings file, it is also possible to plug in
+custom code to authenticate users. This makes it possible to integrate with
+existing authentication schemes.</p>
+
+<p>The following example shows how an external module can be used to provide the
+custom authentication code.</p>
+
+<ul>
+  <li>Save the following in a file called <code class="language-plaintext highlighter-rouge">&lt;node-red&gt;/user-authentication.js</code></li>
+</ul>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+   <span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">credentials</span><span class="dl">"</span><span class="p">,</span>
+   <span class="na">users</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">username</span><span class="p">)</span> <span class="p">{</span>
+       <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">resolve</span><span class="p">)</span> <span class="p">{</span>
+           <span class="c1">// Do whatever work is needed to check username is a valid</span>
+           <span class="c1">// user.</span>
+           <span class="k">if</span> <span class="p">(</span><span class="nx">valid</span><span class="p">)</span> <span class="p">{</span>
+               <span class="c1">// Resolve with the user object. It must contain</span>
+               <span class="c1">// properties 'username' and 'permissions'</span>
+               <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="p">{</span> <span class="na">username</span><span class="p">:</span> <span class="dl">"</span><span class="s2">admin</span><span class="dl">"</span><span class="p">,</span> <span class="na">permissions</span><span class="p">:</span> <span class="dl">"</span><span class="s2">*</span><span class="dl">"</span> <span class="p">};</span>
+               <span class="nx">resolve</span><span class="p">(</span><span class="nx">user</span><span class="p">);</span>
+           <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+               <span class="c1">// Resolve with null to indicate this user does not exist</span>
+               <span class="nx">resolve</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
+           <span class="p">}</span>
+       <span class="p">});</span>
+   <span class="p">},</span>
+   <span class="na">authenticate</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">username</span><span class="p">,</span><span class="nx">password</span><span class="p">)</span> <span class="p">{</span>
+       <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">resolve</span><span class="p">)</span> <span class="p">{</span>
+           <span class="c1">// Do whatever work is needed to validate the username/password</span>
+           <span class="c1">// combination.</span>
+           <span class="k">if</span> <span class="p">(</span><span class="nx">valid</span><span class="p">)</span> <span class="p">{</span>
+               <span class="c1">// Resolve with the user object. Equivalent to having</span>
+               <span class="c1">// called users(username);</span>
+               <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="p">{</span> <span class="na">username</span><span class="p">:</span> <span class="dl">"</span><span class="s2">admin</span><span class="dl">"</span><span class="p">,</span> <span class="na">permissions</span><span class="p">:</span> <span class="dl">"</span><span class="s2">*</span><span class="dl">"</span> <span class="p">};</span>
+               <span class="nx">resolve</span><span class="p">(</span><span class="nx">user</span><span class="p">);</span>
+           <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+               <span class="c1">// Resolve with null to indicate the username/password pair</span>
+               <span class="c1">// were not valid.</span>
+               <span class="nx">resolve</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
+           <span class="p">}</span>
+       <span class="p">});</span>
+   <span class="p">},</span>
+   <span class="na">default</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+       <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">resolve</span><span class="p">)</span> <span class="p">{</span>
+           <span class="c1">// Resolve with the user object for the default user.</span>
+           <span class="c1">// If no default user exists, resolve with null.</span>
+           <span class="nx">resolve</span><span class="p">({</span><span class="na">anonymous</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="na">permissions</span><span class="p">:</span><span class="dl">"</span><span class="s2">read</span><span class="dl">"</span><span class="p">});</span>
+       <span class="p">});</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Set the <code class="language-plaintext highlighter-rouge">adminAuth</code> property in settings.js to load this module:</li>
+</ul>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">adminAuth</span><span class="p">:</span> <span class="nx">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">./user-authentication</span><span class="dl">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="http-node-security">HTTP Node security</h3>
+
+<p>The routes exposed by the HTTP In nodes can be secured using basic authentication.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">httpNodeAuth</code> property in your <code class="language-plaintext highlighter-rouge">settings.js</code> file can be used to define a single
+username and password that will be allowed to access the routes.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">httpNodeAuth</span><span class="p">:</span> <span class="p">{</span><span class="nl">user</span><span class="p">:</span><span class="dl">"</span><span class="s2">user</span><span class="dl">"</span><span class="p">,</span><span class="nx">pass</span><span class="p">:</span><span class="dl">"</span><span class="s2">$2a$08$zZWtXTja0fB1pzD4sHCMyOCMYz2Z6dNbM6tl8sJogENOMcxWV9DN.</span><span class="dl">"</span><span class="p">},</span>
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">pass</code> property uses the same format as <code class="language-plaintext highlighter-rouge">adminAuth</code>. See <a href="https://nodered.org/docs/user-guide/runtime/securing-node-red#generating-the-password-hash">Generating the password hash</a> for more information.</p>
+
+<p>Access to any static content defined by the <code class="language-plaintext highlighter-rouge">httpStatic</code> property can be secured
+using the <code class="language-plaintext highlighter-rouge">httpStaticAuth</code> property, which uses the same format.</p>
+
+<div class="doc-callout">
+<em>Note</em> : in previous releases of Node-RED, the <code>pass</code> property
+was expected to be an MD5 hash. This is cryptographically insecure, so has been
+superseded with bcrypt, as used by <code>adminAuth</code>. For backwards compatibility, MD5
+hashes are still supported - but they are not recommended.
+</div>
+</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="links">
+    <div class="grid">
+        <div class="col-1-3">
+            <p><a href="https://nodered.org/">Node-RED</a>: Low-code programming for event-driven applications.</p>
+            <p>A project of the <a href="https://openjsf.org//">OpenJS Foundation</a>.</p>
+        </div>
+        <div class="col-1-6">
+            <ul>
+                <li><a href="https://github.com/node-red">GitHub</a></li>
+                <li><a href="https://www.npmjs.com/package/node-red">npm</a></li>
+                <li><a href="https://nodered.org/docs">Documentation</a></li>
+                <li><a href="https://nodered.org/docs/api">APIs</a></li>
+            </ul>
+        </div>
+        <div class="col-1-6">
+            <ul>
+                <li><a href="https://flows.nodered.org/">Flow Library</a></li>
+                <li><a href="https://nodered.org/about/">About</a></li>
+                <li><a href="https://nodered.org/about/conduct">Code of Conduct</a></li>
+                <li><a href="https://nodered.org/about/community">Community</a></li>
+            </ul>
+        </div>
+        <div class="col-1-6">
+            <ul>
+                <li><a href="https://nodered.org/blog">Blog</a></li>
+                <li><a href="https://twitter.com/nodered">Twitter</a></li>
+                <li><a href="https://discourse.nodered.org/">Forum</a></li>
+                <li><a href="https://nodered.org/slack">Slack</a></li>
+            </ul>
+        </div>
+
+
+    </div>
+</div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-43773533-1', 'auto');
+  ga('send', 'pageview');
+
+  $(function() {
+    $(".menu").click(function(e) {
+        var s = $(".navigation").slideToggle('hide');
+        e.preventDefault();
+    });
+  });
+</script>
+
+
+
+
+</body></html>

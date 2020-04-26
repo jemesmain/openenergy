@@ -4,7 +4,7 @@ server {
       ##listen      80 default; ## default is duplicated with default server /etc/nginx/site-available/default _> remove default
       listen      80;
       ##server_name example.com www.example.com;
-      server_name el001.is-a-green.com www.el001.is-a-green.com;
+      server_name my_server.securise.com..com www.my_server.securise.com..com;
       ## Redirige le HTTP vers le HTTPS ##
       return 301 https://$server_name$request_uri;
 }
@@ -23,7 +23,7 @@ server {
       ##listen      1.2.3.4:1446 ssl;
       listen      1446 ssl;
       #server_name example.com www.example.com;
-      server_name el001.is-a-green.com www.my_server.com;
+      server_name my_server.securise.com..com www.my_server.com;
       fastcgi_param HTTPS on;
 
      ## Redirection de l url avec www vers une url sans www
@@ -120,8 +120,8 @@ server {
 
 ## Le serveur https sur le port 1448 pour chirpstack. N'oubliez pas vote config SSL###
 server {
-      #access_log  logs/el001.is-a-green.com/ssl_access.log main;
-      #access_log  logs/el001.is-a-green.com/ssl_access.log;
+      #access_log  logs/my_server.securise.com..com/ssl_access.log main;
+      #access_log  logs/my_server.securise.com..com/ssl_access.log;
       #access_log  /var/log/nginx/my_server.com.ssl_access.log;
       #error_log   logs/machine.my_server.com/ssl_error.log;
       #error_log    /var/log/nginx/machine.my_server.com.error.log debug;

@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<!-- saved from url=(0106)https://fabianlee.org/2018/02/17/ubuntu-creating-a-trusted-ca-and-san-certificate-using-openssl-on-ubuntu/ -->
+<html lang="en-US" class="js" slick-uniqueid="3"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="profile" href="https://gmpg.org/xfn/11">
+		<script type="text/javascript" async="" src="./Ubuntu_ Creating a trusted CA and SAN certificate using OpenSSL – Fabian Lee _ Software Architect_files/analytics.js"></script><script>(function(html){html.className = html.className.replace(/\bno-js\b/,'js')})(document.documentElement);</script>
+<title>Ubuntu: Creating a trusted CA and SAN certificate using OpenSSL – Fabian Lee : Software Architect</title>
+<link rel="dns-prefetch" href="https://www.googletagmanager.com/">
+<link rel="dns-prefetch" href="https://ajax.googleapis.com/">
+<link rel="dns-prefetch" href="https://fonts.googleapis.com/">
+<link href="https://fonts.gstatic.com/" crossorigin="" rel="preconnect">
+<link rel="alternate" type="application/rss+xml" title="Fabian Lee : Software Architect » Feed" href="https://fabianlee.org/feed/">
+<link rel="alternate" type="application/rss+xml" title="Fabian Lee : Software Architect » Comments Feed" href="https://fabianlee.org/comments/feed/">
+<link rel="stylesheet" id="wp-block-library-css" href="./Ubuntu_ Creating a trusted CA and SAN certificate using OpenSSL – Fabian Lee _ Software Architect_files/style.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="wp-block-library-theme-css" href="./Ubuntu_ Creating a trusted CA and SAN certificate using OpenSSL – Fabian Lee _ Software Architect_files/theme.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="wp-syntax-css-css" href="./Ubuntu_ Creating a trusted CA and SAN certificate using OpenSSL – Fabian Lee _ Software Architect_files/wp-syntax.css" type="text/css" media="all">
+<link rel="stylesheet" id="twentysixteen-fonts-css" href="./Ubuntu_ Creating a trusted CA and SAN certificate using OpenSSL – Fabian Lee _ Software Architect_files/css" type="text/css" media="all">
+<link rel="stylesheet" id="genericons-css" href="./Ubuntu_ Creating a trusted CA and SAN certificate using OpenSSL – Fabian Lee _ Software Architect_files/genericons.css" type="text/css" media="all">
+<link rel="stylesheet" id="twentysixteen-style-css" href="./Ubuntu_ Creating a trusted CA and SAN certificate using OpenSSL – Fabian Lee _ Software Architect_files/style.css" type="text/css" media="all">
+<link rel="stylesheet" id="twentysixteen-block-style-css" href="./Ubuntu_ Creating a trusted CA and SAN certificate using OpenSSL – Fabian Lee _ Software Architect_files/blocks.css" type="text/css" media="all">
+<!--[if lt IE 10]>
+<link rel='stylesheet' id='twentysixteen-ie-css'  href='https://fabianlee.org/wp-content/themes/twentysixteen/css/ie.css?ver=20160816' type='text/css' media='all' />
+<![endif]-->
+<!--[if lt IE 9]>
+<link rel='stylesheet' id='twentysixteen-ie8-css'  href='https://fabianlee.org/wp-content/themes/twentysixteen/css/ie8.css?ver=20160816' type='text/css' media='all' />
+<![endif]-->
+<!--[if lt IE 8]>
+<link rel='stylesheet' id='twentysixteen-ie7-css'  href='https://fabianlee.org/wp-content/themes/twentysixteen/css/ie7.css?ver=20160816' type='text/css' media='all' />
+<![endif]-->
+<link rel="stylesheet" id="enlighter-local-css" href="./Ubuntu_ Creating a trusted CA and SAN certificate using OpenSSL – Fabian Lee _ Software Architect_files/EnlighterJS.min.css" type="text/css" media="all">
+<script type="text/javascript" src="./Ubuntu_ Creating a trusted CA and SAN certificate using OpenSSL – Fabian Lee _ Software Architect_files/jquery.js"></script><style>@media print {#ghostery-purple-box {display:none !important}}</style>
+<script type="text/javascript" src="./Ubuntu_ Creating a trusted CA and SAN certificate using OpenSSL – Fabian Lee _ Software Architect_files/jquery-migrate.min.js"></script>
+<!--[if lt IE 9]>
+<script type='text/javascript' src='https://fabianlee.org/wp-content/themes/twentysixteen/js/html5.js?ver=3.7.3'></script>
+<![endif]-->
+<script type="text/javascript" src="./Ubuntu_ Creating a trusted CA and SAN certificate using OpenSSL – Fabian Lee _ Software Architect_files/js" async=""></script>
+<script type="text/javascript">
+window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-80909344-1', {"anonymize_ip":true} );
+</script>
+<script type="text/javascript" src="./Ubuntu_ Creating a trusted CA and SAN certificate using OpenSSL – Fabian Lee _ Software Architect_files/mootools.min.js"></script>
+<script type="text/javascript" src="./Ubuntu_ Creating a trusted CA and SAN certificate using OpenSSL – Fabian Lee _ Software Architect_files/EnlighterJS.min.js"></script>
+<link rel="https://api.w.org/" href="https://fabianlee.org/wp-json/">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://fabianlee.org/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://fabianlee.org/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="Postfix: Forcing a reprocess of the pending queue" href="https://fabianlee.org/2018/02/12/postfix-forcing-a-reprocess-of-the-pending-queue/">
+<link rel="next" title="Ubuntu: Creating a self-signed SAN certificate using OpenSSL" href="https://fabianlee.org/2018/02/17/ubuntu-creating-a-self-signed-san-certificate-using-openssl/">
+<meta name="generator" content="WordPress 5.3.2">
+<link rel="canonical" href="https://fabianlee.org/2018/02/17/ubuntu-creating-a-trusted-ca-and-san-certificate-using-openssl-on-ubuntu/">
+<link rel="shortlink" href="https://fabianlee.org/?p=1132">
+<meta name="generator" content="Site Kit by Google 1.6.0"><script type="text/javascript">/* <![CDATA[ */EnlighterJS_Config = {"selector":{"block":"pre.EnlighterJSRAW","inline":"code.EnlighterJSRAW"},"language":"generic","theme":"enlighter","indent":2,"hover":"hoverEnabled","showLinenumbers":true,"rawButton":true,"infoButton":true,"windowButton":true,"rawcodeDoubleclick":true,"grouping":true,"cryptex":{"enabled":false,"email":"mail@example.tld"}};!function(){var a=function(a){var b="Enlighter Error: ";console.error?console.error(b+a):console.log&&console.log(b+a)};return window.addEvent?"undefined"==typeof EnlighterJS?void a("Javascript Resources not loaded yet!"):"undefined"==typeof EnlighterJS_Config?void a("Configuration not loaded yet!"):void window.addEvent("domready",function(){EnlighterJS.Util.Init(EnlighterJS_Config.selector.block,EnlighterJS_Config.selector.inline,EnlighterJS_Config)}):void a("MooTools Framework not loaded yet!")}();;/* ]]> */</script></head>
+
+<body data-rsssl="1" class="post-template-default single single-post postid-1132 single-format-standard wp-custom-logo wp-embed-responsive">
+<div id="page" class="site">
+	<div class="site-inner">
+		<a class="skip-link screen-reader-text" href="https://fabianlee.org/2018/02/17/ubuntu-creating-a-trusted-ca-and-san-certificate-using-openssl-on-ubuntu/#content">Skip to content</a>
+
+		<header id="masthead" class="site-header" role="banner">
+			<div class="site-header-main">
+				<div class="site-branding">
+					<a href="https://fabianlee.org/" class="custom-logo-link" rel="home"><img width="46" height="46" src="./Ubuntu_ Creating a trusted CA and SAN certificate using OpenSSL – Fabian Lee _ Software Architect_files/headshot.png" class="custom-logo" alt="Fabian Lee : Software Architect"></a>
+											<p class="site-title"><a href="https://fabianlee.org/" rel="home">Fabian Lee : Software Architect</a></p>
+												<p class="site-description">Cloud Operations and Development</p>
+									</div><!-- .site-branding -->
+
+									<button id="menu-toggle" class="menu-toggle">Menu</button>
+
+					<div id="site-header-menu" class="site-header-menu">
+													<nav id="site-navigation" class="main-navigation" role="navigation" aria-label="Primary Menu">
+								<div class="menu-categories-container"><ul id="menu-categories" class="primary-menu"><li id="menu-item-897" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-897"><a href="https://fabianlee.org/category/monitoring/">Monitoring</a></li>
+<li id="menu-item-896" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-896"><a href="https://fabianlee.org/category/logging/">Logging</a></li>
+<li id="menu-item-936" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-936"><a href="https://fabianlee.org/category/containers/">Containers</a></li>
+<li id="menu-item-1156" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1156"><a href="https://fabianlee.org/category/python/">Python</a></li>
+</ul></div>							</nav><!-- .main-navigation -->
+						
+											</div><!-- .site-header-menu -->
+							</div><!-- .site-header-main -->
+
+					</header><!-- .site-header -->
+
+		<div id="content" class="site-content">
+
+<div id="primary" class="content-area">
+	<main id="main" class="site-main" role="main">
+		
+<article id="post-1132" class="post-1132 post type-post status-publish format-standard hentry category-dne category-linux tag-ca tag-cert tag-certificate tag-chrome tag-crt tag-haproxy tag-java tag-key tag-keytool tag-openssl tag-pem tag-pfx tag-san tag-self tag-self-signed tag-signed tag-subject-alternate-name tag-ubuntu tag-wildcard">
+	<header class="entry-header">
+		<h1 class="entry-title">Ubuntu: Creating a trusted CA and SAN certificate using OpenSSL</h1>	</header><!-- .entry-header -->
+
+	
+	
+	<div class="entry-content">
+		<p><img class=" wp-image-745 alignleft" src="./Ubuntu_ Creating a trusted CA and SAN certificate using OpenSSL – Fabian Lee _ Software Architect_files/openssl-logo.png" alt="" width="196" height="72">There are numerous articles I’ve written&nbsp; where a certificate is a prerequisite for deploying a piece of infrastructure.</p>
+<p>This article will guide you through creating a trusted CA (Certificate Authority), and then using that to sign a server certificate that supports SAN (<a href="https://www.digicert.com/subject-alternative-name.htm">Subject Alternative Name</a>).&nbsp;</p>
+<p>Operationally, having your own trusted CA is advantageous over a self-signed certificate because once you install the CA certificate on a set of corporate/development machines, all the server certificates you issue from that CA will be trusted.&nbsp;&nbsp; If you manage a larger sized internal environment where hosts, services, and containers are in constant flux, this is an operational win.</p>
+<p>CA trust also had advantages to self-signed certs because browsers like <a href="https://textslashplain.com/2017/03/10/chrome-deprecates-subject-cn-matching/">Chrome 58 and Firefox 48</a> have limitations on trusting self-signed certificates. &nbsp; The Windows version of Chrome is the only flavor that allows self-signed certs to be imported as a trusted root authority, all other OS do not trust the self-signed certificate.&nbsp; And Firefox allows you to add a permanent exception, but needs a trusted CA in order to show a fully green trust lock icon.</p>
+<p>If you just want a self-signed SAN certificate with no backing CA, then <a href="https://fabianlee.org/2018/02/17/ubuntu-creating-a-self-signed-san-certificate-using-openssl/">read my article here instead</a>, but note that it has limitations that are overcome by using a trusted CA.</p>
+<p><span id="more-1132"></span></p>
+<h2>Overview</h2>
+<p>If you are familiar with commercial certificates, you know that a certificate does not live in isolation.&nbsp; It it just the beginning of a chain of trust, where the root certificate is ultimately trusted because it sits on your local system.</p>
+<p>We can create a SAN certificate with the same features, issued and signed by a Certificate Authority that <em>we create</em>.&nbsp;&nbsp; This has several benefits:</p>
+<ol>
+<li>Better emulation of production – production certs also consist of a chain</li>
+<li>Ease of administration – once a user trusts our CA, then any other SAN certificate we generate will also be trusted</li>
+<li>Better browser support – not all browsers allow self-signed certs to be added into the trusted root authorities list</li>
+</ol>
+<p>In this article, first we will create our own CA (Certificate Authority).&nbsp; Then we will use that CA to create a SAN server certificate that covers&nbsp; “mydomain.com” as well as any of its subdomains, “*.mydomain.com”.</p>
+<p>If you want to test the certs we generate here, I would recommend using HAProxy.&nbsp; Here is a page where I <a href="https://fabianlee.org/2017/02/21/haproxy-using-haproxy-for-ssl-termination-on-ubuntu/">describe how to do a quick HAProxy install</a>.</p>
+<h2>Prerequisite</h2>
+<p>As a prerequisite, ensure the SSL packages are installed:</p>
+<pre>$ sudo apt-get install libssl1.0.0 -y</pre>
+<h3>Customized openssl.cnf</h3>
+<p>The first step is to grab the openssl.cnf template available on your system.&nbsp; On Ubuntu this can be found at “/usr/lib/ssl/openssl.cnf”.&nbsp; You may find this in “/System/Library/OpenSSL/” on MacOS, and “/etc/pki/tls” on Redhat variants.</p>
+<pre>export prefix="mydomain"
+
+cp /usr/lib/ssl/openssl.cnf $prefix.cnf</pre>
+<p>“$prefix.cnf” needs be modified with the specific information about the cert we are going to generate.</p>
+<p>Under the [ v3_ca ] section, add the following values.&nbsp; For the CA, this signifies we are creating a CA that will be used for key signing.</p>
+<pre>[ v3_ca ]
+subjectKeyIdentifier=hash
+authorityKeyIdentifier=keyid:always,issuer
+basicConstraints = critical, CA:TRUE, pathlen:3
+keyUsage = critical, cRLSign, keyCertSign
+nsCertType = sslCA, emailCA</pre>
+<p>Then under the “[ v3_req ]” section, set the following along with all the valid alternative names for this certificate.</p>
+<pre>[ v3_req ]
+basicConstraints = CA:FALSE
+keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+#extendedKeyUsage=serverAuth
+subjectAltName = @alt_names
+
+[ alt_names ]
+DNS.1 = <code>mydomain.com</code> 
+DNS.2 = <code>*.dydomain.com</code></pre>
+<p>Also uncomment the following line under the “[ req ]” section so that certificate requests are created with v3 extensions.</p>
+<pre>req_extensions = v3_req</pre>
+<p>When we generate each type of key, we specify which extension section we want to use, which is why we can share $prefix.cnf for creating both the CA as well as the SAN certificate.</p>
+<h3>Create CA certificate</h3>
+<p>Now we will start using OpenSSL to create the necessary keys and certificates. First generate the private/public RSA key pair:</p>
+<pre>openssl genrsa -aes256 -out ca.key.pem 2048
+
+chmod 400 ca.key.pem</pre>
+<p>This encodes the key file using an passphrase based on AES256.&nbsp; Then we need to create the self-signed root CA certificate.</p>
+<pre>openssl req -new -x509 -subj "/CN=myca" <code>-extensions v3_ca</code> -days 3650 -key ca.key.pem -sha256 -out ca.pem -config $prefix.cnf</pre>
+<p>You can verify this root CA certificate using:</p>
+<pre>openssl x509 -in ca.pem -text -noout</pre>
+<p>This will show the root CA certificate, and the ‘Issuer’ and ‘Subject’ will be the same since this is self-signed. This is flagged as “CA:TRUE” meaning it will be recognized as a root CA certificate; meaning browsers and OS will allow it to be imported into their trusted root certificate store.</p>
+<pre>Issuer: <code>CN=myca</code> 
+... 
+Subject: <code>CN=myca</code> 
+... 
+X509v3 Basic Constraints: 
+ critical <code>CA:TRUE,</code> pathlen:3 
+X509v3 Key Usage: 
+ critical Certificate Sign, CRL Sign 
+Netscape Cert Type: 
+ SSL CA, S/MIME CA</pre>
+<h3>Create Server certificate signed by CA</h3>
+<p>With the root CA now created, we switch over to the server certificate.&nbsp; First generate the private/public RSA key pair:</p>
+<pre>openssl genrsa -out $prefix.key.pem 2048</pre>
+<p>We didn’t put a passphrase on this key simply because the CA is more valuable target and we can always regenerate the server cert, but feel free to take this extra precaution.</p>
+<p>Then create the server cert signing request:</p>
+<pre>openssl req -subj "/CN=$prefix" <code>-extensions v3_req</code> -sha256 -new -key $prefix.key.pem -out $prefix.csr</pre>
+<p>Then generate the server certificate using the: server signing request, the CA signing key, and CA cert.</p>
+<pre>openssl x509 -req <code>-extensions v3_req</code> -days 3650 -sha256 -in $prefix.csr -CA ca.pem -CAkey ca.key.pem -CAcreateserial -out $prefix.crt -extfile $prefix.cnf</pre>
+<p>The “$prefix.key.pem” is the server private key and “$prefix.crt” is the server certificate.&nbsp; Verify the certificate:</p>
+<pre>openssl x509 -in $prefix.crt -text -noout</pre>
+<p>This will show the certificate, and the ‘Issuer’ will be the CA name, while the Subject is the prefix.&nbsp; This is not set to be a CA, and the ‘Subject Alternative Name’ field contains the URLs that will be considered valid by browsers.</p>
+<pre>Issuer: <code>
+  CN=myca</code> 
+... 
+Subject: <code>
+  CN=mydomain</code> 
+... 
+X509v3 Basic Constraints: <code>
+  CA:FALSE</code> 
+X509v3 Key Usage: 
+ Digital Signature, Non Repudiation, Key Encipherment 
+X509v3 Subject Alternative Name:
+ <code>DNS:mydomain.com, DNS:*.mydomain.com</code></pre>
+<h3>Server deployment</h3>
+<p>Servers like HAProxy want the full chain of certs along with private key (server certificate+CA cert+server private key).&nbsp; While Windows IIS wants a .pfx file.&nbsp; Here is how you would generate those files.</p>
+<pre>cat $prefix.crt ca.pem $prefix.key.pem &gt; $prefix-ca-full.pem
+
+openssl pkcs12 -export -out $prefix.pfx -inkey $prefix.key.pem -in $prefix.crt -certfile ca.pem</pre>
+<h3>Browser Evaluation</h3>
+<p>When you first point Chrome or Firefox at the site with your SAN cert with CA signing, it will throw the same type of exceptions as a self-signed SAN cert.&nbsp; This is because the root CA cert is not known as a trusted source for signed certificates.</p>
+<p>In Chrome settings (chrome://settings), search for “certificates” and click on “Manage Certificates”.&nbsp; On Windows this will open the Windows certificate manager and you should import the “ca.pem” file at the “Trusted Root Certification Authorities” tab.&nbsp; This is equivalent to adding it through mmc.exe, in the “local user” trusted root store (not the computer level).&nbsp; On Linux, Chrome manages its own certificate store and again you should import “ca.pem” into the “Authorities” tab.&nbsp; This should now make the security icon turn green.</p>
+<p>In Firefox Options (about:preferences), search for “certificates” and click “View Certificates”.&nbsp; Go to the “Authorities” tab and import “ca.pem”.&nbsp; Check the box to have it trust websites, and now the lock icon should turn green when you visit the page.</p>
+<p>Although there is a little friction doing this import, it is a one-time cost because any other certificates that you sign with this CA are now trusted.&nbsp; So if a cert expires and you have to replace it, or you need to change the URLs in a SAN and refresh it, none of the browsers will have an issue with trust.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>REFERENCES</p>
+<p><a href="https://stackoverflow.com/questions/21488845/how-can-i-generate-a-self-signed-certificate-with-subjectaltname-using-openssl">https://stackoverflow.com/questions/21488845/how-can-i-generate-a-self-signed-certificate-with-subjectaltname-using-openssl</a></p>
+<p><a href="http://grokify.github.io/security/wildcard-subject-alternative-name-ssl-tls-certificates/">http://grokify.github.io/security/wildcard-subject-alternative-name-ssl-tls-certificates/</a></p>
+<p><a href="https://gist.github.com/jhamrick/ac0404839b5c7dab24b5">https://gist.github.com/jhamrick/ac0404839b5c7dab24b5</a> (script for CA and SAN)</p>
+<p><a href="http://wiki.cacert.org/FAQ/subjectAltName">http://wiki.cacert.org/FAQ/subjectAltName</a></p>
+<p><a href="https://github.com/stanzgy/wiki/blob/master/network/openssl-self-signed-certs-cheatsheet.md">https://github.com/stanzgy/wiki/blob/master/network/openssl-self-signed-certs-cheatsheet.md</a> (exact commands for CA, intermediate, chain, server cert, validating cert+key)</p>
+<p><a href="https://gist.github.com/akailash/7ec96e39d6951dd2293308e1d8055307">https://gist.github.com/akailash/7ec96e39d6951dd2293308e1d8055307</a></p>
+<p><a href="https://gist.github.com/bitoiu/9e19962b991a71165268">https://gist.github.com/bitoiu/9e19962b991a71165268</a> (original source of quick SAN with no intermediate)</p>
+<p><a href="https://jamielinux.com/docs/openssl-certificate-authority/create-the-root-pair.html">https://jamielinux.com/docs/openssl-certificate-authority/create-the-root-pair.html</a> (multiple pages of detailed lead through for CA, intermediate, and cert)</p>
+<p><a href="https://security.stackexchange.com/questions/38782/ssl-tls-distinction-between-self-signed-cert-and-self-signed-ca-and-other-que">https://security.stackexchange.com/questions/38782/ssl-tls-distinction-between-self-signed-cert-and-self-signed-ca-and-other-que</a> (discussion on CA vs Self signed)</p>
+<p><a href="https://stackoverflow.com/questions/5244129/use-rsa-private-key-to-generate-public-key">https://stackoverflow.com/questions/5244129/use-rsa-private-key-to-generate-public-key</a> (discussion on RSA public/private pair and info inside)</p>
+<p><a href="https://stackoverflow.com/questions/5935369/ssl-how-do-common-names-cn-and-subject-alternative-names-san-work-together">https://stackoverflow.com/questions/5935369/ssl-how-do-common-names-cn-and-subject-alternative-names-san-work-together</a> (explains how RFC 6125 from 2011 says SAN checked first)</p>
+<p><a href="https://github.com/webpack/webpack-dev-server/issues/854">https://github.com/webpack/webpack-dev-server/issues/854</a> (self signed cert no longer valid chrome 58)</p>
+<p><a href="https://bugs.chromium.org/p/chromium/issues/detail?id=700595&amp;desc=2">https://bugs.chromium.org/p/chromium/issues/detail?id=700595&amp;desc=2</a> (chrome 58 needs SAN for self-certs)</p>
+<p><a href="https://gist.github.com/akailash/7ec96e39d6951dd2293308e1d8055307">https://gist.github.com/akailash/7ec96e39d6951dd2293308e1d8055307</a> (wildcard SAN with CA, also shows how to add as trusted cert at linux level)</p>
+<p><a href="https://www.chromium.org/administrators/policy-list-3#EnableCommonNameFallbackForLocalAnchors">https://www.chromium.org/administrators/policy-list-3#EnableCommonNameFallbackForLocalAnchors</a> (temporary workaround for chrome 58)</p>
+<p><a href="https://www.reddit.com/r/sysadmin/comments/66clon/chrome_58_displays_an_untrusted_warning_for_certs/">Reddit discussion on Chrome 58</a></p>
+<p><a href="http://users.skynet.be/pascalbotte/art/server-cert.htm">http://users.skynet.be/pascalbotte/art/server-cert.htm</a> (use Jetty jar to transform pkcs12 to jks java keystore)</p>
+<p>&nbsp;</p>
+<p>NOTES</p>
+<p>On Ubuntu, trusted root certificates sit in the directory “/etc/ssl/certs”, and can be updated using “sudo update-ca-certificates”.&nbsp; On Windows it is managed through the <a href="https://docs.microsoft.com/en-us/dotnet/framework/wcf/feature-details/how-to-view-certificates-with-the-mmc-snap-in">MMC Certificate Snap-In</a>.</p>
+<p>If you don’t want to manually type the password, you can use passin/passout:</p>
+<pre>openssl genrsa -des3 -out CA.key -passout file:capass.txt 2048</pre>
+<p>Now use that CA to create the root CA certificate.</p>
+<pre>openssl rsa -in CA.key -passin file:capass.txt -out CA.pem</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+	</div><!-- .entry-content -->
+
+	<footer class="entry-footer">
+		<span class="byline"><span class="author vcard"><span class="screen-reader-text">Author </span> <a class="url fn n" href="https://fabianlee.org/author/admin/">Fabian</a></span></span><span class="posted-on"><span class="screen-reader-text">Posted on </span><a href="https://fabianlee.org/2018/02/17/ubuntu-creating-a-trusted-ca-and-san-certificate-using-openssl-on-ubuntu/" rel="bookmark"><time class="entry-date published" datetime="2018-02-17T01:38:39+00:00">February 17, 2018</time><time class="updated" datetime="2018-03-01T13:08:37+00:00">March 1, 2018</time></a></span><span class="cat-links"><span class="screen-reader-text">Categories </span><a href="https://fabianlee.org/category/dne/" rel="category tag">DNE</a>, <a href="https://fabianlee.org/category/linux/" rel="category tag">Linux</a></span><span class="tags-links"><span class="screen-reader-text">Tags </span><a href="https://fabianlee.org/tag/ca/" rel="tag">CA</a>, <a href="https://fabianlee.org/tag/cert/" rel="tag">cert</a>, <a href="https://fabianlee.org/tag/certificate/" rel="tag">certificate</a>, <a href="https://fabianlee.org/tag/chrome/" rel="tag">chrome</a>, <a href="https://fabianlee.org/tag/crt/" rel="tag">crt</a>, <a href="https://fabianlee.org/tag/haproxy/" rel="tag">haproxy</a>, <a href="https://fabianlee.org/tag/java/" rel="tag">java</a>, <a href="https://fabianlee.org/tag/key/" rel="tag">key</a>, <a href="https://fabianlee.org/tag/keytool/" rel="tag">keytool</a>, <a href="https://fabianlee.org/tag/openssl/" rel="tag">openssl</a>, <a href="https://fabianlee.org/tag/pem/" rel="tag">pem</a>, <a href="https://fabianlee.org/tag/pfx/" rel="tag">pfx</a>, <a href="https://fabianlee.org/tag/san/" rel="tag">san</a>, <a href="https://fabianlee.org/tag/self/" rel="tag">self</a>, <a href="https://fabianlee.org/tag/self-signed/" rel="tag">self-signed</a>, <a href="https://fabianlee.org/tag/signed/" rel="tag">signed</a>, <a href="https://fabianlee.org/tag/subject-alternate-name/" rel="tag">subject alternate name</a>, <a href="https://fabianlee.org/tag/ubuntu/" rel="tag">ubuntu</a>, <a href="https://fabianlee.org/tag/wildcard/" rel="tag">wildcard</a></span>			</footer><!-- .entry-footer -->
+</article><!-- #post-1132 -->
+
+	<nav class="navigation post-navigation" role="navigation" aria-label="Posts">
+		<h2 class="screen-reader-text">Post navigation</h2>
+		<div class="nav-links"><div class="nav-previous"><a href="https://fabianlee.org/2018/02/12/postfix-forcing-a-reprocess-of-the-pending-queue/" rel="prev"><span class="meta-nav" aria-hidden="true">Previous</span> <span class="screen-reader-text">Previous post:</span> <span class="post-title">Postfix: Forcing a reprocess of the pending queue</span></a></div><div class="nav-next"><a href="https://fabianlee.org/2018/02/17/ubuntu-creating-a-self-signed-san-certificate-using-openssl/" rel="next"><span class="meta-nav" aria-hidden="true">Next</span> <span class="screen-reader-text">Next post:</span> <span class="post-title">Ubuntu: Creating a self-signed SAN certificate using OpenSSL</span></a></div></div>
+	</nav>
+	</main><!-- .site-main -->
+
+	
+</div><!-- .content-area -->
+
+
+	<aside id="secondary" class="sidebar widget-area" role="complementary">
+		<section id="search-2" class="widget widget_search">
+<form role="search" method="get" class="search-form" action="https://fabianlee.org/">
+	<label>
+		<span class="screen-reader-text">Search for:</span>
+		<input type="search" class="search-field" placeholder="Search …" value="" name="s">
+	</label>
+	<button type="submit" class="search-submit"><span class="screen-reader-text">Search</span></button>
+</form>
+</section><section id="similar_posts_widget" class="widget widget_rrm_similar_posts"><h2 class="widget-title">Related articles</h2><ul><li><a href="https://fabianlee.org/2018/02/17/ubuntu-creating-a-self-signed-san-certificate-using-openssl/" rel="bookmark" title="Ubuntu: Creating a self-signed SAN certificate using OpenSSL">Ubuntu: Creating a self-signed SAN certificate using OpenSSL</a></li>
+
+<li><a href="https://fabianlee.org/2017/02/21/ubuntu-creating-a-self-signed-certificate-using-openssl-on-ubuntu/" rel="bookmark" title="Ubuntu: Creating a self-signed certificate using OpenSSL on Ubuntu">Ubuntu: Creating a self-signed certificate using OpenSSL on Ubuntu</a></li>
+
+<li><a href="https://fabianlee.org/2018/02/19/java-loading-self-signed-ca-and-san-certificates-into-a-java-keystore/" rel="bookmark" title="Java: Loading self-signed, CA, and SAN certificates into a Java Keystore">Java: Loading self-signed, CA, and SAN certificates into a Java Keystore</a></li>
+
+<li><a href="https://fabianlee.org/2020/03/24/bash-examining-each-certificate-in-a-yaml-file-using-sed-and-openssl/" rel="bookmark" title="Bash: Examining each certificate in a yaml file using sed and openssl">Bash: Examining each certificate in a yaml file using sed and openssl</a></li>
+
+<li><a href="https://fabianlee.org/2020/03/27/ubuntu-adding-a-root-certificate-authority/" rel="bookmark" title="Ubuntu: Adding a root certificate authority">Ubuntu: Adding a root certificate authority</a></li>
+</ul><!-- Similar Posts took 57.279 ms --></section><section id="tag_cloud-3" class="widget widget_tag_cloud"><h2 class="widget-title">Tags</h2><div class="tagcloud"><ul class="wp-tag-cloud" role="list">
+	<li><a href="https://fabianlee.org/tag/bash/" class="tag-cloud-link tag-link-310 tag-link-position-1" style="font-size: 1em;">bash</a></li>
+	<li><a href="https://fabianlee.org/tag/boot/" class="tag-cloud-link tag-link-436 tag-link-position-2" style="font-size: 1em;">boot</a></li>
+	<li><a href="https://fabianlee.org/tag/build/" class="tag-cloud-link tag-link-413 tag-link-position-3" style="font-size: 1em;">build</a></li>
+	<li><a href="https://fabianlee.org/tag/certificate/" class="tag-cloud-link tag-link-423 tag-link-position-4" style="font-size: 1em;">certificate</a></li>
+	<li><a href="https://fabianlee.org/tag/cli/" class="tag-cloud-link tag-link-614 tag-link-position-5" style="font-size: 1em;">cli</a></li>
+	<li><a href="https://fabianlee.org/tag/client/" class="tag-cloud-link tag-link-210 tag-link-position-6" style="font-size: 1em;">client</a></li>
+	<li><a href="https://fabianlee.org/tag/clone/" class="tag-cloud-link tag-link-97 tag-link-position-7" style="font-size: 1em;">clone</a></li>
+	<li><a href="https://fabianlee.org/tag/cloud-foundry/" class="tag-cloud-link tag-link-613 tag-link-position-8" style="font-size: 1em;">cloud foundry</a></li>
+	<li><a href="https://fabianlee.org/tag/custom/" class="tag-cloud-link tag-link-245 tag-link-position-9" style="font-size: 1em;">custom</a></li>
+	<li><a href="https://fabianlee.org/tag/docker/" class="tag-cloud-link tag-link-438 tag-link-position-10" style="font-size: 1em;">docker</a></li>
+	<li><a href="https://fabianlee.org/tag/documentum/" class="tag-cloud-link tag-link-5 tag-link-position-11" style="font-size: 1em;">documentum</a></li>
+	<li><a href="https://fabianlee.org/tag/elasticsearch/" class="tag-cloud-link tag-link-206 tag-link-position-12" style="font-size: 1em;">elasticsearch</a></li>
+	<li><a href="https://fabianlee.org/tag/elk/" class="tag-cloud-link tag-link-181 tag-link-position-13" style="font-size: 1em;">elk</a></li>
+	<li><a href="https://fabianlee.org/tag/git/" class="tag-cloud-link tag-link-96 tag-link-position-14" style="font-size: 1em;">git</a></li>
+	<li><a href="https://fabianlee.org/tag/golang/" class="tag-cloud-link tag-link-521 tag-link-position-15" style="font-size: 1em;">golang</a></li>
+	<li><a href="https://fabianlee.org/tag/go-programming-language/" class="tag-cloud-link tag-link-552 tag-link-position-16" style="font-size: 1em;">go programming language</a></li>
+	<li><a href="https://fabianlee.org/tag/install/" class="tag-cloud-link tag-link-233 tag-link-position-17" style="font-size: 1em;">install</a></li>
+	<li><a href="https://fabianlee.org/tag/integration/" class="tag-cloud-link tag-link-285 tag-link-position-18" style="font-size: 1em;">integration</a></li>
+	<li><a href="https://fabianlee.org/tag/java/" class="tag-cloud-link tag-link-14 tag-link-position-19" style="font-size: 1em;">java</a></li>
+	<li><a href="https://fabianlee.org/tag/key/" class="tag-cloud-link tag-link-425 tag-link-position-20" style="font-size: 1em;">key</a></li>
+	<li><a href="https://fabianlee.org/tag/kvm/" class="tag-cloud-link tag-link-820 tag-link-position-21" style="font-size: 1em;">kvm</a></li>
+	<li><a href="https://fabianlee.org/tag/linux/" class="tag-cloud-link tag-link-82 tag-link-position-22" style="font-size: 1em;">linux</a></li>
+	<li><a href="https://fabianlee.org/tag/local/" class="tag-cloud-link tag-link-400 tag-link-position-23" style="font-size: 1em;">local</a></li>
+	<li><a href="https://fabianlee.org/tag/logging/" class="tag-cloud-link tag-link-63 tag-link-position-24" style="font-size: 1em;">logging</a></li>
+	<li><a href="https://fabianlee.org/tag/logstash/" class="tag-cloud-link tag-link-27 tag-link-position-25" style="font-size: 1em;">logstash</a></li>
+	<li><a href="https://fabianlee.org/tag/metrics/" class="tag-cloud-link tag-link-46 tag-link-position-26" style="font-size: 1em;">metrics</a></li>
+	<li><a href="https://fabianlee.org/tag/openssl/" class="tag-cloud-link tag-link-321 tag-link-position-27" style="font-size: 1em;">openssl</a></li>
+	<li><a href="https://fabianlee.org/tag/openwrt/" class="tag-cloud-link tag-link-55 tag-link-position-28" style="font-size: 1em;">openwrt</a></li>
+	<li><a href="https://fabianlee.org/tag/package/" class="tag-cloud-link tag-link-155 tag-link-position-29" style="font-size: 1em;">package</a></li>
+	<li><a href="https://fabianlee.org/tag/proxy/" class="tag-cloud-link tag-link-418 tag-link-position-30" style="font-size: 1em;">proxy</a></li>
+	<li><a href="https://fabianlee.org/tag/python/" class="tag-cloud-link tag-link-236 tag-link-position-31" style="font-size: 1em;">python</a></li>
+	<li><a href="https://fabianlee.org/tag/repository/" class="tag-cloud-link tag-link-112 tag-link-position-32" style="font-size: 1em;">repository</a></li>
+	<li><a href="https://fabianlee.org/tag/saltstack/" class="tag-cloud-link tag-link-102 tag-link-position-33" style="font-size: 1em;">saltstack</a></li>
+	<li><a href="https://fabianlee.org/tag/security/" class="tag-cloud-link tag-link-218 tag-link-position-34" style="font-size: 1em;">security</a></li>
+	<li><a href="https://fabianlee.org/tag/service/" class="tag-cloud-link tag-link-300 tag-link-position-35" style="font-size: 1em;">service</a></li>
+	<li><a href="https://fabianlee.org/tag/single/" class="tag-cloud-link tag-link-516 tag-link-position-36" style="font-size: 1em;">single</a></li>
+	<li><a href="https://fabianlee.org/tag/spring/" class="tag-cloud-link tag-link-294 tag-link-position-37" style="font-size: 1em;">spring</a></li>
+	<li><a href="https://fabianlee.org/tag/ssh/" class="tag-cloud-link tag-link-240 tag-link-position-38" style="font-size: 1em;">ssh</a></li>
+	<li><a href="https://fabianlee.org/tag/syslog/" class="tag-cloud-link tag-link-178 tag-link-position-39" style="font-size: 1em;">syslog</a></li>
+	<li><a href="https://fabianlee.org/tag/tls/" class="tag-cloud-link tag-link-125 tag-link-position-40" style="font-size: 1em;">tls</a></li>
+	<li><a href="https://fabianlee.org/tag/ubuntu/" class="tag-cloud-link tag-link-17 tag-link-position-41" style="font-size: 1em;">ubuntu</a></li>
+	<li><a href="https://fabianlee.org/tag/virtualbox/" class="tag-cloud-link tag-link-268 tag-link-position-42" style="font-size: 1em;">virtualbox</a></li>
+	<li><a href="https://fabianlee.org/tag/vmware/" class="tag-cloud-link tag-link-62 tag-link-position-43" style="font-size: 1em;">vmware</a></li>
+	<li><a href="https://fabianlee.org/tag/windows/" class="tag-cloud-link tag-link-9 tag-link-position-44" style="font-size: 1em;">windows</a></li>
+	<li><a href="https://fabianlee.org/tag/zabbix/" class="tag-cloud-link tag-link-281 tag-link-position-45" style="font-size: 1em;">zabbix</a></li>
+</ul>
+</div>
+</section>		<section id="recent-posts-2" class="widget widget_recent_entries">		<h2 class="widget-title">Recent Posts</h2>		<ul>
+											<li>
+					<a href="https://fabianlee.org/2020/03/27/ubuntu-adding-a-root-certificate-authority/">Ubuntu: Adding a root certificate authority</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/03/24/bash-examining-each-certificate-in-a-yaml-file-using-sed-and-openssl/">Bash: Examining each certificate in a yaml file using sed and openssl</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/03/22/kvm-testing-cloud-init-locally-using-kvm-for-a-rhel-cloud-image/">KVM: Testing cloud-init locally using KVM for a RHEL cloud image</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/03/17/linux-introducing-latency-and-packet-loss-into-network-for-testing/">Linux: Introducing latency and packet loss into network for testing</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/03/14/kvm-testing-cloud-init-locally-using-kvm-for-a-centos-cloud-image/">KVM: Testing cloud-init locally using KVM for a CentOS cloud image</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/02/23/kvm-testing-cloud-init-locally-using-kvm-for-an-ubuntu-cloud-image/">KVM: Testing cloud-init locally using KVM for an Ubuntu cloud image</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/02/22/kvm-terraform-and-cloud-init-to-create-local-kvm-resources/">KVM: Terraform and cloud-init to create local KVM resources</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/02/15/bash-associative-array-initialization-and-usage/">Bash: Associative array initialization and usage</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/02/09/bash-appending-to-existing-values-using-sed-capture-group/">Bash: Appending to existing values using sed capture group</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/29/bash-using-bash_rematch-to-pull-capture-groups-from-a-regex/">Bash: Using BASH_REMATCH to pull capture groups from a regex</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/29/bash-renaming-files-using-shell-parameter-expansion/">Bash: Renaming files using shell parameter expansion</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/29/golang-go-modules-for-package-management-during-a-multi-stage-docker-build/">GoLang: Go modules for package management during a multi-stage Docker build</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/26/golang-using-multi-stage-builds-to-create-clean-docker-images/">GoLang: Using multi-stage builds to create clean Docker images</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/24/golang-installing-the-go-programming-language-on-ubuntu/">GoLang: Installing the Go Programming language on Ubuntu</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/24/docker-working-with-local-volumes-and-tmpfs-mounts/">Docker: Working with local volumes and tmpfs mounts</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/19/bash-using-shell-or-environment-variables-in-awk-output/">Bash: Using shell or environment variables in awk output</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/19/docker-placing-limits-on-cpu-usage-in-containers/">Docker: Placing limits on cpu usage in containers</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/18/docker-placing-limits-on-container-memory-using-cgroups/">Docker: Placing limits on container memory using cgroups</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/18/bash-skipping-lines-at-the-top-or-bottom-of-a-stream/">Bash: Skipping lines at the top or bottom of a stream</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/15/linux-outputting-single-quotes-in-awk-output/">Linux: Outputting single quotes in awk output</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/15/docker-use-overlay2-with-an-xfs-backing-filesystem-to-limit-rootfs-size/">Docker: Use overlay2 with an xfs backing filesystem to limit rootfs size</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/13/linux-mounting-a-loopback-ext4-xfs-filesystem-to-isolate-or-enforce-storage-limits/">Linux: Mounting a loopback ext4/xfs filesystem to isolate or enforce storage limits</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/13/linux-using-xfs-project-quotas-to-limit-capacity-within-a-subdirectory/">Linux: Using xfs project quotas to limit capacity within a subdirectory</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/11/python-using-flask-to-upload-files/">Python: Using Flask to upload files</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/10/bash-outputting-text-in-color-for-readability/">Bash: Outputting text in color for readability</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/04/bash-performing-floating-arithmetic-using-bc/">Bash: Performing floating arithmetic using bc</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/11/18/python-using-flask-to-stream-chunked-dynamic-content-to-end-users/">Python: Using Flask to stream chunked dynamic content to end users</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/10/23/docker-running-a-postfix-container-for-testing-mail-during-development/">Docker: Running a Postfix container for testing mail during development</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/10/23/python-sending-html-emails-via-gmail-api-or-smtp-relay/">Python: Sending HTML emails via Gmail API or SMTP relay</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/10/06/zabbix-using-docker-compose-to-install-and-upgrade-zabbix/">Zabbix: Using Docker Compose to install and upgrade Zabbix</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/10/05/bash-setting-and-replacing-values-in-a-properties-file-use-sed/">Bash: setting and replacing values in a properties file use sed</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/09/30/bash-running-command-on-quoted-list-of-parameters-using-xargs/">Bash: Running command on quoted list of parameters using xargs</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/09/28/docker-installing-docker-ce-on-ubuntu-bionic-18-04/">Docker: Installing Docker CE on Ubuntu bionic 18.04</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/09/22/python-using-a-custom-decorator-to-inspect-function-arguments/">Python: Using a custom decorator to inspect function arguments</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/09/21/python-using-inspection-to-view-the-parameters-of-a-function/">Python: Using inspection to view the parameters of a function</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/09/15/python-getting-live-output-from-subprocess-using-poll/">Python: Getting live output from subprocess using poll</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/09/14/python-parsing-command-line-arguments-with-argparse/">Python: Parsing command line arguments with argparse</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/09/08/powershell-creating-a-self-signed-certificate-using-powershell-without-makecert-or-iis/">PowerShell: Creating a self-signed certificate using Powershell without makecert or IIS</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/06/05/kvm-creating-a-guest-vm-on-a-network-in-routed-mode/">KVM: Creating a guest VM on a network in routed mode</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/06/05/ubuntu-debug-iptables-by-inserting-a-log-rule/">Ubuntu: Debug iptables by inserting a log rule</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/06/03/openwrt-installing-tcpdump-from-opkg/">OpenWrt: Installing tcpdump from opkg</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/05/26/kvm-creating-a-guest-vm-on-a-nat-network/">KVM: Creating a guest VM on a NAT network</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/04/01/kvm-creating-a-bridged-network-with-netplan-on-ubuntu-bionic/">KVM: Creating a bridged network with NetPlan on Ubuntu bionic</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/03/24/git-bfg-for-removing-secrets-from-entire-git-history/">Git: BFG for removing secrets from entire git history</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/03/17/wordpress-cloning-your-wordpress-site-locally-using-docker-compose/">WordPress: Cloning your WordPress site locally using Docker Compose</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/03/10/python-jsonpath-to-extract-vcenter-information-using-govc/">Python: JSONPath to extract vCenter information using govc</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/03/10/python-querying-json-files-with-jsonpath-using-jsonpath_rw_ext/">Python: Querying JSON files with JSONPath using jsonpath_rw_ext</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/03/09/vmware-using-the-govc-cli-to-automate-vcenter-commands/">VMware: Using the govc CLI to automate vCenter commands</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/03/09/linux-7zip-to-split-archives-for-use-on-windows/">Linux: 7zip to split archives for use on Windows</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/02/27/linux-sed-to-cleanup-json-that-has-errant-text-surrounding-it/">Linux: sed to cleanup json that has errant text surrounding it</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/02/16/kvm-virt-manager-to-connect-to-a-remote-console-using-qemussh/">KVM: virt-manager to connect to a remote console using qemu+ssh</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/02/15/ubuntu-create-an-nfs-server-mount-on-ubuntu/">Ubuntu: Create an NFS server mount on Ubuntu</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/02/11/linux-use-stat-to-verify-permissions-and-ownership/">Linux: Use stat to verify permissions and ownership</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/02/11/kubernetes-running-minikube-locally-on-ubuntu-using-kvm/">Kubernetes: running Minikube locally on Ubuntu using KVM</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/02/03/ubuntu-x2go-on-ubuntu-bionic-for-remote-desktop-access/">Ubuntu: X2Go on Ubuntu bionic for remote desktop access</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/01/28/git-client-error-server-certificate-verification-failed/">Git: client error, server certificate verification failed</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/01/27/cloudfoundry-cli-error-unexpected-end-of-json-input/">CloudFoundry: CLI error, unexpected end of JSON input</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/01/13/ubuntu-apt-get-error-yarn-signature-verification/">Ubuntu: apt-get error, yarn signature verification</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/01/12/cloudfoundry-the-lifecycle-of-a-simple-bosh-release/">CloudFoundry: The lifecycle of a simple BOSH release</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/01/12/aws-bash-helper-functions-for-common-aws-cli-calls/">AWS: Bash helper functions for common AWS CLI calls</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/01/12/cloudfoundry-installing-a-bosh-director-on-aws/">CloudFoundry: Installing a BOSH Director on AWS</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/01/02/aws-installing-the-aws-sdk-for-python-on-ubuntu/">AWS: Installing the AWS SDK for Python on Ubuntu</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/12/16/aws-installing-the-aws-cli-on-ubuntu/">AWS: Installing the AWS CLI on Ubuntu</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/12/15/java-ftp-with-an-http-proxy-using-the-connect-method/">Java: FTP with an HTTP proxy using the CONNECT method</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/12/09/git-contributing-to-a-git-project-using-a-pull-request/">Git: Contributing to a git project using a pull request</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/12/02/ubuntu-auditing-sudo-commands-and-forwarding-audit-logs-using-syslog/">Ubuntu: Auditing sudo commands and forwarding audit logs using syslog</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/12/02/python-calling-python-functions-from-mako-templates/">Python: Calling python functions from mako templates</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/12/02/git-sharing-a-single-git-controlled-folder-among-a-group-under-linux/">Git: Sharing a single git controlled folder among a group under Linux</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/12/01/python-using-pip-with-a-squid-proxy/">Python: Using pip with a squid proxy</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/12/01/git-forcing-git-to-use-vim-for-commit-messages/">Git: Forcing git to use vim for commit messages</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/11/14/ubuntu-determining-the-package-origin-of-a-file/">Ubuntu: Determining the package origin of a file</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/11/06/kvm-deploy-the-vmware-vcenter-appliance-using-the-cli-installer/">KVM: Deploy the VMware vCenter appliance using the CLI installer</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/10/30/linux-using-gpg-encrypted-credentials-for-enhanced-security/">Linux: Using GPG encrypted credentials for enhanced security</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/10/30/linux-using-zip-unzip-to-add-update-and-remove-files-from-a-java-jar-war/">Linux: Using zip/unzip to add, update, and remove files from a Java jar/war</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/10/28/linux-using-sed-to-insert-lines-before-or-after-a-match/">Linux: Using sed to insert lines before or after a match</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/10/25/powershell-create-windows-scheduled-task-to-run-powershell-script-every-hour/">PowerShell: Create Windows Scheduled Task to run Powershell script every hour</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/10/22/kvm-using-dnsmasq-for-libvirt-dns-resolution/">KVM: Using dnsmasq for libvirt DNS resolution</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/10/15/linux-copy-a-directory-preserving-ownership-permissions-and-modification-date/">Linux: Copy a directory preserving ownership, permissions, and modification date</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/10/14/ruby-copying-gems-to-hosts-with-limited-internet-access/">Ruby: Copying gems to hosts with limited internet access</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/10/14/ruby-creating-selenium-tests-using-headless-chrome-and-ruby2/">Ruby: Creating Selenium tests using headless Chrome and Ruby2</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/10/14/ubuntu-x11-forwarding-to-view-gui-applications-running-on-server-hosts/">Ubuntu: X11 forwarding to view GUI applications running on server hosts</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/10/12/linux-excluding-files-based-on-extension-and-age-with-tar/">Linux: Excluding files based on extension and age with tar</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/10/10/saltstack-escaping-dollar-signs-in-cmd-run-parameters-to-avoid-interpolation/">SaltStack: Escaping dollar signs in cmd.run parameters to avoid interpolation</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/10/10/openwrt-archive-router-configs-for-backup/">OpenWrt: Archive router configs for backup</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/10/07/putty-bulk-import-putty-session-definitions-into-the-registry-using-powershell/">PuTTy: Bulk import PuTTy session definitions into the registry using Powershell</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/10/06/kvm-creating-an-ubuntu-vm-with-console-only-access/">KVM: Creating an Ubuntu VM with console-only access</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/10/02/elk-deleting-unassigned-shards-to-restore-cluster-health/">ELK: Deleting unassigned shards to restore cluster health</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/09/28/ubuntu-customizing-and-repacking-a-deb-file/">Ubuntu: Customizing and repacking a deb file</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/09/26/linux-excluding-directories-when-using-zip/">Linux: Excluding directories when using zip</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/09/24/kvm-implementing-linked-clones-with-a-backing-file/">KVM: Implementing linked clones with a backing file</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/09/23/ubuntu-gathering-hardware-and-bios-details/">Ubuntu: Gathering hardware and BIOS details</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/09/23/bash-reading-input-from-the-console-while-looping-over-output-of-command/">Bash: Reading input from the console while looping over output of  command</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/09/19/kvm-deploying-a-nested-version-of-vmware-esxi-6-7-inside-kvm/">KVM: Deploying a nested version of VMware ESXi 6.7 inside KVM</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/09/17/kvm-cloning-and-fixing-ubuntu-host-using-kvm/">KVM: Cloning and fixing Ubuntu host using KVM</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/09/17/iptables-running-service-as-non-root-iptables-to-forward-from-privileged-port/">iptables: Running service as non-root, iptables to forward from privileged port</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/09/17/ubuntu-using-iptables-to-forward-tcp-and-udp-requests/">Ubuntu: Using iptables to forward tcp and udp requests</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/09/16/vagrant-fixing-error-while-downloading-the-metadata-for-this-box/">Vagrant: Fixing “error while downloading the metadata for this box”</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/09/13/ubuntu-alternate-firmware-bios-for-kvm/">KVM: Alternate firmware BIOS for KVM</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/09/13/kvm-building-the-latest-seabios-firmware-for-virtual-machines/">KVM: Building the latest SeaBIOS firmware for virtual machines</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/09/12/kvm-building-the-latest-ovmf-firmware-for-virtual-machines/">KVM: Building the latest OVMF firmware for virtual machines</a>
+									</li>
+					</ul>
+		</section><section id="categories-2" class="widget widget_categories"><h2 class="widget-title">Categories</h2>		<ul>
+				<li class="cat-item cat-item-534"><a href="https://fabianlee.org/category/automation/">Automation</a>
+</li>
+	<li class="cat-item cat-item-482"><a href="https://fabianlee.org/category/containers/">Containers</a>
+</li>
+	<li class="cat-item cat-item-596"><a href="https://fabianlee.org/category/development/">Development</a>
+</li>
+	<li class="cat-item cat-item-15"><a href="https://fabianlee.org/category/devops/">DevOps</a>
+</li>
+	<li class="cat-item cat-item-756"><a href="https://fabianlee.org/category/dne/">DNE</a>
+</li>
+	<li class="cat-item cat-item-1"><a href="https://fabianlee.org/category/dctm/">Documentum</a>
+</li>
+	<li class="cat-item cat-item-4"><a href="https://fabianlee.org/category/java/">Java</a>
+</li>
+	<li class="cat-item cat-item-33"><a href="https://fabianlee.org/category/linux/">Linux</a>
+</li>
+	<li class="cat-item cat-item-471"><a href="https://fabianlee.org/category/logging/">Logging</a>
+</li>
+	<li class="cat-item cat-item-464"><a href="https://fabianlee.org/category/monitoring/">Monitoring</a>
+</li>
+	<li class="cat-item cat-item-116"><a href="https://fabianlee.org/category/openwrt/">OpenWrt</a>
+</li>
+	<li class="cat-item cat-item-244"><a href="https://fabianlee.org/category/python/">Python</a>
+</li>
+	<li class="cat-item cat-item-7"><a href="https://fabianlee.org/category/scripting/">Scripting</a>
+</li>
+	<li class="cat-item cat-item-917"><a href="https://fabianlee.org/category/virtualization/">Virtualization</a>
+</li>
+		</ul>
+			</section>	</aside><!-- .sidebar .widget-area -->
+
+		</div><!-- .site-content -->
+
+		<footer id="colophon" class="site-footer" role="contentinfo">
+							<nav class="main-navigation" role="navigation" aria-label="Footer Primary Menu">
+					<div class="menu-categories-container"><ul id="menu-categories-1" class="primary-menu"><li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-897"><a href="https://fabianlee.org/category/monitoring/">Monitoring</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-896"><a href="https://fabianlee.org/category/logging/">Logging</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-936"><a href="https://fabianlee.org/category/containers/">Containers</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1156"><a href="https://fabianlee.org/category/python/">Python</a></li>
+</ul></div>				</nav><!-- .main-navigation -->
+			
+			
+			<div class="site-info">
+								<span class="site-title"><a href="https://fabianlee.org/" rel="home">Fabian Lee : Software Architect</a></span>
+								<a href="https://wordpress.org/" class="imprint">
+					Proudly powered by WordPress				</a>
+			</div><!-- .site-info -->
+		</footer><!-- .site-footer -->
+	</div><!-- .site-inner -->
+</div><!-- .site -->
+
+<script type="text/javascript" src="./Ubuntu_ Creating a trusted CA and SAN certificate using OpenSSL – Fabian Lee _ Software Architect_files/wp-syntax.js"></script>
+<script type="text/javascript" src="./Ubuntu_ Creating a trusted CA and SAN certificate using OpenSSL – Fabian Lee _ Software Architect_files/skip-link-focus-fix.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var screenReaderText = {"expand":"expand child menu","collapse":"collapse child menu"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Ubuntu_ Creating a trusted CA and SAN certificate using OpenSSL – Fabian Lee _ Software Architect_files/functions.js"></script>
+
+
+</body></html>

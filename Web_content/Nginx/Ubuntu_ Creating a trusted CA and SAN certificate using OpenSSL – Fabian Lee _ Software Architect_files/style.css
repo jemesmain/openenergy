@@ -1,0 +1,74 @@
+/*
+ * Theme Name: faboverlay
+ * Template: twentysixteen
+ * Theme URI: https://wordpress.org/themes/twentysixteen/
+ * Author: Fabian Lee
+ * Author URI: https://fabianlee.org
+ * Description: Overlay used to customize base theme
+ * Version: 1.3
+ * License: GNU General Public License v2 or later
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * Tags: one-column, two-columns, right-sidebar, accessibility-ready, custom-background, custom-colors, custom-header, custom-menu, editor-style, featured-images, flexible-header, microformats, post-formats, rtl-language-support, sticky-post, threaded-comments, translation-ready, blog
+ * Text Domain: faboverlay
+ *
+ * This theme, like WordPress, is licensed under the GPL.
+ * Use it to make something cool, have fun, and share what you've learned with others.
+ * */
+
+@import url("../twentysixteen/style.css");
+
+/* newer updates use Inconsolata, monospace */
+code,
+kbd,
+tt,
+var,
+samp,
+pre {
+  font-family: "Courier 10 Pitch",Courier,monospace
+}
+
+
+/* base template uses border, bigger font size, smaller line height, 1.75em padding */
+pre {
+  background: #eeeeee;
+  border: 0px;
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 0 0 1.6em;
+  max-width: 100%;
+  overflow: auto;
+  padding: 1.6em;
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+
+/* FAB overlay modification for highlighting within pre */
+pre code {
+  background-color: #ffff00;
+}
+pre code[class='yellowhighlight'] {
+  background-color: #ffff00;
+}
+pre code[class='darkgrayhighlight'] {
+  background-color: #aaaaaa;
+}
+
+/* FAB overlay custom first level of ul indented more, not other levels */
+ul,
+ol {
+  margin: 0 0 1.75em 1.25em;
+  padding-left: 20px;
+}
+
+/* FAB overlay custom so recent posts do not get indented */
+section#recent-posts-2 ul {
+  padding-left: 0px;
+}
+
+/* FAB push top-right menu down so it aligns with header and tagline */
+.menu-categories-container {
+        margin-top: 42px;
+}
+

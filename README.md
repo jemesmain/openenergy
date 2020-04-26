@@ -100,6 +100,23 @@ En effet dans la documentation il est dit localhost:8000. Il faut lui préferer 
 
 #### Lopy Nano Gateway
 
+On peut utiliser un Lopy 4 pour se comporter comme une gateway monocanal afin de transmettre les messages des capteurs.
+
+https://docs.pycom.io/tutorials/lora/lorawan-nano-gateway/
+
+Dans les fichiers lopy nano de la partie setting vous avez un exemple de programmation:
+
+- Le fichier config.py:
+    -  défini une mac avec FFFE en sont centre pour le réseau TTN ou FFEE pour le réseau Chirpstack. Cette mac est l'identifiant de la gateway pour chacun des deux réseaux TTN ou Chirpstack (en FFEE ou en FFFE selon le réseau choisi)
+    ```
+    GATEWAY_ID = WIFI_MAC[:6] + "FFEE" + WIFI_MAC[6:12]
+    ```
+    
+    
+    - myserver doit être remplacé par le DNS du réseau qui héberge votre serveur chirpstack.
+- le fichier main.py:
+    - gère la connexion au réseau lorawan
+    - puis avec le module nanogateway.py capte et transmet les éléments recu par les capteur au serveur TTN ou Chirpstack.
 
 ### Serveur - on stock et on affiche
 #### Chirpstack - on gère les élément de notre réseau
@@ -569,11 +586,588 @@ La dernière étape est de laisser le capteur / device envoyer des données et v
 Node-red peut permettre d'effectuer des opérations plus complexe sur les messages des capteurs. Chirpstack et The things network permettent d'écrire des éléments decoder et encoder afin de realiser cela. Openenergy utilise la partie decoder pour transformer le meassage payload d'hexadecimal en chaine de caractère (string)
 ##### Installation
 
-    PRE DECODAGE DU PAYLOAD PAR TTN OU CHIRPSTACK CONVERSION EN STRING...
+Les explications d'installations sont ici:
+https://nodered.org/docs/getting-started/raspberrypi
+
+Nodered propose un script pour installer Node.js, npm et Node-RED onto sur un  Raspberry Pi. Ce script peut aussi être utilisé pour faire une mise à jour d'une installation existante quand une nouvelle émission est disponnible.
+
+La commande suivante télécharge et joue le script.
+
+```
+bash <(curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered)
+
+```
+**Mise en route**
+
+- Manuelle
+Vous pouvez utiliser la commande **node-red** dans un terminal. La mémoire limité d'un Raspberry Pi vous pouvez utiliser la commande suivante.
+```
+node-red-pi --max-old-space-size=256
+```
+- En tant que service: Les commandes suivante sont fournie pour démarrer node-red en tant que service:
+
+    - node-red-start - démarre Node-RED service et affiche les logs.  Ctrl-C ferme la fenetre mais node-red continu en arrière plan
+    - node-red-stop - arret du service Node-RED.
+    - node-red-restart - redemarrage du service Node-RED.
+    - node-red-log - affiche les  log du service.
+    
+- Démarrage automatique: il faut jouer une des commandes suivantes:
+    - pour activer le service
+    ```
+    sudo systemctl enable nodered.service
+    ```
+    - pour désactiver le service
+    ```
+    sudo systemctl disable nodered.service
+    ```
+**Ouverture de l'éditeur**
+Opening the editor
+L'éditeur est accessble à l'adresse suivante: http://localhost:1880.
+
+##### PRE DECODAGE DU PAYLOAD PAR TTN OU CHIRPSTACK CONVERSION EN STRING
+
+Pour:
+    - The Things Network (TTN) dans la partie application / payload format
+    - Chirpstack dans la partie device profil / codec / custom javascript codec function
+On peut choisir de decoder ou d'encoder les messages.
+
+
+Voici un exemple pour convertir le message d'un capteur ADEUNIS modèle Pulse sur l'interface TTN. Le message contient 10 octet en Hexa que l'on doit transformer en chaine de caractère - on doit ajouter un 0 à la chaine de caractère si la valeur de l'octet est inférieur à F. La partie du décodage est envoyé dans la partie adeunis_raw du message global.
+
+```
+function Decoder(bytes, port) {
+  // Decode an uplink message from a buffer
+  // (array) of bytes to an object of fields.
+  //var decoded = {};
+
+  // if (port === 1) decoded.led = bytes[0];
+
+  //return decoded;
+  
+  var result={};
+  
+  if (bytes[0]<=0xF){
+    result="0"+bytes[0].toString(16);
+  } else
+  {
+    result=bytes[0].toString(16);
+  }
+  
+  if (bytes[1]<=0xF){
+    result+="0"+bytes[1].toString(16);
+  } else
+  {
+    result+=bytes[1].toString(16)
+  }
+  
+  
+  if (bytes[2]<=0xF){
+    result+="0"+bytes[2].toString(16);
+  } else
+  {
+    result+=bytes[2].toString(16)
+  }
+  
+  if (bytes[3]<=0xF){
+    result+="0"+bytes[3].toString(16);
+  } else
+  {
+    result+=bytes[3].toString(16)
+  }
+  
+  if (bytes[4]<=0xF){
+    result+="0"+bytes[4].toString(16);
+  } else
+  {
+    result+=bytes[4].toString(16)
+  }
+  
+  if (bytes[5]<=0xF){
+    result+="0"+bytes[5].toString(16);
+  } else
+  {
+    result+=bytes[5].toString(16)
+  }
+  
+  if (bytes[6]<=0xF){
+    result+="0"+bytes[6].toString(16);
+  } else
+  {
+    result+=bytes[6].toString(16)
+  }
+  
+  if (bytes[7]<=0xF){
+    result+="0"+bytes[7].toString(16);
+  } else
+  {
+    result+=bytes[7].toString(16)
+  }
+  
+  if (bytes[8]<=0xF){
+    result+="0"+bytes[8].toString(16);
+  } else
+  {
+    result+=bytes[8].toString(16)
+  }
+  
+  if (bytes[9]<=0xF){
+    result+="0"+bytes[9].toString(16);
+  } else
+  {
+    result+=bytes[9].toString(16)
+  }
+  
+  
+  return {
+    adeunis_raw:result
+  }
+  
+  
+}
+
+
+```
+
+Voici un exemple de décodage sur Chirpstack d'une valeur de température transmis en octet et pour le transformer en flottant (valeur décimale float)
+
+```
+
+// Decode decodes an array of bytes into an object.
+//  - fPort contains the LoRaWAN fPort number
+//  - bytes is an array of bytes, e.g. [225, 230, 255, 0]
+//  - variables contains the device variables e.g. {"calibration": "3.5"} (both the key / value are of type string)
+// The function must return an object, e.g. {"temperature": 22.5}
+function Decode(fPort, bytes, variables) {
+  //return {};
+  // Based on https://stackoverflow.com/a/37471538 by Ilya Bursov
+  function bytesToFloat(bytes) {
+    // JavaScript bitwise operators yield a 32 bits integer, not a float.
+    // Assume LSB (least significant byte first).
+    var bits = bytes[3]<<24 | bytes[2]<<16 | bytes[1]<<8 | bytes[0];
+    var sign = (bits>>>31 === 0) ? 1.0 : -1.0;
+    var e = bits>>>23 & 0xff;
+    var m = (e === 0) ? (bits & 0x7fffff)<<1 : (bits & 0x7fffff) | 0x800000;
+    var f = sign * m * Math.pow(2, e - 150);
+    return f;
+  }  
+
+```
+
+##### Exemple de Flux / Flow nodered
+
+Pour décoder les données d'un capteur adeunis et le transmettre dans une variable d'un device dans le logiciel ubidots on peut utiliser les noeux / nodes suivants:
+    - ttn uplink node pour souscrire aux informations d'un capteur en précisant le nom de l'application et le device id
+    - function node pour ecrire eventuellement un script supplémentaire
+    - exec node qui permet d'appeler la librairie de décodage codec adéunis par exemple:
+    ```
+    /home/pi/codec-adeunis-10/bin/codec decode --deviceType comfort --json
+    ```
+    - Json node pour convertir le message en Convert between Json string & object
+    - function node pour extraire la partie / variable que vous souhaitez transmettre à Ubidots
+    ```
+    var payload_out = {
+    "humidity":msg.payload.humidity.values[0]
+    };
+node.log("payload_out:humidity");
+node.log(payload_out);
+
+//var msg_out;
+msg.payload = payload_out;
+
+return msg;
+    ```
+    - ubidots_out node pour envoyer les données en précisant le nom de la variable / le jeton d'authentification / le label du capteur défini dans ubidots
 
 ## Securisation
-### Certificat
+
+Les éléments qui participent à la sécurisation de la solution openenergy sont décrite ci-dessous. D'autres éléments peuvent être mis en place afin de sécuriser l'ensemble et les instructions ci-dessous sont loins d'être exhaustive.
+
+### Sécurisation de Node-Red
+
+Les différents éléments de sécurisation de Node-red sont décrit ici:
+https://nodered.org/docs/user-guide/runtime/securing-node-red
+
+Par défaut l'éditeur Node-RED n'est pas sécurisé - quiconque peut acccéder à son IP peut accéder à l'éditeur et effectuer des changements. Cette partie décrit comment vous pouvez sécuriser node-red et propose différentes solution. Ce guide ne reprendra que la partie de sécurisation de l'API attendu que la sécurisation https est effectué via Nginx.
+
+L'éditeur et l'API ne permmettent que les authentification suivante:
+- par utilisateur / mot de passe: username/password credential based authentication
+- authentification OAuth / Open ID: authentication against any OAuth/OpenID provider such as Twitter or GitHub
+
+C'est la première solution qui a été retenue ici. Dans le fichier settings.js il faut décommenter les ligne suivantes afin de permettre l'authentification utilisateur:
+```
+adminAuth: {
+    type: "credentials",
+    users: [
+        {
+            username: "admin",
+            password: "$2a$08$zZWtXTja0fB1pzD4sHCMyOCMYz2Z6dNbM6tl8sJogENOMcxWV9DN.",
+            permissions: "*"
+        },
+        {
+            username: "John DOE",
+            password: "$2b$08$wuAqPiKJlVN27eF5qJp.RuQYuy6ZYONW7a/UWYxDTtwKFCdB8F19y",
+            permissions: "read"
+        }
+    ]
+}
+```
+
+Les propriétés de chaque utilisateurs sont définies dans un tableau d'utilisateurs permmettant ainsi à de multiples utilisateur d'acceder à node-red avec différentes permissions. L'exemple ci-dessus défini un admin avec un accès intégral et John DOE avec un accès en lecture
+
+Les mots de passe sont encryptés via l'algorythm Bcrypt et l'instruction suivante permet de générer la clé. L 'installation de l'outil est décrite juste après:
+```
+node-red-admin hash-pw
+```
+L'outil va vous demander le mot de passe que vous souhaitez utiliser puis afficher la clé que vous devrez copier dans le fichier de configuration.
+De manière alternative vous pouvez utiliser l'instruction suivante depuis le répertoire d'installation de Node-RED pour génerer la clé:
+```
+node -e "console.log(require('bcryptjs').hashSync(process.argv[1], 8));" your-password-here
+```
+
+L'instruction d'installation suivante vous permettra de l'utiliser directement depuis le chemin de votre profil utilisateur.:
+```
+npm install -g node-red-admin
+```
+
+### Sécurisation de Chirpstack
+
+La sécurisation de Chirpstack s'effectue en changeant le login et le mot de passe par défaut à minima de l'administrateur. Le passage au protocole https s'effectue avec NGINX.
+
+Par défaut le login de Chirpstack est le suivant
+```
+Username: admin
+Password: admin
+```
+Il vous faut le modifier pour une utilisation en production. En haut à droite cliquer sur Admin et changer de mot de passe.
+
+### Sécurisation de ThingsBoard
+
+
+La sécurisation de Thingsboard s'effectue en changeant le login et le mot de passe par défaut à minima de l'administrateur. Le passage au protocole https s'effectue avec NGINX.
+
+Si vous avez installer ThingsBoard avec les éléments de démonstration, les utilisateurs ci-dessous ont été créé. Il vous faudra soit les modifier soit les supprimer pour une utilisation de production
+
+https://thingsboard.io/docs/samples/demo-account/
+
+```
+System Administrator
+Default system administrator account:
+
+login - sysadmin@thingsboard.org.
+password - sysadmin.
+Demo Tenant
+Default tenant administrator account:
+
+login - tenant@thingsboard.org.
+password - tenant.
+Demo tenant customers:
+
+Customer A users - customer@thingsboard.org or customerA@thingsboard.org.
+Customer B users - customerB@thingsboard.org.
+Customer C users - customerC@thingsboard.org.
+all users have “customer” password.
+```
+
+### Génération des Certificats pour le protocole https
+Le tuto permettant de générer des certificats tout en simulant une autorité de certification est disponnible à l'adresse suivante:
+https://fabianlee.org/2018/02/17/ubuntu-creating-a-trusted-ca-and-san-certificate-using-openssl-on-ubuntu/
+
+Il explique les limitations des derniers navigateurs tel que Firefox ou Chrome concernant les certificats autosignés. Les certificats ne fonctionnant pas seuls, il doivent faire parti d'une chaine de confiance à partir d'un certificat racine / root.
+
+**Pré requis**
+
+Il faut tout d'abord s'assurer que les paquet SSL sont installés:
+```
+$ sudo apt-get install libssl1.0.0 -y
+```
+**Modification du fichier de configuration des certificats openssl.cnf**
+
+Puis modifier le fichier de configuration de openssl afin de générer des certificats personalisés openssl.cnf
+
+La première étape est de trouver le modèle de openssl.cnf sur votre ordinateur.  Sur ubuntu on peut le trouver “/usr/lib/ssl/openssl.cnf”.  Sur mac OS c'est plutot  “/System/Library/OpenSSL/”, et sur les variantes Redhat “/etc/pki/tls”.
+```
+export prefix="mydomain"
+
+cp /usr/lib/ssl/openssl.cnf $prefix.cnf
+```
+
+“$prefix.cnf” doit être modifié en fonction des information spécifique concernant les certificat que nous voulons générer. Ainsi les modifications suivantes peuvent être effectuées.
+
+Dans la section [ v3_ca ] ajouter les valeurs suivantes.  Pour le CA CA, cela signifie que nous allons créer un CA qui va etre utiliser pour signer la clé / key signing.
+```
+[ v3_ca ]
+subjectKeyIdentifier=hash
+authorityKeyIdentifier=keyid:always,issuer
+basicConstraints = critical, CA:TRUE, pathlen:3
+keyUsage = critical, cRLSign, keyCertSign
+nsCertType = sslCA, emailCA
+```
+
+Dans la section “[ v3_req ]”, spécifier les éléments suivants avec des nom alternatifs valide pour ce certificat.
+```
+[ v3_req ]
+basicConstraints = CA:FALSE
+keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+#extendedKeyUsage=serverAuth
+subjectAltName = @alt_names
+
+[ alt_names ]
+DNS.1 = mydomain.com 
+DNS.2 = *.dydomain.com
+Also uncomment the following line under the “[ req ]” section so that certificate requests are created with v3 extensions.
+
+req_extensions = v3_req
+When we generate each type of key, we specify which extension section we want to use, which is why we can share $prefix.cnf for creating both the CA as well as the SAN certificate.
+```
+**Création du certificat CA: ca.key.pem**
+
+Maintenant nous allons commencer à utiliser OpenSSL pour creer les clé nécessaires et les certificat. Premièrement générons la paire de clés RSA publique et privée / private/public RSA key pair:
+```
+openssl genrsa -aes256 -out ca.key.pem 2048
+
+chmod 400 ca.key.pem
+```
+Ceci encode la clé en utilisant une phrase mot de passe / passphrase basée sur l'encryptage AES256.  Ensuite nous avons besoin de créer un certificat auto signé racine / self-signed root CA certificate.
+```
+openssl req -new -x509 -subj "/CN=myca" -extensions v3_ca -days 3650 -key ca.key.pem -sha256 -out ca.pem -config $prefix.cnf
+```
+Vous pouvez vérifier ce certificat / root CA certificate en utilisant:
+```
+openssl x509 -in ca.pem -text -noout
+```
+Cela vous montre le certificat CA racine / root CA certificate. Ceci nous montre l'émetteur / ‘Issuer’ et le sujet / ‘Subject’ seront les mêmes attendu que le certificat est auto signé / self-signed. Ceci est marqué avec le drapeau / flagged comme “CA:TRUE” signifiant que qu'il sera reconnu comme un certificat racine. Ainsi les navigateur/ browsers et les systèmes d'exploitation / OS vont autoriser l'imprtation de ce certificat dans le magasint / store de certificat racine de confiance / trusted root certificate.
+```
+Issuer: CN=myca 
+... 
+Subject: CN=myca 
+... 
+X509v3 Basic Constraints: 
+ critical CA:TRUE, pathlen:3 
+X509v3 Key Usage: 
+ critical Certificate Sign, CRL Sign 
+Netscape Cert Type: 
+ SSL CA, S/MIME CA
+```
+** Création du certificat serveur signé par CA**
+
+Avec le certificat racine CA maintenant créé, nous basculons du coté du certificat serveur. Premièrement générons la paire clés RSA publiques / privées / private/public RSA key pair:
+```
+openssl genrsa -out $prefix.key.pem 2048
+```
+Nous n'avons pas utilisé de phrase mot de pass / passphrase sur cette clé simplement parce que le CA est une cible plus éléevée et que nous pouvons toujours générer de nouveau le certificat serveur mais soyez libre de prendre cette précaution supplémentaire.
+
+La commande suivante permet d'effectuer la requete de signature du certificat serveur:
+```
+openssl req -subj "/CN=$prefix" -extensions v3_req -sha256 -new -key $prefix.key.pem -out $prefix.csr
+```
+Générer le certificat serveur en utilisant la requete de signature ci-dessus, la clé CA et le certificat CA
+```
+openssl x509 -req -extensions v3_req -days 3650 -sha256 -in $prefix.csr -CA ca.pem -CAkey ca.key.pem -CAcreateserial -out $prefix.crt -extfile $prefix.cnf
+```
+Le “$prefix.key.pem” étant la clé privé serveur / server private key et “$prefix.crt” étant le certificat serveur / server certificate.  Vérifion les certificats:
+```
+openssl x509 -in $prefix.crt -text -noout
+```
+Ceci nous montre l'émetteur / ‘Issuer’ qui va être le nom du CA / CA name, alors que le sujet est le prefix. Le réglage n'est pas éffectué pour être un CA, et le champ du nom alternatif du sujet / ‘Subject Alternative Name’ contien l'URL qui va être considéré comme valide par les navigateurs.
+```
+Issuer: 
+  CN=myca 
+... 
+Subject: 
+  CN=mydomain 
+... 
+X509v3 Basic Constraints: 
+  CA:FALSE 
+X509v3 Key Usage: 
+ Digital Signature, Non Repudiation, Key Encipherment 
+X509v3 Subject Alternative Name:
+ DNS:mydomain.com, DNS:*.mydomain.com
+```
+
+**Déploiemeent serveur**
+
+Certains serveur comme HAProxy nécessitent une chaine complète / full chain de certificats comme clé privée / private key (server certificate+CA cert+server private key). Windows IIs nécessite un fichier .pfx. Vous pouvez générer ces fichiers avec les instructions suivantes.
+```
+cat $prefix.crt ca.pem $prefix.key.pem > $prefix-ca-full.pem
+
+openssl pkcs12 -export -out $prefix.pfx -inkey $prefix.key.pem -in $prefix.crt -certfile ca.pem
+```
+
+**Evaluation navigateur**
+
+Lorsque vous utilisez l'url de votre site dans firefox ou chrome avec votre certificat SAN avec la signature CA cela va renvoyer la même erreur qu'avec un certificat auto signé SAN /self-signed SAN cert.  C'est parce que votre certificat racine CA / root CA cert n'est pas connu comme une source de confiance pour les certificats signés / signed certificates.
+
+Dans les réglages de Chrome (chrome://settings), recherchez la partie Certificat / “certificates” et cliquer sur Gérez les certificats / “Manage Certificates”.  Sur windows cela va ouvrir la page Windows certificate manager et vous importerez le fichier “ca.pem”  dans l'onglet “Trusted Root Certification Authorities”. 
+
+D'autre variantes en anglais ci-dessous:
+
+On windows, This is equivalent to adding it through mmc.exe, in the “local user” trusted root store (not the computer level).  On Linux, Chrome manages its own certificate store and again you should import “ca.pem” into the “Authorities” tab.  This should now make the security icon turn green.
+
+In Firefox Options (about:preferences), search for “certificates” and click “View Certificates”.  Go to the “Authorities” tab and import “ca.pem”.  Check the box to have it trust websites, and now the lock icon should turn green when you visit the page.
+
+Although there is a little friction doing this import, it is a one-time cost because any other certificates that you sign with this CA are now trusted.  So if a cert expires and you have to replace it, or you need to change the URLs in a SAN and refresh it, none of the browsers will have an issue with trust.
+
 ### HTTPS avec Nginx
+
+Il est maintenant tant de procéder à la sécurisation du protocole Http en le passant en Https et en utilisant Nginx.
+La documentation ci-dessous s'inspire largement de la mise en place de Nginx telle que décrite ici: https://projetsdiy.fr/securiser-node-red-nginx-openssl-ubuntu/
+
+#### Installation de Nginx
+Nginx s’installe très simplement à l’aide d’une simple commande apt-get.
+```
+sudo apt-get update
+sudo apt-get install nginx
+```
+Acceptez l’installation de toutes les dépendances qui sont demandées durant l’installation.
+
+** Nginx fonctionne avec des sites-disponnible / sites-available que l'on peut utiliser ou non en créant un lien symbolique dans la partie sites-enabled**
+
+Le fichier de configuration final utilisé est disponible dans la partie settings/nginx/sites-available/my_server.com. Il permet de rediriger les ports:
+- 1446 vers node-red
+- 1447 vers Chirpstack
+- 1448 vers Thingsboard
+
+#### Configurer Nginx pour utiliser une connexion SSL
+
+Dans le chapitre précédent nous avons générer une clé et un certificat, nous allons créer un fichier de configuration. Nous pourrons l’appeler my_server.securise.com.
+
+Ouvrez un nouveau fichier de configuration avec nano
+
+sudo nano /etc/nginx/sites-available/my_server.securise.com
+
+Adaptez l’exemple ci-dessous en fonction de vos besoins et collez le dans le fichier puis enregistrez avec CTRL+X puis O.
+```
+server {
+    listen 80;
+    listen 443 ssl http2;
+    server_name my_server.securise.com;
+    # les deux ligne ci-dessous sont à adapter en fonction des fichiers de certificat
+    ssl_certificate /etc/nginx/ssl/nginx.crt;
+    ssl_certificate_key /etc/nginx/ssl/nginx.key;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_ciphers EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+$
+    ssl_prefer_server_ciphers On;
+    ssl_session_cache shared:SSL:128m;
+    ssl_stapling on;
+    ssl_stapling_verify on;
+    resolver 8.8.8.8;
+
+    location / {
+        if ($scheme = http) {
+            return 301 https://$server_name$request_uri;
+        }
+        proxy_pass http://localhost:1880;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+
+    location '/.well-known/acme-challenge' {
+        root /var/www/html;
+    }
+}
+```
+Quelques explications (rapides)
+
+- La clé server_name permet de définir le nom du site internet par lequel on obtiendra une connexion sécurisée via Nginx.
+- Les clés ssl_certificate et ssl_certificate_key permettent de définir le dossier dans lequel se trouvent le certificat et la clé créée précédemment.
+- Le bloc “if ($scheme = http) { return 301 https://$server_name$request_uri; }" permet de renvoyer toutes les connexions http non sécurisées vers une liaison HTTPS
+- "proxy_pass http://localhost:1880;" permet de pointer vers la page de Node-RED
+
+Il reste à créer un lien symbolique vers le dossier sites-enabled pour rendre actif la configuration.
+```
+sudo ln -s /etc/nginx/sites-available/node-red.securise.com /etc/nginx/sites-enabled/
+```
+#### Configuration du fichier hosts
+Pour que l’URL soit accessible depuis un navigateur, il faut modifier le fichier hosts. Récupérez l’adresse IP de votre PC avec la commande ifconfig ou ipconfig sur windows puis modifiez le fichier /etc/hosts
+```
+sudo nano /etc/hosts
+```
+et ajoutez par exemple
+```
+127.0.0.1       localhost
+192.168.2.2     my_server.securise.com
+```
+Enregistrez avec CTRL+X puis O.
+
+
+Il se peut que des éléments de configuration du firewall soient nécessaires. Ceci est détaillé dans le fichier d'origine de ce chapitre
+
+#### Autre fichier de configuration de Nginx
+Attendu que le redémarrage de Nginx ne s'effectuait pas correctement du notamment à des problématiques lié à la ligne ssl_ciphers 
+le fichier de confirguration suivant present dasn cette documentation à été largement utilisé car il était bien commenté sur la redirection des requetes http vers https: https://korben.info/nginx-rediriger-http-https.html
+
+Si vous utilisez Nginx en reverse proxy et que vous cherchez la méthode pour rediriger de manière permanente (en 301) tout le trafic arrivant sur le HTTP vers du HTTPS pour apporter confort, sécurité et volupté à vos visiteurs, voici comment faire…
+
+Ouvrez votre nginx.conf (qui se trouve surement dans un répertoire comme /etc/nginx/)
+```
+nano nginx.conf
+```
+Et faites en sorte d’y placer la ligne de reécriture suivante, dans la section réservée à la config HTTP.
+```
+return 301 https://$server_name$request_uri;
+```
+
+Les autres sections sont dédiées au HTTPS et à la config SSL.
+```
+## le serveur http sur le port 80
+server {
+      listen      1.2.3.4:80 default;
+      server_name example.com www.example.com;
+      ## Redirige le HTTP vers le HTTPS ##
+      return 301 https://$server_name$request_uri;
+}
+
+## Le serveur https sur le port 443. N'oubliez pas vote config SSL###
+server {
+      access_log  logs/example.com/ssl_access.log main;
+      error_log   logs/example.com/ssl_error.log;
+      index       index.html;
+      root        /usr/local/nginx/html;
+      
+      ## Début de la config SSL ##
+      listen      1.2.3.4:443 ssl;
+      server_name example.com www.example.com;
+      fastcgi_param HTTPS on;
+
+     ## Redirection de l url avec www vers une url sans www
+      if ($host = 'www.example.com' ) {
+         rewrite  ^/(.*)$  https://example.com/$1  permanent;
+      }
+
+    ### config SSL - A vous de jouer ###
+     ssl_certificate      ssl/example.com/example.com_combined.crt;
+     ssl_certificate_key  ssl/example.com/example.com.key_without_password;
+     ssl_protocols        SSLv3 TLSv1 TLSv1.1 TLSv1.2;
+     ssl_ciphers RC4:HIGH:!aNULL:!MD5;
+     ssl_prefer_server_ciphers on;
+     keepalive_timeout    70;
+     ssl_session_cache    shared:SSL:10m;
+     ssl_session_timeout  10m;
+
+    ## PROXY
+      location / {
+        add_header           Front-End-Https    on;
+        add_header  Cache-Control "public, must-revalidate";
+        add_header Strict-Transport-Security "max-age=2592000; includeSubdomains";
+        proxy_pass  http://exampleproxy;
+        proxy_next_upstream error timeout invalid_header http_500 http_502 http_503;
+        proxy_set_header        Host            $host;
+        proxy_set_header        X-Real-IP       $remote_addr;
+        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+      }
+}
+```
+
+Sauvegardez le fichier (CTRL+X puis O) et relancez nginx
+```
+nginx -s reload
+```
+Pour vérifier que tout fonctionne correctement, allez faire un tour sur la version HTTP de votre site. Si vous êtes rebasculé automatiquement sur la version en HTTPS et que tout fonctionne, vous avez réussi !
+
+
 
 ## Alternatives
 ### The thing network
@@ -581,4 +1175,4 @@ Node-red peut permettre d'effectuer des opérations plus complexe sur les messag
 
 ## Technical data
 ### port list
-
+voir l'illustration architecture
