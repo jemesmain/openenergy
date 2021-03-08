@@ -631,6 +631,8 @@ Pour:
     - Chirpstack dans la partie device profil / codec / custom javascript codec function
 On peut choisir de decoder ou d'encoder les messages.
 
+Pour le codec ADEUNIS désormais plusieurs exemples sont présents ici https://codec-adeunis.com/download
+
 
 Voici un exemple pour convertir le message d'un capteur ADEUNIS modèle Pulse sur l'interface TTN. Le message contient 10 octet en Hexa que l'on doit transformer en chaine de caractère - on doit ajouter un 0 à la chaine de caractère si la valeur de l'octet est inférieur à F. La partie du décodage est envoyé dans la partie adeunis_raw du message global.
 
