@@ -633,6 +633,11 @@ On peut choisir de decoder ou d'encoder les messages.
 
 Pour le codec ADEUNIS désormais plusieurs exemples sont présents ici https://codec-adeunis.com/download
 
+Afin que l'appel par Nod-Red du codec via un noeud Exec node fonctionne, il ne faut pas oublié d'installer le codec via Npm. Pour cela se rendre dans le répertoire contenant la dernière librairie du codec et executé la commande suivante en respectant la version du codec.
+
+```
+npm adeunis-codec-version.tgz
+```
 
 Voici un exemple pour convertir le message d'un capteur ADEUNIS modèle Pulse sur l'interface TTN. Le message contient 10 octet en Hexa que l'on doit transformer en chaine de caractère - on doit ajouter un 0 à la chaine de caractère si la valeur de l'octet est inférieur à F. La partie du décodage est envoyé dans la partie adeunis_raw du message global.
 
