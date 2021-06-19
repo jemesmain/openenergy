@@ -1224,12 +1224,14 @@ https://janw.me/raspberry-pi/install-lets-encrypt-ssl-on-raspberry-pi/
 
 Se connecter au RaspberryPi
 
-'''sudo snap install core; sudo snap refresh core
+```
+sudo snap install core; sudo snap refresh core
 sudo snap install --classic certbot
 
 sudo ln -s /snap/bin/certbot /usr/bin/certbot
 
-sudo certbot --nginx'''
+sudo certbot --nginx
+```
 
 trop la classe
 il retrouve tout seul les éléments du serveur nginx www.el001.is-a-green.com et el001.is-a-green.com
@@ -1256,8 +1258,10 @@ Finally go to ssllabs.com and test your site. Behind the scenes Certbot also add
 
 Dans les fichiers de configuration de nginx aussi bien pour default que pour votre nom de domaine, toutes les entrées ssl doivent être remplacé par celle écrite automatiquement et commentée par # cerbot 
 
-```ssl_certificate /etc/letsencrypt/live/el001.is-a-green.com/fullchain.pem; # managed by Certbot
-ssl_certificate_key /etc/letsencrypt/live/el001.is-a-green.com/privkey.pem; # managed by Certbot```
+```
+ssl_certificate /etc/letsencrypt/live/el001.is-a-green.com/fullchain.pem; # managed by Certbot
+ssl_certificate_key /etc/letsencrypt/live/el001.is-a-green.com/privkey.pem; # managed by Certbot
+```
 
 
 ### HTTPS avec Nginx
