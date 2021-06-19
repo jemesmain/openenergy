@@ -1366,6 +1366,7 @@ return 301 https://$server_name$request_uri;
 Les autres sections sont dédiées au HTTPS et à la config SSL.
 ```
 ## le serveur http sur le port 80
+
 server {
       listen      1.2.3.4:80 default;
       server_name example.com www.example.com;
@@ -1373,7 +1374,7 @@ server {
       return 301 https://$server_name$request_uri;
 }
 
-## Le serveur https sur le port 443. N'oubliez pas vote config SSL###
+## Le serveur https sur le port 443. N'oubliez pas vote config SSL
 server {
       access_log  logs/example.com/ssl_access.log main;
       error_log   logs/example.com/ssl_error.log;
