@@ -1636,7 +1636,7 @@ Sur nginx il faut permettre l'affichage du button dans l'écran de login
        proxy_pass http://localhost:8085;
 ```
 
-### Oauth2-Proxy: Nginx et 2 facteur authentication
+### Oauth2-Proxy: service sur RaspberryPi
 https://github.com/oauth2-proxy/oauth2-proxy/blob/master/contrib/oauth2-proxy.service.example
 et
 https://www.raspberrypi.org/documentation/linux/usage/systemd.md
