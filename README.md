@@ -719,7 +719,7 @@ Vous pouvez toujours changer les mots de passe dans les logins utilisateurs
 
 Merci de bien attendre environ 240 secondes pour que l'interface démarre en particulier pour les machines lentes avec 1-2 CPUs ou 1-2 GB RAM.
 
-** - 7. Réglages complémentaires**
+** - 7. Réglages complémentaires - conflits**
 
 Le fichier de configuration utilisé est présent dans la partie settings.
 Du fait que thingsboard est installé sur la même machine que Chirpstack leur port de l'explorateur web sont en conflit sur le 8080
@@ -736,10 +736,22 @@ mqtt:
     bind_address: "${MQTT_BIND_ADDRESS:0.0.0.0}"
     bind_port: "${MQTT_BIND_PORT:8883}"
 ```
+L'erreur suivante:
+```
+[main] ERROR o.s.boot.SpringApplication - Application run failed
+```
+provient du fait que mosquitto est démarré. Executer la commande suivante:
+```
+sudo service mosquitto stop
+```
+
+pour chirpstack: erreur / error context deadline exceeded (code: 2) 
+réglage pour la partie via l'interface web network server 192.168.1.101:8000 doit correspondre a la partie public_host="192.168.1.101:8001" du fichier /etc/chirpstack-application-server/chirpstack-application-server.toml
+
 
 **- Troubleshooting**
 
-Si le service Thingsboard ne démarre pas malgré les modifications ci-dessus il vousu faut analyser les éléments plus précisement à l'aide des instructions suivantes:
+Si le service Thingsboard ne démarre pas malgré les modifications ci-dessus il vous faut analyser les éléments plus précisement à l'aide des instructions suivantes:
 Les logs de ThingsBoard logs sont enregistré dans le répertoire suivant:
 ```
 /var/log/thingsboard
@@ -750,11 +762,24 @@ Vous pouvez toujours utiliser la commande suivante pour vérifier les erreur du 
 cat /var/log/thingsboard/thingsboard.log | grep ERROR
 ```
 
+ERROR o.s.w.s.s.s.DefaultHandshakeHandler - Handshake failed due to invalid Upgrade header: null
+Il faut valider les web socket dans nginx pour permettre l'affichage des widget et eviter cette erreur
+ajouter ces lignes
+
+```
+# handle websocket for thingsboard widget like showing latest telemetry
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+```
+
+
+
 #### Intégration Thingsboard - Chirpstack
 
 Le détail de l'intégration est présent à l'adresse suivante: https://www.chirpstack.io/guides/thingsboard/
 
-Pour l'installation de ThingsBoard se référer au partie adequat du guide de démarrrage. La parie importante est d'avaoir créer un capteur (device) au sein de Thingsboard.
+Pour l'installation de ThingsBoard se référer au partie adequat du guide de démarrrage. La parie importante est d'avoir créer un capteur (device) au sein de Thingsboard.
 
 **Récuperer Device Auth Token**
 
@@ -772,7 +797,7 @@ Toujours dans l'interface web ChirpStack Application Server, naviguez vers l'app
 
 type d'intégration: ThingsBoard.io.
 
-ThingsBoard.io server: Pour OpenEnergy le réglage est http://host_name:8085 car l'installation de Thingsboard est sur le port 8085. Les réglages peuvent varier http://host:9090...
+ThingsBoard.io server: Pour OpenEnergy le réglage est http://host_name:8085 car l'installation de Thingsboard est sur le port 8085.(ERREUR l'installation de chirpstack est sur le port 8080) Les réglages peuvent varier http://host:9090...
 
 **Valider l'integration**
 
@@ -780,6 +805,9 @@ Si vous avez suivi toutes ces étapes alors ThingsBoard est pret à recevoire le
 
 La dernière étape est de laisser le capteur / device envoyer des données et valider que ces données sont recu par Thingsboard. Vous trouverez les données dans l'onglet Latest Telemetry en navigant vers le capteur / Device au sein de Thingsboard.
 
+**MQTT thingsboard: Sheevaplug l'exemple d'un envois de données par un device**
+
+Dans les paramètre d'un device thingsboard récuperer device id et access token
 
 #### Node-red - pour aider au décryptage des messages
 
@@ -1354,7 +1382,7 @@ Il se peut que des éléments de configuration du firewall soient nécessaires. 
 
 #### Autre fichier de configuration de Nginx
 Attendu que le redémarrage de Nginx ne s'effectuait pas correctement du notamment à des problématiques lié à la ligne ssl_ciphers 
-le fichier de confirguration suivant present dasn cette documentation à été largement utilisé car il était bien commenté sur la redirection des requetes http vers https: https://korben.info/nginx-rediriger-http-https.html
+le fichier de configuration suivant present dans cette documentation à été largement utilisé car il était bien commenté sur la redirection des requetes http vers https: https://korben.info/nginx-rediriger-http-https.html
 
 Si vous utilisez Nginx en reverse proxy et que vous cherchez la méthode pour rediriger de manière permanente (en 301) tout le trafic arrivant sur le HTTP vers du HTTPS pour apporter confort, sécurité et volupté à vos visiteurs, voici comment faire…
 
@@ -1442,8 +1470,226 @@ After=network.target nss-lookup.target chirpstack-application-server.service chi
 
 
 
-### Nginx et 2 facteur authentication
+### Oauth2-Proxy: Nginx et 2 facteur authentication
 Afin de permettre la sécurite sur nginx avant d'autoriser l'acces a chirpstack nodered et thingsboard
+
+source: https://oauth2-proxy.github.io/oauth2-proxy/docs/
+
+la version armv6 de oauth2-proxy est celle fonctionnelle sur raspberry pi 3 B+
+
+Générer un cookie secret 
+```
+python -c 'import os,base64; print(base64.urlsafe_b64encode(os.urandom(16)).decode())'
+```
+Choisir google par défaut comme fournisseur de oauth2 (effectuer avec pas mal d'intuition l'ensemble des instructions afin de parvenir au résultat ci dessous)
+
+Il faut choisir un "provider d'autorisation oauth2" comme Google.
+Les actions a effectuer pour permettre cela sont présente ici en fonction du "provider".
+https://oauth2-proxy.github.io/oauth2-proxy/docs/configuration/oauth_provider
+
+Pour google il faut créer une application web, choisir les url authorisé pour les demande d'autorisation et récuperer client id et client secret. Le fichier json mentionné n'a pas été utilisé
+
+On peut ainsi lancer oauth2-proxy en ligne de commande
+```
+## exemple de ligne de commande complete
+/usr/local/lib/oauth2-proxy/./oauth2-proxy    
+--cookie-secret=   \ 
+--cookie-secure=true    \
+--provider=google    \
+--reverse-proxy=true    \
+--authenticated-emails-file=/etc/oauth2-proxy/authenticated-emails    \
+--client-id=  \  
+--client-secret=
+
+```
+ou via un fichier de configuration
+```
+## exemple de ligne de commande pour appeler oauth2-proxy
+/usr/local/lib/oauth2-proxy/./oauth2-proxy --config=/etc/oauth2-proxy/oauth2-proxy.cfg
+```
+Le fichier des email autorisé doit contenir une adresse mail par ligne encadrée par des  "".
+
+Nginx et Oauth2 fonctionnent sur la meme machine et donc les éléments liés a la securité ssl n'ont pas été implémentés.
+```
+ --tls-cert-file=/path/to/cert.pem \
+ --tls-key-file=/path/to/cert.key \
+```
+
+Afin de gérer l'accès aux différentes applications on passe par des sous domaines.
+Attention a bien étendre le certificat certbot à l'ensemble des sous domaines utilisés.
+
+Ainsi les fichier de configuration nginx sont les suivants
+
+default
+```
+server {
+    listen 443 default ssl;
+    server_name el001.energyleaks.org; #el001.is-a-green.com;
+    ssl_certificate /etc/letsencrypt/live/el001.is-a-green.com/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/el001.is-a-green.com/privkey.pem; # managed by Certbot
+
+    add_header Strict-Transport-Security max-age=2592000;
+
+	root /var/www/html;
+        index index.html index.htm index.nginx-debian.html;
+        server_name _;
+        location / {
+                try_files $uri $uri/ =404;
+        }
+#   location /authenticator {
+	# authentification avec les login 	
+#                auth_pam "Secure area";
+#                auth_pam_service_name "nginx";
+#        }
+#   location /oauth2 {
+#        proxy_pass http://127.0.0.1:4180;
+#        proxy_set_header Host $host;
+#        proxy_set_header X-Real-IP $remote_addr;
+#        proxy_set_header X-Scheme $scheme;
+#        proxy_connect_timeout 1;
+#        proxy_send_timeout 30;
+#        proxy_read_timeout 30;
+#    }
+
+}
+
+```
+Cette partie laisse un libre acces à la partie cartographique de mon application. Les parties authenticator et oauth2 étaient présentes à des fins de tests.
+
+
+par exemple l'application chirpstack
+```
+
+server {
+	# chirpstack
+  #include ssl/ssl.conf
+
+  #listen 80;
+  #listen 1447 ssl http2;
+	listen 443 ssl http2;
+
+  server_name chirpstack.el001.energyleaks.org; #chirpstack.el001.is-a-green.com;
+    ssl_certificate /etc/letsencrypt/live/el001.is-a-green.com/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/el001.is-a-green.com/privkey.pem; # managed by Certbot
+
+    
+   location /oauth2/ {
+    proxy_pass       http://127.0.0.1:4180;
+    proxy_set_header Host                    $host;
+    proxy_set_header X-Real-IP               $remote_addr;
+    proxy_set_header X-Scheme                $scheme;
+    proxy_set_header X-Auth-Request-Redirect $request_uri;
+  }
+
+  location /
+  {
+    auth_request /oauth2/auth;
+    error_page 401 = /oauth2/sign_in;
+
+    proxy_set_header X-Forwarded-Host $host;
+    proxy_set_header X-Forwarded-Server $host;
+    proxy_set_header X-Forwarded-Port $server_port;
+    proxy_set_header X-Forwarded-Proto "https";
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_pass http://localhost:8080;
+	#proxy_bind 127.0.0.1:8080;
+	#proxy_pass http://el001.is-a-green.com/chirpstack;
+
+
+# handle websocket 
+#for thingsboard widget like showing latest telemetry
+# for node-red connection lost message:Lost connection to server, reconnecting
+# for chirpstack
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+
+
+  }
+
+}
+```
+le auth_request permet d'effectuer du controle d'accès. Le proxy_pass permet d'indiquer l'url à ouvrir à la fin du processus d'authentification.
+
+
+le fichier authenticated-emails permet de gérer les mails autorisés.
+
+
+POUR THINGSBOARD on peut mettre en place oauth2 comme décrit ici afin de laisser les éléments public accessible
+https://thingsboard.io/docs/user-guide/oauth-2-support/
+
+Le réglage de administration paramètre système général est sur http://thingsboard.el001.energyleaks.org
+
+Les réglages de l'uri autorisé est
+http://localhost:8085/login/oauth2/code/ pour la machine hote
+https://thingsboard.el001.energyleaks.org/login/oauth2/code/ pour le général
+
+ainsi sur le réseau local https://192.168.1.101:1448/login il n'est pas possible de se connecter via google car ce type d'URI n'est pas admise meme avec le nom dns de la machine raspberrypi.
+
+Sur nginx il faut permettre l'affichage du button dans l'écran de login
+```
+#this settings allow google oauth2 button to show
+       proxy_set_header  Host               $host;
+       proxy_set_header  X-Real-IP          $remote_addr;
+       proxy_set_header  X-Forwarded-For    $proxy_add_x_forwarded_for;
+       proxy_set_header  X-Forwarded-Proto  $scheme;
+       proxy_pass http://localhost:8085;
+```
+
+### Oauth2-Proxy: Nginx et 2 facteur authentication
+https://github.com/oauth2-proxy/oauth2-proxy/blob/master/contrib/oauth2-proxy.service.example
+et
+https://www.raspberrypi.org/documentation/linux/usage/systemd.md
+
+Editer le fichier suivant dans  /etc/systemd/system/oauth2-proxy.service en tant que root pour un raspberrypi
+```
+# Systemd service file for oauth2-proxy daemon
+#
+# Date: Feb 9, 2016
+# Author: Srdjan Grubor <sgnn7@sgnn7.org>
+
+[Unit]
+Description=oauth2-proxy daemon service
+After=syslog.target network.target
+
+[Service]
+# www-data group and user need to be created before using these lines
+User=www-data
+Group=www-data
+
+# ligne de commande a faire correspondre dans la ligne execstart pour notre configuration
+# /usr/local/lib/oauth2-proxy/./oauth2-proxy --config=/etc/oauth2-proxy/oauth2-proxy.cfg
+
+#ExecStart=/usr/local/bin/oauth2-proxy --config=/etc/oauth2-proxy.cfg
+ExecStart=/usr/local/lib/oauth2-proxy/oauth2-proxy --config=/etc/oauth2-proxy/oauth2-proxy.cfg
+ExecReload=/bin/kill -HUP $MAINPID
+
+KillMode=process
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+Once this has been copied, you have to inform systemd that a new service has been added. This is done with the following command:
+```
+sudo systemctl daemon-reload
+```
+Now you can attempt to start the service using the following command:
+```
+sudo systemctl start oauth2-proxy.service
+```
+Stop it using following command:
+```
+sudo systemctl stop oauth2-proxy.service
+```
+When you are happy that this starts and stops your app, you can have it start automatically on reboot by using this command:
+
+```
+sudo systemctl enable oauth2-proxy.service
+```
+The systemctl command can also be used to restart the service or disable it from boot up!
+
+
 
 ## Cartographie / Leaflet / Progressive web app
 
