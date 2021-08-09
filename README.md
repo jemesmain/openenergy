@@ -728,7 +728,7 @@ Il vous faut de la meme manière que le fichier de configuration éditer le fich
 # Server bind port
   port: "${HTTP_BIND_PORT:8085}"
 ```
-Le protocole MQTT est aussi en conflit pour des raisons identiques sur le port 8880. Pour Thingsboard vous pouvez le configurer sur le port 8883
+Le protocole MQTT est aussi en conflit pour des raisons identiques sur le port 8080. Pour Thingsboard vous pouvez le configurer sur le port 8883 dans le fichier /usr/share/thingsboard/conf/thingsboard.yml
 ```
 mqtt:
     # Enable/disable mqtt transport protocol.
@@ -861,11 +861,20 @@ On peut choisir de decoder ou d'encoder les messages.
 
 Pour le codec ADEUNIS désormais plusieurs exemples sont présents ici https://codec-adeunis.com/download
 
-Afin que l'appel par Nod-Red du codec via un noeud Exec node fonctionne, il ne faut pas oublié d'installer le codec via Npm. Pour cela se rendre dans le répertoire contenant la dernière librairie du codec et executé la commande suivante en respectant la version du codec.
+Afin que l'appel par Nod-Red du codec via un noeud Exec node fonctionne, il ne faut pas oublier d'installer le codec via Npm. Pour cela se rendre dans le répertoire contenant la dernière librairie du codec et executé la commande suivante en respectant la version du codec.
 
 ```
 npm adeunis-codec-version.tgz
 ```
+Dans les différentes version on peut regarder si le codec est installé
+```
+pi@raspberrypi:~/codec-adeunis-14 $ npm list |grep @adeunis
+@adeunis/codecs@1.4.0 /home/pi/codec-adeunis-14
+
+pi@raspberrypi:~/codec-adeunis-13 $ npm list |grep @adeunis
+@adeunis/codecs@1.3.2 /home/pi/codec-adeunis-13
+```
+
 
 Voici un exemple pour convertir le message d'un capteur ADEUNIS modèle Pulse sur l'interface TTN. Le message contient 10 octet en Hexa que l'on doit transformer en chaine de caractère - on doit ajouter un 0 à la chaine de caractère si la valeur de l'octet est inférieur à F. La partie du décodage est envoyé dans la partie adeunis_raw du message global.
 
@@ -1709,6 +1718,22 @@ et sur chrome du pc choisir le bon onglet et cliquer sur inspect
 ## Alternatives
 ### The thing network
 ### Grafana
+source: https://simonhearne.com/2020/pi-influx-grafana/
+video illustrative notamment les noeud node red à utiliser pour inserer des données dans influxdb
+video: https://www.youtube.com/watch?v=JdV4x925au0
+
+
+after installing influxdb problem to start executer ceci
+```
+sudo chmod +x /usr/lib/influxdb/scripts/influxd-systemd-start.sh
+
+```
+and then 
+```
+sudo systemctl unmask influxdb.service
+sudo systemctl start influxdb
+sudo systemctl enable influxdb.service
+```
 
 ##Technical data
 ### port list
