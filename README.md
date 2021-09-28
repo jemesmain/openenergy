@@ -176,6 +176,11 @@ A QR code will be displayed which you can scan with your TOTP app (e.g. Google A
 
 Enter the code and backup real vnc code in case your brake your smartphone.
 
+### Filezilla 2 factor authentification
+
+Pour utiliser le 2 factor authentification il faut dans le gestionnaire de site utiliser le réglage type d'authentification interactif.
+Pour éviter de devoir retaper les codes pour chacun des fichiers il faut cocher la case limiter le nombre de connexions simultannées dans les paramètres de transfert.
+
 ## Installation
 
 **Une copie locale de l'ensemble des pages internet référencées est présente dans le dossier web_content**
@@ -805,9 +810,21 @@ Si vous avez suivi toutes ces étapes alors ThingsBoard est pret à recevoire le
 
 La dernière étape est de laisser le capteur / device envoyer des données et valider que ces données sont recu par Thingsboard. Vous trouverez les données dans l'onglet Latest Telemetry en navigant vers le capteur / Device au sein de Thingsboard.
 
-**MQTT thingsboard: Sheevaplug l'exemple d'un envois de données par un device**
+**MQTT thingsboard: Sheevaplug l'exemple d'un envois de données par un device (sheeva plug / current cost**
 
 Dans les paramètre d'un device thingsboard récuperer device id et access token
+Dans le script de lecture du current cost /home/eluser/ccRead.pl ajouter les lignes de publication mqtt.
+8883 est le port de mqtt thingsboard.
+```
+for (my $i=0;$i<$#measures;$i++){
+      if ($measures[$i] != 0){ 
+          $sock->send("local.el.channel$i.VA ".$measures[$i]." $timestamp\n");
+	  system('mosquitto_pub -d -q 1 -h "192.168.1.101" -p "8883" -t "v1/devices/me/telemetry" -u "access_token" -m {"consommation'.$i.'":'.$measures[$i].'}');
+      }
+    }
+    $sock->send("local.el.temp $temp $timestamp\n");
+    system('mosquitto_pub -d -q 1 -h "192.168.1.101" -p "8883" -t "v1/devices/me/telemetry" -u "access_token" -m {"temperature":'.$temp.'}');
+```
 
 #### Node-red - pour aider au décryptage des messages
 
@@ -1734,6 +1751,22 @@ sudo systemctl unmask influxdb.service
 sudo systemctl start influxdb
 sudo systemctl enable influxdb.service
 ```
+
+Lors du démarrage j'ai l'erreur suivante: influxd-systemd-start.sh[PID]: Failed to reach influxdb http endpoint at http://localhost:8086/health
+Fix:
+in ./usr/lib/influxdb/scripts/influxd-systemd-start.sh:
+
+increase the sleep timer (in my case from 1 to 5):
+...
+while [ "$result" != "200" ]; do
+  sleep 5
+  result=$(curl -k -s -o /dev/null $url -w %{http_code})
+...
+Done!
+
+
+Grafana oauth2 authentification.
+https://grafana.com/docs/grafana/latest/auth/google/
 
 ##Technical data
 ### port list
