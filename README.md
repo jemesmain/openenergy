@@ -777,7 +777,40 @@ ajouter ces lignes
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
 ```
+Au bout d'un moment mon service exit...
+thingsboard service status
+oct. 09 06:17:37 raspberrypi thingsboard.jar[19855]: /usr/share/thingsboard/bin/thingsboard.jar : ligne 278 : 19869 Processus arrêté      "$javaexe" "${argum
+oct. 09 06:17:38 raspberrypi systemd[1]: thingsboard.service: Main process exited, code=exited, status=137/n/a
+oct. 09 06:17:38 raspberrypi systemd[1]: thingsboard.service: Failed with result 'exit-code'.
 
+pi@raspberrypi:~ $ cat /var/log/thingsboard/thingsboard.log | grep ERROR
+2021-10-09 06:12:39,420 [sql-queue-0-ts latest-7-thread-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - HikariPool-1 - Connection is not available, request timed out after 139526ms.
+2021-10-09 06:12:51,602 [sql-queue-0-ts latest-7-thread-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - This connection has been closed.
+2021-10-09 06:12:59,689 [pool-7-thread-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - HikariPool-1 - Connection is not available, request timed out after 116121ms.
+2021-10-09 06:13:07,792 [pool-7-thread-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - This connection has been closed.
+2021-10-09 06:14:51,473 [sql-queue-0-ts-3-thread-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - HikariPool-1 - Connection is not available, request timed out after 273688ms.
+2021-10-09 06:14:54,849 [sql-queue-0-ts-3-thread-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - This connection has been closed.
+2021-10-09 06:14:57,508 [ForkJoinPool-11-worker-3] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - HikariPool-1 - Connection is not available, request timed out after 127704ms.
+2021-10-09 06:15:57,842 [ForkJoinPool-11-worker-3] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - This connection has been closed.
+2021-10-09 06:14:56,439 [sql-queue-0-ts latest-7-thread-1] ERROR o.t.s.dao.sql.TbSqlBlockingQueue - [TS Latest] Failed to save 1 entities
+2021-10-09 06:15:57,609 [sql-queue-0-ts-3-thread-1] ERROR c.g.c.u.concurrent.AggregateFuture - Got more than one input Future failure. Logging failures after the first
+2021-10-09 06:15:58,070 [sql-queue-0-ts-3-thread-1] ERROR o.t.s.dao.sql.TbSqlBlockingQueue - [TS] Failed to save 1 entities
+
+trouvé une information sur HikariPool
+source: https://stackoverflow.com/questions/60301008/failed-to-validate-connection-this-connection-has-been-closed-possibly-consi
+changement des setting du coté database en decommentant les trois parametres suivants dans le fichier /etc/postgresql/11/main/postgresql.conf
+```
+# - TCP Keepalives -
+# see "man 7 tcp" for details
+
+#tcp_keepalives_idle = 0		# TCP_KEEPIDLE, in seconds;
+					# 0 selects the system default
+#tcp_keepalives_interval = 0		# TCP_KEEPINTVL, in seconds;
+					# 0 selects the system default
+#tcp_keepalives_count = 0		# TCP_KEEPCNT;
+					# 0 selects the system default
+```
+redemarrer le service postgres puis le service thingsboard
 
 
 #### Intégration Thingsboard - Chirpstack
@@ -836,7 +869,7 @@ https://nodered.org/docs/getting-started/raspberrypi
 
 Nodered propose un script pour installer Node.js, npm et Node-RED onto sur un  Raspberry Pi. Ce script peut aussi être utilisé pour faire une mise à jour d'une installation existante quand une nouvelle émission est disponnible.
 
-La commande suivante télécharge et joue le script.
+La commande suivante télécharge et joue le script. ELLE PERMET DE FAIRE UNE MISE A JOUR...
 
 ```
 bash <(curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered)
@@ -1731,6 +1764,443 @@ se rendre sur OpenEnergy Mobile Leaflet Map
 https://el001.is-a-green.com/
 et sur chrome du pc choisir le bon onglet et cliquer sur inspect
 
+# Docker container
+## install
+source https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository
+
+Avant toute chose - et pour eviter tout ennui lié à l'installation - s'assurer d'une bonne désinstallation ;-)
+Uninstall Docker Engine
+Uninstall the Docker Engine, CLI, and Containerd packages:
+```
+ sudo apt-get purge docker-ce docker-ce-cli containerd.io
+```
+Images, containers, volumes, or customized configuration files on your host are not automatically removed. To delete all images, containers, and volumes:
+```
+ sudo rm -rf /var/lib/docker
+ sudo rm -rf /var/lib/containerd
+```
+
+Install using the repository
+Before you install Docker Engine for the first time on a new host machine, you need to set up the Docker repository. Afterward, you can install and update Docker from the repository.
+
+Set up the repository
+Update the apt package index and install packages to allow apt to use a repository over HTTPS:
+```
+ sudo apt-get update
+ sudo apt-get install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg \
+    lsb-release
+```
+Add Docker’s official GPG key:
+```
+ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+```
+Use the following command to set up the stable repository. To add the nightly or test repository, add the word nightly or test (or both) after the word stable in the commands below. Learn about nightly and test channels.
+
+Note: The lsb_release -cs sub-command below returns the name of your Ubuntu distribution, such as xenial. Sometimes, in a distribution like Linux Mint, you might need to change $(lsb_release -cs) to your parent Ubuntu distribution. For example, if you are using Linux Mint Tessa, you could use bionic. Docker does not offer any guarantees on untested and unsupported Ubuntu distributions.
+
+Pour mon linux mint la liste des correspondance avec ubuntu est ici. Pour ma par Uma 20.2 correspond a Ubuntu Focal a modifier dans la source des logiciel de mintupdate.
+https://linuxmint.com/download_all.php
+```
+ echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+Install Docker Engine
+Update the apt package index, and install the latest version of Docker Engine and containerd, or go to the next step to install a specific version:
+
+ sudo apt-get update
+ sudo apt-get install docker-ce docker-ce-cli containerd.io
+ ```
+Verify that Docker Engine is installed correctly by running the hello-world image.
+```
+ sudo docker run hello-world
+```
+REBOOT!!!!!!! to avoid pb with sudo rights
+
+to have a home .docker folder you must login to docker hub
+
+## Change Docker’s root dir
+Par défaut les images sont dans /var/lib/docker
+
+source: https://tienbm90.medium.com/how-to-change-docker-root-data-directory-89a39be1a70b
+The standard data directory used for docker is /var/lib/docker, and since this directory will store all your images, volumes, etc. it can become quite large in a relative small amount of time.
+If you want to move the docker data directory on another location you can follow the following simple steps.
+1. Stop the docker daemon
+sudo service docker stop
+2. Add a configuration file to tell the docker daemon what is the location of the data directory
+Create docker daemon configuration with following content:
+  Version before v17.05.0
+```
+{ 
+   "graph": "/path/to/your/new/docker/root" 
+}
+```
+“"/path/to/your/new/docker/root”” is the new location you want to use for your new docker data directory.
+  v17.05.0 and newer
+From v17.05.0, the -g or --graph flag for the dockerd or docker daemon command was used to indicate the directory in which to store persistent data and resource configuration and has been replaced with the more descriptive --data-root flag. We create daemon configuration file:
+
+Pour creer un daemon config file il faut creer le fichier daemon.json dans le répertoire /etc/docker et copier les lignes suivantes
+```
+{ 
+   "data-root": "/path/to/your/new/docker/root"
+}
+```
+These flags “graph” were added before Docker 1.0, so will not be removed, only hidden. You still use this flag but simply discourage from using it.
+3. Copy the current data directory to the new one
+We can use both rsync and cp command:
+```
+sudo rsync -aP /var/lib/docker/ "/path/to/your/new/docker/root"
+sudo cp -rp /var/lib/docker/* "/path/to/your/new/docker/root/"
+```
+4. Rename the old docker directory
+Rename old directory to ensure that docker daemon can’t use old directory.
+```
+sudo mv /var/lib/docker /var/lib/docker.old
+```
+5. Restart the docker daemon
+```
+sudo service docker start
+```
+6. Test
+If everything is ok you should see no differences in using your docker containers.
+pour tester on peut utiliser la commande
+```
+docker info
+```
+le résultat de la commande doit contenir le chemin dans le flag : Docker Root Dir
+7. Clean old data.
+Alter all, we should clean old data:
+```
+rm -rf /var/lib/docker.old
+```
+
+# Docker developement
+
+Use vs codium with docker plugin
+source: https://vscodium.com/#install
+source plugin: Nom : Docker
+ID : ms-azuretools.vscode-docker
+Description : Makes it easy to create, manage, and debug containerized applications.
+Version : 1.17.0
+Serveur de publication : ms-azuretools
+Lien de la Place de marché pour VS : https://open-vsx.org/vscode/item?itemName=ms-azuretools.vscode-docker
+
+## Nginx container
+https://hub.docker.com/_/nginx
+abandonné
+preferez certbot nginx container
+
+## Cerbot nginx container
+https://hub.docker.com/r/certbot/certbot
+tuto / howto: https://pentacent.medium.com/nginx-and-lets-encrypt-with-docker-in-less-than-5-minutes-b4b8a60d3a71
+script: https://github.com/wmnnd/nginx-certbot
+
+#192.168.1.48	docker.is-a-green.com
+192.168.1.48	docker.energyleaks.org
+192.168.1.48	docker-chirpstack.energyleaks.org
+192.168.1.48	docker-nodered.energyleaks.org
+192.168.1.48	docker-thingsboard.energyleaks.org
+192.168.1.48	docker-grafana.energyleaks.org
+192.168.1.48	docker-grafana-pub.energyleaks.org
+
+ docker.energyleaks.org docker-chirpstack.energyleaks.org docker-nodered.energyleaks.org docker-thingsboard.energyleaks.org docker-grafana.energyleaks.org	docker-grafana-pub.energyleaks.org
+
+dans la partie domains de ./init-letsencypt.sh on met les domaines à la suite et son adresse mail dans la partie email
+ ```
+ docker.energyleaks.org chirpstack.docker.energyleaks.org nodered.docker.energyleaks.org thingsboard.docker.energyleaks.org grafana.docker.energyleaks.org	grafana-pub.docker.energyleaks.org
+```
+
+ Pour plusieurs domain dans le app.conf on met tous les domaines séparés par une virgule.
+ Les liens vers les ssl_certificate doivent reprendre UNIQUEMENT le premier domaine de ./init-letsencrypt.sh ici c'est docker.el001.energyleaks.org
+
+ /var/root/certbot cad dans le volume certbot/www va contenir les fichier des page html.
+ le proxy_pass et les trois lignes suivantes permettent de pointer vers chirpstack / nodered / grafana / thingsboard
+
+```
+server {
+    listen 80;
+    server_name docker.el001.energyleaks.org, grafana.docker.el001.energyleaks.org;
+    server_tokens off;
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+ 
+server {
+    listen 443 ssl;
+    server_name docker.el001.energyleaks.org;
+    server_tokens off;
+
+    ssl_certificate /etc/letsencrypt/live/docker.el001.energyleaks.org/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/docker.el001.energyleaks.org/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    location / {
+        root /var/www/certbot;
+        #proxy_pass  http://docker.energyleaks.org;
+        #proxy_set_header    Host                $http_host;
+        #proxy_set_header    X-Real-IP           $remote_addr;
+        #proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
+    }
+}
+
+
+server {
+    listen 443 ssl;
+    server_name grafana.docker.el001.energyleaks.org;
+    server_tokens off;
+
+    ssl_certificate /etc/letsencrypt/live/docker.el001.energyleaks.org/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/docker.el001.energyleaks.org/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    location / {
+        root /var/www/certbot;
+        #proxy_pass  http://grafana.docker.energyleaks.org;
+        #proxy_set_header    Host                $http_host;
+        #proxy_set_header    X-Real-IP           $remote_addr;
+        #proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
+    }
+}
+```
+
+On doit s'intéresser au docker networking
+youtube: https://www.youtube.com/watch?v=c6Ord0GAOp8
+on a les principe des network jusqu'a du ping entre les container
+
+A priori on peut définir des adresses ip fixes comme dans l'exemple suivant
+```
+version: '2'
+
+services:
+  redis:
+    image: redis:2.8
+    networks:
+      frontapp:
+        ipv4_address: 172.25.0.11
+
+  elasticsearch:
+    image: elasticsearch:2.2
+    networks:
+      frontapp:
+        ipv4_address: 172.25.0.12
+
+  postgres:  
+    image: postgres:9.5
+    environment:
+      POSTGRES_USER: elephant
+      POSTGRES_PASSWORD: smarty_pants
+      POSTGRES_DB: elephant
+    volumes:
+      - /var/lib/postgresql/data
+    networks:
+      frontapp:
+        ipv4_address: 172.25.0.10
+
+networks:
+  frontapp:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.25.0.0/16
+          gateway: 172.25.0.1
+```
+          
+
+
+## Oauth2-proxy container
+source: https://hub.docker.com/r/bitnami/oauth2-proxy
+command line to launch direct: docker run -p 4180:4180 -p 8443:8443 bitnami/oauth2-proxy:7     --cookie-secure=false     --upstream="file:///dev/null"     --http-address="0.0.0.0:4180"     --https-address="0.0.0.0:8443"     --redirect-url="http://internal.website.com/oauth2/callback"     --cookie-secret="NXA4K2lMUGsrSnFLYnprWnZESE5GUDNINzIrc2NHUnQ="     --client-id=changeme     --client-secret=changeme     --email-domain=*
+via docker compose pour configurer le proxy et les email autorisé via des volumes sur l'hote:
+volumes:
+      #configuation file
+      - "./oauth2-proxy/oauth2-proxy.cfg:/opt/bitnami/oauth2-proxy/bin/oauth2-proxy.cfg"
+      # authenthicated emails file
+      - "./oauth2-proxy/authenticated-emails.cfg:/opt/bitnami/oauth2-proxy/bin/authenticated-emails.cfg"
+
+    command:  /opt/bitnami/oauth2-proxy/bin/oauth2-proxy --config=/opt/bitnami/oauth2-proxy/bin/oauth2-proxy.cfg
+
+    dans le fichier de config modifier la ligne 
+    #http_address = "127.0.0.1:4180" #when operating on same server
+ http_address = "0.0.0.0:4180" #when operating frome another server
+
+## Nodered Container
+https://hub.docker.com/r/nodered/node-red
+
+## THINGSBOARD container
+thingsboard docker documentation here: https://thingsboard.io/docs/user-guide/install/docker/?ubuntuThingsboardQueue=inmemory
+https://hub.docker.com/r/thingsboard/tb-postgres
+
+Ce container contient une base postgres et un mqtt mosquitto
+
+DIFFICULTE A DEMARRER...SUREMENT CONFLIT PORT 5432...port postgresql......
+
+Il faut changer les droit des répertoires suivants
+```
+$ mkdir -p ~/.mytb-data && sudo chown -R 799:799 ~/.mytb-data
+$ mkdir -p ~/.mytb-logs && sudo chown -R 799:799 ~/.mytb-logs
+```
+
+## Grafana container
+https://hub.docker.com/r/grafana/grafana
+https://grafana.com/docs/grafana/latest/administration/configure-docker/
+
+le lien ci dessus contient les chemins vers les data et la config de grafana.
+
+## Chirpstack container
+ https://hub.docker.com/r/chirpstack/chirpstack-application-server
+ https://hub.docker.com/r/chirpstack/chirpstack-network-server
+ https://hub.docker.com/r/chirpstack/chirpstack-gateway-bridge
+
+ si besoin de géolocalisation: https://hub.docker.com/r/chirpstack/chirpstack-geolocation-server
+
+chirpstack docker-compose INSTRUCTIONS: https://github.com/brocaar/chirpstack-docker
+
+
+Ce container contient une base postgres et un mqtt mosquitto que l'on peut enlever dans le docker-compose.yml a condition que le cablage réseau des container soit adapté.
+
+PROBLEME AVEC LE FICHIER COMPOSE QUE J AI CREE... POUR LES VOLUMES MOSQUITTO ET LES VOLUME CHIRPSTACK...par exemple mosquitto.conf qui est pris pour un dossier
+
+
+
+# KUBERNETES
+
+## install Kubetcl
+source: https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
+Update the apt package index and install packages needed to use the Kubernetes apt repository:
+```
+sudo apt-get update
+sudo apt-get install -y apt-transport-https ca-certificates curl
+```
+Download the Google Cloud public signing key:
+```
+sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+```
+Add the Kubernetes apt repository:
+```
+echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+```
+Update apt package index with the new repository and install kubectl:
+```
+sudo apt-get update
+sudo apt-get install -y kubectl
+```
+test
+```
+kubectl version --client
+```
+# install minikube
+source:https://kubernetes.io/fr/docs/tasks/tools/install-minikube/
+
+Installez Minikube par téléchargement direct
+Si vous n'installez pas via un package, vous pouvez télécharger un binaire autonome et l'utiliser.
+```
+curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 \
+  && chmod +x minikube
+```
+Voici un moyen simple d'ajouter l'exécutable Minikube à votre path :
+```
+sudo mkdir -p /usr/local/bin/
+sudo install minikube /usr/local/bin/
+```
+Confirmer l'installation
+Pour confirmer la réussite de l'installation d'un hyperviseur et d'un mini-cube, vous pouvez exécuter la commande suivante pour démarrer un cluster Kubernetes local :
+
+Note: Pour définir le --driver avec minikube start, entrez le nom de l'hyperviseur que vous avez installé en minuscules où <driver_name> est mentionné ci-dessous. Une liste complète des valeurs --driver est disponible dans la documentation spécifiant le pilote VM.
+minikube start --driver=<driver_name>
+par exemple
+```
+minikube start --driver=docker
+```
+Une fois minikube start terminé, exécutez la commande ci-dessous pour vérifier l'état du cluster :
+```
+minikube status
+```
+Si votre cluster est en cours d'exécution, la sortie de minikube status devrait être similaire à :
+```
+host: Running
+kubelet: Running
+apiserver: Running
+kubeconfig: Configured
+```
+si ca marche pas executer les trois commandes suivantes:
+```
+minikube stop
+minikube delete
+minikube start
+
+```
+## install Helm option
+source www.helm.sh
+
+via snap
+```
+sudo snap install helm --classic
+```
+
+## install Kompose docker-compose vers kubenetes
+source: https://kubernetes.io/fr/docs/tasks/configure-pod-container/translate-compose-kubernetes/
+
+install on linux
+```
+curl -L https://github.com/kubernetes/kompose/releases/download/v1.16.0/kompose-linux-amd64 -o kompose
+chmod +x kompose
+sudo mv ./kompose /usr/local/bin/kompose
+```
+
+1. Allez dans le répertoire contenant votre fichier docker-compose.yml
+2. Lancez la commande kompose up pour déployer directement sur Kubernetes, ou passez plutôt à l'étape suivante pour générer un fichier à utiliser avec kubectl.
+3. Pour convertir le fichier docker-compose.yml en fichiers que vous pouvez utiliser avec kubectl, lancez kompose convert et ensuite kubectl apply -f <output file>.
+```
+$ kompose convert                           
+INFO Kubernetes file "frontend-service.yaml" created         
+INFO Kubernetes file "redis-master-service.yaml" created     
+INFO Kubernetes file "redis-slave-service.yaml" created      
+INFO Kubernetes file "frontend-deployment.yaml" created      
+INFO Kubernetes file "redis-master-deployment.yaml" created  
+INFO Kubernetes file "redis-slave-deployment.yaml" created   
+$ kubectl apply -f frontend-service.yaml,redis-master-service.yaml,redis-slave-service.yaml,frontend-deployment.yaml,redis-master-deployment.yaml,redis-slave-deployment.yaml
+service/frontend created
+service/redis-master created
+service/redis-slave created
+deployment.apps/frontend created
+deployment.apps/redis-master created
+deployment.apps/redis-slave created
+```
+Vos déploiements fonctionnent sur Kubernetes.
+
+Accédez à votre application.
+
+Si vous utilisez déjà minikube pour votre processus de développement :
+```
+$ minikube service nom du service présent dans le docker-compose
+```
+
+# Kubernetes course
+absolute beginer: https://www.youtube.com/watch?v=s_o8dwzRlu4
+exemple of a project 40 min.
+
+basic commands: https://www.youtube.com/watch?v=azuwXALfyRg
+
+yaml explained: https://www.youtube.com/watch?v=qmDzcu5uY1I
+
+volume explained: https://www.youtube.com/watch?v=0swOh5C3OVM
+
+config file: https://www.youtube.com/watch?v=FAnQTgr04mU
+
+
+
 
 ## Alternatives
 ### The thing network
@@ -1768,7 +2238,7 @@ Done!
 Grafana oauth2 authentification.
 https://grafana.com/docs/grafana/latest/auth/google/
 
-##Technical data
+## Technical data
 ### port list
 voir l'illustration architecture
 
