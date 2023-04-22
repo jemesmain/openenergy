@@ -2663,6 +2663,14 @@ Ce container contient une base postgres et un mqtt mosquitto que l'on peut enlev
 
 PROBLEME AVEC LE FICHIER COMPOSE QUE J AI CREE... POUR LES VOLUMES MOSQUITTO ET LES VOLUME CHIRPSTACK...par exemple mosquitto.conf qui est pris pour un dossier
 
+## XTREMUS XTR container
+pour faire tourner le site web d xtremus il faut:
+-apache
+-php
+-sql
+
+source: https://gist.github.com/jcavat/2ed51c6371b9b488d6a940ba1049189b
+
 
 
 # KUBERNETES
