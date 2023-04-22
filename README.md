@@ -6,6 +6,16 @@ Un projet pour effectuer du suivi énergétique ouvert dans les bâtiments.
 Se référer au diagramme suivant: openenergy_architecture.jpg
 Le pdf présent à l'adresse suivante openenergy.bicyclopresto.fr peut être consulté.
 
+## Echinix Gnome
+pour installer gnome
+sudo apt install tasksel
+sudo tasksel
+sudo apt-get install task-gnome-desktop
+
+
+pour demarrer gnome automatiquement
+sudo update-alternatives --config x-session-manager
+
 ## Raspberry Pi
 
 Pour les administrateur le Raspberry Pi peut être accédé via SSH et RealVNC
@@ -131,17 +141,17 @@ so it will look like this
 ```
 # PAM configuration for the Secure Shell service
 
-# Standard Un*x authentication.
+# Standard Unix authentication.
+
 @include common-auth
 
-# 2FA
+
 auth required pam_google_authenticator.so
 
 # Disallow non-root logins when /etc/nologin exists.
+
 account    required     pam_nologin.so
 ```
-
-
 As I prefer to be prompted for my verification code after entering my password, I’ve added this line after the @include line. If you want to be prompted for the code before entering your password you should add it before the @include line.
 
 Now restart the SSH daemon:
@@ -181,12 +191,23 @@ Enter the code and backup real vnc code in case your brake your smartphone.
 Pour utiliser le 2 factor authentification il faut dans le gestionnaire de site utiliser le réglage type d'authentification interactif.
 Pour éviter de devoir retaper les codes pour chacun des fichiers il faut cocher la case limiter le nombre de connexions simultannées dans les paramètres de transfert.
 
-## Installation
+## Installation Capteur
 
 **Une copie locale de l'ensemble des pages internet référencées est présente dans le dossier web_content**
 
 ### Capteur - les données sont recueillies
-#### Adeunis
+
+rappel sur les différentes key: https://stackoverflow.com/questions/54096980/lorawan-deveui-appeui-and-appkey
+
+
+### Gateway parametrage chirpstack  
+
+La gateway a a priori selon la documentation 8 channel a parametrer dans la gateway profil
+0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+
+
+
+#### INSTALLATION CAPTEUR ADEUNIS
 La société Adeunis propose tout une série de capteur Lorawan avec une bibliothèque qui permet de décoder les messages dans de nombreux logiciel par un appel de la librairie de décodage.
 A partir de The Thing Network (TTN) ou Chirpstack il faut préalablement décodé les message en hexa vers un format de chaine de caractère qui est nécessaire pour l'appel de la librairie de décodage
 
@@ -196,6 +217,250 @@ http://codec-adeunis.com/decoder
 La librairie est accessible ici:
 
 http://codec-adeunis.com/download
+
+
+source: https://www.adeunis.com/device-management/configuration-des-capteurs/
+app: https://play.google.com/store/apps/details?id=com.adeunis.IoTConfiguratorApp
+
+NONFAIT A CAUSE CONNEXION SMARTPHONE USB: avec une cle torx ouvir le capteur et connecter ce dernier a votre smartphone  mini usb mini usb.
+
+Pour activer sous chirpstack il faut le DevEUI et l'Appkey... puis attendre 12 heures... La nuit porte conseil!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+### Installation capteur Watteco Flasho
+pour l'installation physique
+source: http://support.nke-watteco.com/flasho/
+pour la configuration lora
+source: https://support.nke-watteco.com/
+
+Le capteur flashO est un CAPTEURLORAWAN DE CLASS A
+
+scanner le qrcode sur mobile et le partager
+LW:D0:70B3D5E75F600000:70B3D5E75E00F27A:01280017:P5070071006:S002E484C81:CFC83
+JoinEUI: 70B3D5E75F600000
+DevEUI: 70B3D5E75E00F27A
+
+# Codage Decodage Capteur Codec
+
+## modification du decodage pour chirpstack -> thingsboard
+source: https://www.chirpstack.io/application-server/integrations/thingsboard/
+
+Decoded uplink data is prefixed with the **data_ prefix**. Make sure to configure a coded in the Device Profile.
+
+## Codage Decodage Capteur Codec ADEUNIS
+source: https://codec-adeunis.com/download
+
+**utiliser https://cryptii.com/ bytes en hexa a gauche, encode base 64 rfc 3548, text à droite**
+**le port a utiliser est le 1**
+**périodicité de l'envoi de la mesure: toutes les X mesures**
+0x41 0x41 register to modify 301
+envoi toute les mesures
+S301 : trame  41 01 00 01 (register to modify is 300+1 01-> 41 01 -> valeur de 1 toutes les mesures 00 01 -> 41 01 00 01  )->en text "QQEAAQ=="
+envoi toute les 6 mesures (soit 1h si la périodicité est a 10 minutes)
+S301 : trame  41 01 00 06 (register to modify is 300+1 01-> 41 01 -> valeur de 6 toutes les 6 mesures 00 06 -> 41 01 00 06  )->en text "QQEABg=="
+envoi toute les 24 mesures (soit 4h si la périodicité est a 10 minutes)
+S301 : trame  41 01 00 18 (register to modify is 300+1 01-> 41 01 -> valeur de 6 toutes les 24 mesures 00 18 -> 41 01 00 18  )->en text "QQEAGA=="
+envoi toute les 48 mesures (soit 8h si la périodicité est a 10 minutes)
+S301 : trame  41 01 00 30 (register to modify is 300+1 01-> 41 01 -> valeur de 48 toutes les 48 mesures 00 30 -> 41 01 00 30  )->en text "QQEAMA=="
+envoi toute les 72 mesures (soit 12h si la périodicité est a 10 minutes)
+S301 : trame  41 01 00 48 (register to modify is 300+1 01-> 41 01 -> valeur de 72 toutes les 72 mesures 00 48 -> 41 01 00 48  )->en text "QQEASA=="
+envoi toute les 144 mesures (soit 24h si la périodicité est a 10 minutes)
+S301 : trame  41 01 00 90 (register to modify is 300+1 01-> 41 01 -> valeur de 144 toutes les 144 mesures 00 90 -> 41 01 00 90  )->en text "QQEAkA=="
+
+**périodicité de la mesure**
+0x41 register to modify 321
+réglage à 600s soit 10 minutes
+s321 :  trame 41 15 01 2c (register to modify 300+21-> 41 15 (21=16+5->15)-> 1 point toute les 10 min 300*2s on envoi 300 -> 41 15 01 2C) )-> en text "QRUBLA=="
+**reboot**
+0x48
+pour un reboot dans 120 minutes après l'envois du message
+120 minutes = 0x0078 la trame est donc 48 00 78 -> en text "SAB4"
+30 minutes = 0x001E -> en text "SAAe"
+10 minutes = 0x000A -> en text "SAAK"
+5 minutes la trame est 48 00 05 -> en text "SAAF"
+
+on peut envoyer deux informations a la fois... 41 15 01 2C 01 00 06 -> 10 minutes / envois toutes les 6 mesures soit toute les heures
+-> QRUBLAEABg==
+10 minutes toutes les 3h soit toutes les 18 mesures (12 en hexa)... 41 15 01 2C 01 00 12
+-> QRUBLAEAEg==
+
+## Codage Decodage Capteur Codec NKE
+source: https://support.nke-watteco.com/downloads/
+pour du flashO : https://github.com/TheThingsNetwork/lorawan-devices/blob/master/vendor/nke-watteco/flasho-sensor.js
+
+périodicité de la mesure
+réglage à 600s en downlink message sur le **port 125** (en bas de la partie stat du device sur chirpstack)
+/* pas ok
+trame 11 06 00 0f 00 04 02 23 00 00 02 58 00 00 00 00 -> en text "EQYADwAEAiMAAAJYAAAAAA=="
+réglage à 600s avec un envoi toutes les 6 mesures sur le **port 125** (en bas de la partie stat du device sur chirpstack)
+trame 11 06 00 0f 00 04 02 23 00 00 02 58 00 00 00 06- > en text "EQYADwAEAiMAAAJYAAAABg=="
+pas ok */
+
+EQYADwAEAiMAAAJYAAAAAA==
+
+PLUTOT
+d'après l'exemple de la configuration https://support.nke-watteco.com/configuration-cluster/
+example: report the battery level once a day.
+Send on the fport 125: 11 06 00 50 00 00 06 41 800A 85A0 05 00 04 00C8 00
+with 800A : 8000(minutes) | 000A (10)  => periodicity of measure all 10 minutes
+with 85A0 : 8000(minutes) | 05A0 (1440)  => periodicity of sending all 1440 minutes = 1 day
+with 04: set a delta variation on disposable battery.
+with 00C8 : the delta variation for which a report will be sent is 200 mV
+
+c'est ici que les trame peuvent etre encodé.
+http://support.nke.fr/Lora/LoraEncoder/Index.html
+```
+Choisissez tout d'abord le modèle de capteur, puis sélectionnez une commande et éditez les paramètres disponibles.
+
+① Choisissez un produit : 
+Flash'O (50-70-071)
+② Choisissez une fonction : 
+Comptage - Configurer les rapports de nombre de changements d'état
+
+Avancé
+③ Modifiez les paramètres suivants afin de générer la trame souhaitée :
+Paramètre	Valeur	Commentaire
+EndPoint	
+0
+---
+Type de rapport	
+Batch // c'est batch qui défini que l'on veut de l'historisation cad un envoi périodique de plusieurs mesures
+---
+Intervalle de rapport minimal	
+10 minutes --- (0 à 32767 secondes) // mesures toutes les 10 minutes
+Intervalle de rapport maximal	
+180 minutes --- (0 à 32767 secondes) // périodicité de l'envois toutes les 3 h
+Delta	
+0 // IMPORTANT ENFIXANT A 0 ON FORCE LE COMPORTEMENT D 4UN ENVOIS TOUTES LES TROIS HEURE SINON CELA SEMBLE ETRE UN DELTA MAX POUR DECLENCHER UN ENVOI 5 CE COMPORTEMENT PERMET DE SURVEILLER DES FUITE 6 ON DECLENCHE UN ENVOIS PREMATRURE SUR DELTA TROP IMPORTANT
+--- (0 à 32767 )
+Résolution	
+1 --- (0 à 32767 )
+TagLabel	
+0 --- (0 à 31 )
+TagSize	
+1 --- (1 à 7 )
+```
+Downlink sur port 125
+1106000f01040200800a80b4000000000000000101
+-> "EQYADwEEAgCACoC0AAAAAAAAAAEB"
+1106000f1d040200800a80b4000000000000000101
+plutot
+1106000f11005500800a80b4000101
+
+quand on configure le state
+Decoded frame (json) : 1106000f11005500800a80b4000101
+{"version": "NKE_Frame_Codec_v_1.0.svn5087", "TimeStamp": "2022-01-15 19:09:18.814959"}
+{
+ "EndPoint": 0,
+ "Report": "Standard",
+ "CommandID": "ConfigureReporting",
+ "ClusterID": "BinaryInput",
+ "ReportParameters": {
+  "Batch": "Yes",
+  "Size": 8
+ },
+ "AttributeID": "PresentValue",
+ "Batches": [
+  {
+   "FieldIndex": 0,
+   "MinReport": {
+    "Unit": "Minutes",
+    "Value": 10
+   },
+   "MaxReport": {
+    "Unit": "Minutes",
+    "Value": 180
+   },
+   "Delta": false,
+   "Resolution": true,
+   "TagValue": {
+    "TagLabel": 0,
+    "TagSize": 1
+   }
+  }
+ ]
+}
+
+
+
+quand on configure le count
+Decoded frame (json) : 110Decoded frame (json) : 1106000f1d040200800a80b40000000000000001016000f1d040200800a80b4000000000000000101
+{"version": "NKE_Frame_Codec_v_1.0.svn5087", "TimeStamp": "2022-01-15 19:16:33.117499"}
+{
+ "EndPoint": 0,
+ "Report": "Standard",
+ "CommandID": "ConfigureReporting",
+ "ClusterID": "BinaryInput",
+ "ReportParameters": {
+  "Batch": "Yes",
+  "Size": 14
+ },
+ "AttributeID": "Count",
+ "Batches": [
+  {
+   "FieldIndex": 0,
+   "MinReport": {
+    "Unit": "Minutes",
+    "Value": 10
+   },
+   "MaxReport": {
+    "Unit": "Minutes",
+    "Value": 180
+   },
+   "Delta": 0,
+   "Resolution": 1,
+   "TagValue": {
+    "TagLabel": 0,
+    "TagSize": 1
+   }
+  }
+ ]
+}
+
+
+
+
+
+read de la configuration version du codec
+1108000f000055
+-> EQgADwAAVQ==
+read de la configuration from manual jyria
+11080050000006
+-> EQgAUAAABg==
+
+downlink  simple flash O configure reporting report standart min 10 max 180 reportable change 0
+1106000f00040223800a80b400000000
+->EQYADwAEAiOACoC0AAAAAA==
+trame up chirpstack
+data:"EQcADwAABAI="
+attributID:"0x0402"
+clusterdID:"0x000F"
+cmdID:"0x07"
+decodedBatch:0
+endpoint:0
+report:"standard"
+status:0
+
+# MQTT TTN et Nodered
+
+Subscribing to Upstream Traffic
+The Application Server publishes uplink traffic on the following topics:
+
+v3/{application id}@{tenant id}/devices/{device id}/join
+v3/{application id}@{tenant id}/devices/{device id}/up
+v3/{application id}@{tenant id}/devices/{device id}/down/queued
+v3/{application id}@{tenant id}/devices/{device id}/down/sent
+v3/{application id}@{tenant id}/devices/{device id}/down/ack
+v3/{application id}@{tenant id}/devices/{device id}/down/nack
+v3/{application id}@{tenant id}/devices/{device id}/down/failed
+v3/{application id}@{tenant id}/devices/{device id}/service/data
+v3/{application id}@{tenant id}/devices/{device id}/location/solved
+
+
+db.frames.find({$where:"JSON.stringify(this).indexOf('adpul')!=-1", "uplink_message.frm_payload":{"$exists": true}},{_id:1, "end_device_ids.device_id":1, received_at:1, "uplink_message.frm_payload":1}).sort({"_id" : -1})
+
+
+
 
 #### Lopy
 
@@ -261,6 +526,7 @@ Le réglage de la gateway s'effectue à partir de la commande suivante:
 sudo gateway-config
 ```
 ***Recuperer Gateway ID encore appelé Geteway EUI qui est la chaine de caractère présente dans le tire de la fenetre immédiatement après ID:**
+deveui B827EBFFFE627CCF
 
 -menu Set pi password - est utilisé pour changer le mot de passe de la Gateway.
 
@@ -312,12 +578,14 @@ https://docs.pycom.io/tutorials/lora/lorawan-nano-gateway/
 Dans les fichiers lopy nano de la partie setting vous avez un exemple de programmation:
 
 - Le fichier config.py:
-    -  défini une mac avec FFFE en sont centre pour le réseau TTN ou FFEE pour le réseau Chirpstack. Cette mac est l'identifiant de la gateway pour chacun des deux réseaux TTN ou Chirpstack (en FFEE ou en FFFE selon le réseau choisi)
+    -  défini une mac avec FFFE en sont centre pour le réseau TTN ou FFEE pour le réseau Chirpstack. Cette mac est l'identifiant de la gateway pour chacun des deux réseaux TTN ou Chirpstack (respectivement en FFEE ou en FFFE selon le réseau choisi)
     ```
     GATEWAY_ID = WIFI_MAC[:6] + "FFEE" + WIFI_MAC[6:12]
     ```
-    
-    
+    deveui
+      70B3D54995E573F7 lopy red?
+      db2b4bbc2cf740a3 lopy green
+
     - myserver doit être remplacé par le DNS du réseau qui héberge votre serveur chirpstack.
 - le fichier main.py:
     - gère la connexion au réseau lorawan
@@ -754,7 +1022,7 @@ pour chirpstack: erreur / error context deadline exceeded (code: 2)
 réglage pour la partie via l'interface web network server 192.168.1.101:8000 doit correspondre a la partie public_host="192.168.1.101:8001" du fichier /etc/chirpstack-application-server/chirpstack-application-server.toml
 
 
-**- Troubleshooting**
+**- Troubleshooting thingsboard**
 
 Si le service Thingsboard ne démarre pas malgré les modifications ci-dessus il vous faut analyser les éléments plus précisement à l'aide des instructions suivantes:
 Les logs de ThingsBoard logs sont enregistré dans le répertoire suivant:
@@ -777,6 +1045,8 @@ ajouter ces lignes
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
 ```
+
+Thingsboard troubleshooting HikaryPool
 Au bout d'un moment mon service exit...
 thingsboard service status
 oct. 09 06:17:37 raspberrypi thingsboard.jar[19855]: /usr/share/thingsboard/bin/thingsboard.jar : ligne 278 : 19869 Processus arrêté      "$javaexe" "${argum
@@ -811,6 +1081,81 @@ changement des setting du coté database en decommentant les trois parametres su
 					# 0 selects the system default
 ```
 redemarrer le service postgres puis le service thingsboard
+
+Thingsboard troubleshooting lwM2MServiceImpl
+2022-03-31 19:23:59,738 [main] INFO  o.t.s.c.SystemInfoController - System build info: {"version":"3.3.3","artifact":"application","name":"ThingsBoard Server Application"}
+2022-03-31 19:23:59,899 [main] INFO  o.t.s.c.t.c.ssl.SslCredentialsConfig - LWM2M Server DTLS Credentials: Initializing SSL credentials.
+2022-03-31 19:23:59,903 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'lwM2MServiceImpl' defined in URL [jar:file:/usr/share/thingsboard/bin/thingsboard.jar!/BOOT-INF/classes!/org/thingsboard/server/service/lwm2m/LwM2MServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'lwM2MTransportServerConfig': Unsatisfied dependency expressed through field 'credentialsConfig'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'lwm2mServerCredentials': Invocation of init method failed; nested exception is java.lang.RuntimeException: LWM2M Server DTLS Credentials: Invalid SSL credentials configuration. None of the PEM or KEYSTORE configurations can be used!
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-03-31 19:23:59,966 [main] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'lwM2MServiceImpl' defined in URL [jar:file:/usr/share/thingsboard/bin/thingsboard.jar!/BOOT-INF/classes!/org/thingsboard/server/service/lwm2m/LwM2MServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'lwM2MTransportServerConfig': Unsatisfied dependency expressed through field 'credentialsConfig'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'lwm2mServerCredentials': Invocation of init method failed; nested exception is java.lang.RuntimeException: LWM2M Server DTLS Credentials: Invalid SSL credentials configuration. None of the PEM or KEYSTORE configurations can be used!
+
+Dans thingsboard.yml mettre le enabled a false...
+
+ # Local LwM2M transport parameters
+  lwm2m:
+    # Enable/disable lvm2m transport protocol.
+    enabled: "${LWM2M_ENABLED:false}"
+
+thingsboard troubleshooting jdbc connection / connection refused
+Caused by: java.net.ConnectException: Connection refused (Connection refused)
+
+2022-05-09 11:04:30,851 [main] ERROR com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Exception during pool initialization.
+org.postgresql.util.PSQLException: Connection to localhost:5432 refused. 
+Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections.
+Caused by: java.net.ConnectException: Connection refused (Connection refused)
+
+2022-05-09 11:04:30,853 [main] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Connection to localhost:5432 refused.
+ Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections.
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-05-09 11:04:30,981 [main] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.context.ApplicationContextException: Unable to start web server;
+ nested exception is org.springframework.boot.web.server.WebServerException: Unable to start embedded Tomcat
+
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'thingsboardSecurityConfiguration': Unsatisfied dependency expressed through field 'oauth2AuthenticationSuccessHandler'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'oauth2AuthenticationSuccessHandler' defined in URL [jar:file:/usr/share/thingsboard/bin/thingsboard.jar!/BOOT-INF/classes!/org/thingsboard/server/service/security/auth/oauth2/Oauth2AuthenticationSuccessHandler.class]: Unsatisfied dependency expressed through constructor parameter 6; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'defaultSystemSecurityService': Unsatisfied dependency expressed through field 'mailService'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'defaultMailService': Invocation of init method failed; nested exception is org.springframework.dao.DataAccessResourceFailureException:
+ Unable to acquire JDBC Connection;
+  nested exception is org.hibernate.exception.JDBCConnectionException:
+   Unable to acquire JDBC Connection
+
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'oauth2AuthenticationSuccessHandler' defined in URL [jar:file:/usr/share/thingsboard/bin/thingsboard.jar!/BOOT-INF/classes!/org/thingsboard/server/service/security/auth/oauth2/Oauth2AuthenticationSuccessHandler.class]: Unsatisfied dependency expressed through constructor parameter 6; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'defaultSystemSecurityService': Unsatisfied dependency expressed through field 'mailService'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'defaultMailService': Invocation of init method failed; nested exception is org.springframework.dao.DataAccessResourceFailureException:
+ Unable to acquire JDBC Connection;
+  nested exception is org.hibernate.exception.JDBCConnectionException:
+   Unable to acquire JDBC Connection
+
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'defaultSystemSecurityService': Unsatisfied dependency expressed through field 'mailService'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'defaultMailService': Invocation of init method failed; nested exception is org.springframework.dao.DataAccessResourceFailureException:
+ Unable to acquire JDBC Connection; 
+ nested exception is org.hibernate.exception.JDBCConnectionException:
+  Unable to acquire JDBC Connection
+
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'defaultMailService': Invocation of init method failed; nested exception is org.springframework.dao.DataAccessResourceFailureException:
+ Unable to acquire JDBC Connection;
+  nested exception is org.hibernate.exception.JDBCConnectionException: Unable to acquire JDBC Connection
+
+Caused by: org.springframework.dao.DataAccessResourceFailureException:
+ Unable to acquire JDBC Connection;
+  nested exception is org.hibernate.exception.JDBCConnectionException:
+   Unable to acquire JDBC Connection
+
+Caused by: org.hibernate.exception.JDBCConnectionException: Unable to acquire JDBC Connection
+
+Caused by: org.postgresql.util.PSQLException: Connection to localhost:5432 refused.
+ Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections.
+
+On monte le répertoire supplémentaire
+./thingsboard/logpostgres:/var/log/postgres dans le docker compose
+
+ainsi on obtient cela dans posgres.log de var/log/postgres
+2022-05-09 16:42:08.499 UTC [9] FATAL:  lock file "postmaster.pid" already exists
+2022-05-09 16:42:08.499 UTC [9] HINT:  Is another postmaster (PID 10) running in data directory "/data/db"?
+
+il faut virer le postmaster.pid dans le repertoire data du bon container /var/lib/docker
+ce fichier empeche les acces concurrent à la db
+sudo find /var/lib/docker/ -name "*.pid"
+/var/lib/docker/volumes/thingsboarddata/_data/db/postmaster.pid
+/var/lib/docker/volumes/compose_thingsboarddata/_data/db/postmaster.pid
+
+redemarrer le container DANS TOUS LES CAS PREFERER UN ARRET CORRECT DES CONTAINER ;-) docker-compose stop.
 
 
 #### Intégration Thingsboard - Chirpstack
@@ -1748,9 +2093,19 @@ sudo systemctl enable oauth2-proxy.service
 ```
 The systemctl command can also be used to restart the service or disable it from boot up!
 
+## frontend: login
+tutorial: https://www.youtube.com/watch?v=b91XgdyX-SM
+github: https://github.com/mehulmpt/node-auth-youtube
+
+dans la partie server.js il faut faire pointer la partie mongoose vers l'adresse ip du container mongo db. -> cf mongo / mongo express container
+mongoose.connect('mongodb://root:example@172.25.0.5:27017/login-app-db?authSource=admin', {	
+	useNewUrlParser: true,
+	useUnifiedTopology: true,
+	useCreateIndex: true
+})
 
 
-## Cartographie / Leaflet / Progressive web app
+## frontend: Cartographie / Leaflet / Progressive web app
 
 ### Debugage smartphone / android
 démarrer le android debug bridge
@@ -1763,6 +2118,11 @@ sur le smartphone démarrer chrome
 se rendre sur OpenEnergy Mobile Leaflet Map
 https://el001.is-a-green.com/
 et sur chrome du pc choisir le bon onglet et cliquer sur inspect
+
+### mongodb et cartographie
+schema mongodb pour mongoose: https://transform.tools/json-to-mongoose
+mongo db geospatial query:  https://examples.javacodegeeks.com/software-development/mongodb/mongodb-geospatial-query-operators-example/
+                            http://thecodebarbarian.com/80-20-guide-to-mongodb-geospatial-queries
 
 # Docker container
 ## install
@@ -1877,6 +2237,30 @@ Alter all, we should clean old data:
 rm -rf /var/lib/docker.old
 ```
 
+# Docker-compose
+
+source: https://docs.docker.com/compose/install/
+installation - choisir la version plus récente en se reportant au lien ci dessus
+```
+ sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+```
+rendre l'élément executable
+```
+sudo chmod +x /usr/local/bin/docker-compose
+```
+rendre la commande executable pour l'utilisateur
+```
+ sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+```
+
+
+vérification que tout est ok
+```
+docker-compose --version
+```
+
+
 # Docker developement
 
 Use vs codium with docker plugin
@@ -1973,6 +2357,40 @@ server {
     }
 }
 ```
+#certbot nginx renew certificate renouvellement de certificat
+
+modifier dans ./init-letsencrypt.sh
+staging=1 # Set to 1 if you're testing your setup to avoid hitting request limits
+bien remettre à 0 pour de la production...
+
+depuis le répertoire /el/compose lancer la commande suivante lors de l'ajout d'un nouveau domaine
+certbot-nginx/init-letsencrypt.sh
+
+
+ATTENTION ne pas utiliser directement ./init-letsencrypt.sh depuis le répertoire certbot-nginx car dans ce cas la la commande va appeler le docker-compose.yml présent dans ce répertoire et donner l'illusion d'un comportement correct.
+
+
+pour le lancer dans /el/compose
+```
+docker-compose run --rm --entrypoint " certbot renew --dry-run " certbot
+```
+et sans le dry-run ensuite (le dry run effectue un essai de renouvellement)
+```
+docker-compose run --rm --entrypoint " certbot renew" certbot
+```
+faut faire relire les certificats par le nginx cad redemmarrer le container
+
+
+#troubleshooting certbot nginx
+Troubleshoot sur le ./init-letsencrypt.sh
+Certbot failed to authenticate some domains (authenticator: webroot). The Certificate Authority reported these problems:
+  Domain: nodered.echinix.energyleaks.org
+  Type:   connection
+  Detail: Fetching http://nodered.echinix.energyleaks.org/.well-known/acme-challenge/rABa5ysKBBo_SR_4viMYBWqKa6EDZrivQqtv5AnVFoI: Timeout during connect (likely firewall problem)
+
+NE PAS OUBLIER QUE LE PORT HHTP:80 DOIT ETRE OUVERT VERS L EXTERIEUR!!!!!!!
+
+
 
 On doit s'intéresser au docker networking
 youtube: https://www.youtube.com/watch?v=c6Ord0GAOp8
@@ -2035,6 +2453,79 @@ volumes:
     #http_address = "127.0.0.1:4180" #when operating on same server
  http_address = "0.0.0.0:4180" #when operating frome another server
 
+## mongo / mongo-express container
+source: https://hub.docker.com/_/mongo
+
+ajouter les element suivant au docker-compose.yml
+il faut ouvrir le port 27017 pour un acces direct.
+```
+mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+
+```
+On peut ajouter les address ip v4 pour avoir un adressage static à ce service.
+
+On peut acceder via le plugin mongodb de vs codium 
+```
+Nom : MongoDB for VS Code
+ID : mongodb.mongodb-vscode
+Description : Connect to MongoDB and Atlas directly from your VS Code environment, navigate your databases and collections, inspect your schema and use playgrounds to prototype queries and aggregations.
+Version : 0.7.0
+Serveur de publication : mongodb
+Lien de la Place de marché pour VS : https://open-vsx.org/vscode/item?itemName=mongodb.mongodb-vscode
+mongodb.mongodb-vscode
+```
+avec la chaine suivante. authSource=admin permet de ne pas avoir de problème d'authentification. login-app-db est la base active.
+```
+mongodb://root:example@172.25.0.5:27017/login-app-db?authSource=admin&readPreference=primary&directConnection=true&ssl=false
+```
+source: https://docs.mongodb.com/manual/reference/connection-string/
+
+voir comment creer un utilisateur:
+source : https://docs.mongodb.com/manual/tutorial/create-users/#std-label-create-users
+
+Pour que le plugin fonctionne il faut installer MONGO SHELL
+source: https://www.mongodb.com/try/download/shell
+sudo dpkg -i path to deb file
+sudo dpkg -i /home/eleq/Downloads/mongodb-mongosh_1.1.7_amd64.deb 
+optionnellement sudo apt-get install -f
+
+avec un echinix et un remote desktop rdp j'ai l'erreur suivante lorsque je cherche a me connecter
+mongodb vscodium extension unable to create connexion: Error or unsupported transport disabled for adress disabled
+
+
+
+
+
+pour convertir les élément openstreetmap osm en schéma mongoos utiliser l'outil suivant.
+https://transform.tools/json-to-mongoose
+
+
+
+## Nodejs container
+source: https://hub.docker.com/_/node
+instructions: https://github.com/nodejs/docker-node/blob/main/README.md#how-to-use-this-image
+
+
+
+
+
 ## Nodered Container
 https://hub.docker.com/r/nodered/node-red
 
@@ -2050,6 +2541,106 @@ Il faut changer les droit des répertoires suivants
 ```
 $ mkdir -p ~/.mytb-data && sudo chown -R 799:799 ~/.mytb-data
 $ mkdir -p ~/.mytb-logs && sudo chown -R 799:799 ~/.mytb-logs
+```
+MAJ image et base de données
+
+Le $choisir_la_version permet d'incrémenter d'une version a une version
+```
+#Original Instructions
+docker pull thingsboard/tb-postgres
+docker-compose stop
+docker run -it -v ~/.mytb-data:/data --rm thingsboard/tb-postgres upgrade-tb.sh
+docker-compose rm mytb
+docker-compose up
+
+#JEM modified Instructions
+# a utiliser dans le home eleq el compose directory
+/home/jemesmain/dockerFile/compose/thingsboard/data
+
+docker pull thingsboard/tb-postgres:$choisir_la_version
+docker-compose stop thingsboard
+#docker run -it -v thingsboarddata:/data --rm thingsboard/tb-postgres:latest upgrade-tb.sh
+docker run -it -v /home/eleq/el/compose/thingsboard/data:/data --rm thingsboard/tb-postgres:$choisir_la_meme_version upgrade-tb.sh
+docker run -it -v /home/jemesmain/dockerFile/compose/thingsboard/data:/data --rm thingsboard/tb-postgres:latest upgrade-tb.sh
+docker-compose rm thingsboard
+docker-compose up -d thingsboard
+```
+L'instruction avec thingsboarddata ne fonctionne pas pour la maj de la database
+CREATE DATABASE
+cat: /data/.upgradeversion: No such file or directory
+Starting ThingsBoard upgrade ...
+FROM_VERSION variable is invalid or unspecified!
+L'instruction avec le chemin complet fonctionne ici on a lancé un upgrade depuis 3.3.4.1 (version de l'image) depuis une database en version 3.3.1. On a la version actuelle dans thingsboard/data/.upgradeversion
+SI LE PROCESSUS PLANTE UNE MANIERE DE S EN SORTIR EST DE PULL UNE VERSION IDENTIQUE A upgradeversion DU CONTAINER
+```
+The files belonging to this database system will be owned by user "thingsboard".
+This user must also own the server process.
+
+The database cluster will be initialized with
+ locale "C.UTF-8".
+The default database encoding has accordingly been set to "UTF8".
+The default text search configuration will be set to "english".
+
+Data page checksums are disabled.
+
+fixing permissions on existing directory /data/db ... ok
+creating subdirectories ... ok
+selecting dynamic shared memory implementation ... posix
+selecting default max_connections ... 100
+selecting default shared_buffers ... 128MB
+selecting default time zone ... Etc/UTC
+creating configuration files ... ok
+running bootstrap script ... ok
+performing post-bootstrap initialization ... ok
+syncing data to disk ... ok
+
+initdb: warning: enabling "trust" authentication for local connections
+You can change this by editing pg_hba.conf or using the option -A, or
+--auth-local and --auth-host, the next time you run initdb.
+
+Success. You can now start the database server using:
+
+    /usr/lib/postgresql/12/bin/pg_ctl -D /data/db -l logfile start
+
+Starting ThingsBoard upgrade ...
+  ______    __      _                              ____                               __
+ /_  __/   / /_    (_)   ____    ____ _   _____   / __ )  ____   ____ _   _____  ____/ /
+  / /     / __ \  / /   / __ \  / __ `/  / ___/  / __  | / __ \ / __ `/  / ___/ / __  /
+ / /     / / / / / /   / / / / / /_/ /  (__  )  / /_/ / / /_/ // /_/ /  / /    / /_/ /
+/_/     /_/ /_/ /_/   /_/ /_/  \__, /  /____/  /_____/  \____/ \__,_/  /_/     \__,_/
+                              /____/
+
+ ===================================================
+ :: ThingsBoard ::       (v3.3.4.1)
+ ===================================================
+
+Starting ThingsBoard Upgrade from version 3.3.1 ...
+Upgrading ThingsBoard from version 3.3.1 to 3.3.2 ...
+Upgrading ThingsBoard from version 3.3.2 to 3.3.3 ...
+Failed updating schema!!!
+org.postgresql.util.PSQLException: FATAL: database "thingsboard" does not exist
+```
+
+POUR MODIFIER LES PORTS DE LA CONNECTION VERS LA BASE DE DONNEES
+trois fichiers:
+docker-compose.yml: modifier la ligne dans le service thingsboard 5432->15432
+thingsboard.yml: ligne 522 / 5432->15432
+postgresql.conf: ligne 64 / 5432 ->15432
+pour des probleme de jdbc connection.
+
+
+#troubleshooting thingsboard container
+
+# ERROR lwM2M
+2022-03-31 19:23:59,966 [main] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'lwM2MServiceImpl' defined in URL [jar:file:/usr/share/thingsboard/bin/thingsboard.jar!/BOOT-INF/classes!/org/thingsboard/server/service/lwm2m/LwM2MServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'lwM2MTransportServerConfig': Unsatisfied dependency expressed through field 'credentialsConfig'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'lwm2mServerCredentials': Invocation of init method failed; nested exception is java.lang.RuntimeException: LWM2M Server DTLS Credentials: Invalid SSL credentials configuration. None of the PEM or KEYSTORE configurations can be used!
+
+SOLUTION 
+fichier thingsboard.yml passer la ligne ~721 a enabled =false
+```
+lwm2m:
+    # Enable/disable lvm2m transport protocol.
+    enabled: "${LWM2M_ENABLED:false}"
 ```
 
 ## Grafana container
@@ -2143,8 +2734,20 @@ minikube start
 ```
 ## install Helm option
 source www.helm.sh
+helm est un package manager pour kubernetes
 
-via snap
+### From Apt (Debian/Ubuntu)
+Members of the Helm community have contributed a Helm package for Apt. This package is generally up to date.
+
+'''
+curl https://baltocdn.com/helm/signing.asc | sudo apt-key add -
+sudo apt-get install apt-transport-https --yes
+echo "deb https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+sudo apt-get update
+sudo apt-get install helm
+'''
+
+### from snap
 ```
 sudo snap install helm --classic
 ```
@@ -2198,6 +2801,134 @@ yaml explained: https://www.youtube.com/watch?v=qmDzcu5uY1I
 volume explained: https://www.youtube.com/watch?v=0swOh5C3OVM
 
 config file: https://www.youtube.com/watch?v=FAnQTgr04mU
+
+# kubernetes cert-manager
+
+source nginx/letsencrypt: https://medium.com/avmconsulting-blog/encrypting-the-certificate-for-kubernetes-lets-encrypt-805d2bf88b2a
+and: https://github.com/jetstack/cert-manager/
+and https://cert-manager.io/docs/installation/helm/
+
+version has changed from the page
+```
+kubectl apply --validate=false \
+> -f https://github.com/jetstack/cert-manager/releases/download/v1.6.1/cert-manager.yaml
+```
+download file from here: https://github.com/jetstack/cert-manager/releases/
+kubectl apply -f cert-manager.yaml
+kubectl create ns cert-manager
+Error from server (AlreadyExists): namespaces "cert-manager" already exists
+helm search repo
+NAME                                   	CHART VERSION	APP VERSION	DESCRIPTION                                    
+jetstack/cert-manager                  	v1.6.1       	v1.6.1     	A Helm chart for cert-manager                  
+jetstack/cert-manager-approver-policy  	v0.2.0       	v0.2.0     	A Helm chart for cert-manager-approver-policy  
+jetstack/cert-manager-csi-driver       	v0.2.1       	v0.2.0     	A Helm chart for cert-manager-csi-driver       
+jetstack/cert-manager-csi-driver-spiffe	v0.1.0       	v0.1.0     	A Helm chart for cert-manager-csi-driver-spiffe
+jetstack/cert-manager-istio-csr        	v0.3.1       	v0.3.0     	A Helm chart for istio-csr                     
+jetstack/cert-manager-trust            	v0.1.1       	v0.1.0     	A Helm chart for cert-manager-trust
+
+RELIABLE INSTRUCTION HERE
+https://cert-manager.io/docs/installation/helm/
+
+kubectl apply -f cert-manager.crds.yaml 
+helm install   cert-manager jetstack/cert-manager   --namespace cert-manager   --create-namespace   --version v1.6.1   #--set installCRDs=true
+
+
+# kubernetes chirpstack
+
+source chirpstack deploy: https://github.com/Mekrache/chirpstack-kubernetes
+
+peut etre qu'il faut élargir les ports possible: minikube start --driver=docker --mount-string="$HOME/el/mnt:/mnt" --mount --extra-config=apiserver.service-node-port-range=1-65535   
+
+Chirpstack a un problème a se connecter au broker mqtt
+level=error msg="integration/mqtt: connecting to broker error, will retry in 2s: network Error : dial tcp 10.104.213.62:1883: connect: connection refused"
+
+dans tous les cas le mosquitto en version 2 provoque le démarrage suivant avec un error adress not available
+eleq@vbdeb10:~/el$ utils/kube-logs.sh mosquitto                                                                                                
+1640006624: mosquitto version 2.0.14 starting                                                                                                  
+1640006624: Config loaded from /mosquitto/config/mosquitto.conf.                                                                               
+1640006624: Starting in local only mode. Connections will only be possible from clients running on this machine.                               
+1640006624: Create a configuration file which defines a listener to allow remote access.                                                       
+1640006624: For more details see https://mosquitto.org/documentation/authentication-methods/                                                   
+1640006624: Opening ipv4 listen socket on port 1883.                                                                                           
+1640006624: Opening ipv6 listen socket on port 1883.                                                                                           
+1640006624: Error: Address not available                                                                                                       
+1640006624: mosquitto version 2.0.14 running
+
+il faut pull une version 1.6
+eleq@vbdeb10:~/el$ utils/kube-logs.sh mosquitto                                                                                                
+1640007573: mosquitto version 1.6.15 starting                                                                                                  
+1640007573: Config loaded from /mosquitto/config/mosquitto.conf.                                                                               
+1640007573: Opening ipv4 listen socket on port 1883.                                                                                           
+1640007573: Opening ipv6 listen socket on port 1883.                                                                                           
+1640007573: mosquitto version 1.6.15 running                                                                                                   
+1640007577: New connection from 172.17.0.1 on port 1883.                                                                                       
+1640007577: New client connected from 172.17.0.1 as auto-1B76F76D-B3BF-4C13-0A1C-9E27EA9AD1F6 (p2, c1, k30).                                   
+1640007577: New connection from 172.17.0.1 on port 1883.                                                                                       
+1640007577: New client connected from 172.17.0.1 as auto-70E31A1F-81EF-15CE-EF19-0453112E7B4F (p2, c1, k30).
+
+et chirpstack demarre sans pb
+eleq@vbdeb10:~/el$ utils/kube-logs.sh chirpstack-app                                                                                           
+time="2021-12-20T13:39:30.388446945Z" level=info msg="starting ChirpStack Application Server" docs="https://www.chirpstack.io/" version=       
+time="2021-12-20T13:39:30.388475254Z" level=info msg="storage: setting up storage package"                                                     
+time="2021-12-20T13:39:30.388481075Z" level=info msg="storage: setup metrics"                                                                  
+time="2021-12-20T13:39:30.388488233Z" level=info msg="storage: setting up Redis client"                                                        
+time="2021-12-20T13:39:30.388503604Z" level=info msg="storage: connecting to PostgreSQL database"                                              
+time="2021-12-20T13:39:31.404274577Z" level=warning msg="storage: ping PostgreSQL database error, will retry in 2s" error="dial tcp 10.102.47.2
+03:5432: connect: connection refused"                                                                                                          
+time="2021-12-20T13:39:34.416603506Z" level=warning msg="storage: ping PostgreSQL database error, will retry in 2s" error="dial tcp 10.102.47.2
+03:5432: connect: connection refused"                                                                                                          
+time="2021-12-20T13:39:36.427421614Z" level=info msg="storage: applying PostgreSQL data migrations"                                            
+time="2021-12-20T13:39:37.674133652Z" level=info msg="storage: PostgreSQL data migrations applied" from_version=0 to_version=60                
+time="2021-12-20T13:39:37.683402895Z" level=info msg="integration: configuring global integrations"                                            
+time="2021-12-20T13:39:37.683574087Z" level=info msg="integration/mqtt: TLS config is empty"                                                   
+time="2021-12-20T13:39:37.683625668Z" level=info msg="integration/mqtt: connecting to mqtt broker" server="tcp://mosquitto:1883"               
+time="2021-12-20T13:39:37.684300567Z" level=info msg="api/as: starting application-server api" bind="0.0.0.0:8001" ca_cert= tls_cert= tls_key= 
+time="2021-12-20T13:39:37.684596088Z" level=info msg="api/external: starting api server" bind="0.0.0.0:8080" tls-cert= tls-key=                
+time="2021-12-20T13:39:37.684691246Z" level=info msg="integration/mqtt: connected to mqtt broker"                                              
+time="2021-12-20T13:39:37.684710374Z" level=info msg="integration/mqtt: subscribing to tx topic" qos=0 topic=application/+/device/+/command/dow
+n                                                                                                                                              
+time="2021-12-20T13:39:37.785049752Z" level=info msg="api/external: registering rest api handler and documentation endpoint" path=/api         
+time="2021-12-20T13:39:37.785088907Z" level=info msg="api/js: starting join-server api" bind="0.0.0.0:8003" ca_cert= tls_cert= tls_key=
+
+Le serveur est accessible ici en ssh
+http://127.0.0.1:30001/#/network-servers
+
+ensuite on a cette erreur dans la config -comme lors de l'installation sur le raspberry pi:
+pour chirpstack: erreur / error context deadline exceeded (code: 2) 
+réglage pour la partie via l'interface web network server 192.168.1.101:8000 doit correspondre a la partie public_host="192.168.1.101:8001" du fichier /etc/chirpstack-application-server/chirpstack-application-server.toml
+ainsi le config map est ok mais il faut utiliser ceci pour le network serveur add
+la solution est ici: https://github.com/brocaar/chirpstack-docker
+```
+Add Network Server
+When adding the Network Server in the ChirpStack Application Server web-interface (see Network Servers), you must enter chirpstack-network-server:8000 as the Network Server hostname:IP.
+```
+
+# UDP tunnelling
+Pour passer les elements via SSH qui ne fait pas du tunnelling pour le port 1701/30002
+http://zarb.org/~gc/html/udp-in-ssh-tunneling.html
+
+config ssh:
+```
+#gateway bridge udp 1700/1701->30002
+  #LocalForward 30002 192.168.49.2:30002 #ne marche pas car UDP
+  #http://zarb.org/~gc/html/udp-in-ssh-tunneling.html
+  LocalForward 6667 localhost:6667
+```
+du coté serveur 49.2 etant l'ip du minikube
+```
+mkfifo /tmp/fifo
+nc -l -p 6667 < /tmp/fifo | nc -u 192.168.49.2 30002 > /tmp/fifo
+   ``` 
+du coté client
+```
+mkfifo /tmp/fifo
+sudo nc -l -u -p 1700 < /tmp/fifo | nc localhost 6667 > /tmp/fifo
+   ``` 
+    
+    
+ gateway rakwireless -> 192.168.1.48 : 1700 
+
+
 
 
 
