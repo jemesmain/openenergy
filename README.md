@@ -1,114 +1,137 @@
 
-- [openenergy project](#openenergy-project)
-  - [Architecture](#architecture)
-  - [Echinix Gnome](#echinix-gnome)
-  - [Raspberry Pi](#raspberry-pi)
-    - [SSH 2 factor authentification](#ssh-2-factor-authentification)
-    - [RealVNC 2 factor authentification](#realvnc-2-factor-authentification)
-    - [Filezilla 2 factor authentification](#filezilla-2-factor-authentification)
-  - [Installation Capteur](#installation-capteur)
-    - [Capteur - les données sont recueillies](#capteur---les-données-sont-recueillies)
-    - [Gateway parametrage chirpstack](#gateway-parametrage-chirpstack)
-      - [INSTALLATION CAPTEUR ADEUNIS](#installation-capteur-adeunis)
-    - [Installation capteur Watteco Flasho](#installation-capteur-watteco-flasho)
-- [Codage Decodage Capteur Codec](#codage-decodage-capteur-codec)
-  - [modification du decodage pour chirpstack -\> thingsboard](#modification-du-decodage-pour-chirpstack---thingsboard)
-  - [Codage Decodage Capteur Codec ADEUNIS](#codage-decodage-capteur-codec-adeunis)
-  - [Codage Decodage Capteur Codec NKE](#codage-decodage-capteur-codec-nke)
-- [MQTT TTN et Nodered](#mqtt-ttn-et-nodered)
-      - [Lopy](#lopy)
-    - [Gateway - les grandes oreilles sont à l'écoute](#gateway---les-grandes-oreilles-sont-à-lécoute)
-      - [Rakwireless RAK7246 LPWAN Developer Gateway - RAK7246 - EU868](#rakwireless-rak7246-lpwan-developer-gateway---rak7246---eu868)
-      - [Lopy Nano Gateway](#lopy-nano-gateway)
-    - [Serveur - on stock et on affiche](#serveur---on-stock-et-on-affiche)
-      - [Chirpstack - on gère les élément de notre réseau](#chirpstack---on-gère-les-élément-de-notre-réseau)
-        - [Chirpstack quickstart](#chirpstack-quickstart)
-        - [Chirpstack bridge](#chirpstack-bridge)
-        - [Chirpstack server](#chirpstack-server)
-        - [Chirpstack application server](#chirpstack-application-server)
-      - [Thingsboard - on gère les tableaux de bord et les alertes](#thingsboard---on-gère-les-tableaux-de-bord-et-les-alertes)
-- [Local LwM2M transport parameters](#local-lwm2m-transport-parameters)
-      - [Intégration Thingsboard - Chirpstack](#intégration-thingsboard---chirpstack)
-      - [Node-red - pour aider au décryptage des messages](#node-red---pour-aider-au-décryptage-des-messages)
-        - [Installation](#installation)
-        - [PRE DECODAGE DU PAYLOAD PAR TTN OU CHIRPSTACK CONVERSION EN STRING](#pre-decodage-du-payload-par-ttn-ou-chirpstack-conversion-en-string)
-        - [Exemple de Flux / Flow nodered](#exemple-de-flux--flow-nodered)
-  - [Securisation](#securisation)
-    - [Sécurisation de Node-Red](#sécurisation-de-node-red)
-    - [Sécurisation de Chirpstack](#sécurisation-de-chirpstack)
-    - [Sécurisation de ThingsBoard](#sécurisation-de-thingsboard)
-    - [Génération manuelle des Certificats pour le protocole https](#génération-manuelle-des-certificats-pour-le-protocole-https)
-    - [HTTPS avec Nginx](#https-avec-nginx)
-      - [Installation de Nginx](#installation-de-nginx)
-      - [Configurer Nginx pour utiliser une connexion SSL](#configurer-nginx-pour-utiliser-une-connexion-ssl)
-      - [Configuration du fichier hosts](#configuration-du-fichier-hosts)
-      - [Autre fichier de configuration de Nginx](#autre-fichier-de-configuration-de-nginx)
-    - [Nginx et démarrage des services](#nginx-et-démarrage-des-services)
-    - [Oauth2-Proxy: Nginx et 2 facteur authentication](#oauth2-proxy-nginx-et-2-facteur-authentication)
-    - [Oauth2-Proxy: service sur RaspberryPi](#oauth2-proxy-service-sur-raspberrypi)
-  - [frontend: login](#frontend-login)
-  - [frontend: Cartographie / Leaflet / Progressive web app](#frontend-cartographie--leaflet--progressive-web-app)
-    - [Debugage smartphone / android](#debugage-smartphone--android)
-    - [mongodb et cartographie](#mongodb-et-cartographie)
-- [Docker container](#docker-container)
-  - [install](#install)
-  - [Change Docker’s root dir](#change-dockers-root-dir)
-- [Docker-compose](#docker-compose)
-- [Docker developement](#docker-developement)
-  - [Nginx container](#nginx-container)
-  - [Cerbot nginx container](#cerbot-nginx-container)
-  - [Oauth2-proxy container](#oauth2-proxy-container)
-  - [mongo / mongo-express container](#mongo--mongo-express-container)
-  - [Nodejs container](#nodejs-container)
-  - [Nodered Container](#nodered-container)
-  - [THINGSBOARD container](#thingsboard-container)
-- [ERROR lwM2M](#error-lwm2m)
-  - [Grafana container](#grafana-container)
-  - [Chirpstack container](#chirpstack-container)
-  - [XTREMUS XTR container](#xtremus-xtr-container)
-- [KUBERNETES](#kubernetes)
-  - [install Kubetcl](#install-kubetcl)
-- [install minikube](#install-minikube)
-  - [install Helm option](#install-helm-option)
-    - [From Apt (Debian/Ubuntu)](#from-apt-debianubuntu)
-    - [from snap](#from-snap)
-  - [install Kompose docker-compose vers kubenetes](#install-kompose-docker-compose-vers-kubenetes)
-- [Kubernetes course](#kubernetes-course)
-- [kubernetes cert-manager](#kubernetes-cert-manager)
-- [kubernetes chirpstack](#kubernetes-chirpstack)
-- [UDP tunnelling](#udp-tunnelling)
-  - [Alternatives](#alternatives)
-    - [The thing network](#the-thing-network)
-    - [Grafana](#grafana)
-  - [Technical data](#technical-data)
-    - [port list](#port-list)
-  - [Graphique Path](#graphique-path)
-    - [LGM Centrale solaire du lycée du Grésivaudan](#lgm-centrale-solaire-du-lycée-du-grésivaudan)
-    - [INPG acepi polygone pulse atex](#inpg-acepi-polygone-pulse-atex)
+- [1. Openenergy project](#1-openenergy-project)
+  - [1.1. Architecture](#11-architecture)
+  - [1.2. Implémentation serveur Debian: Echinix](#12-implémentation-serveur-debian-echinix)
+    - [1.2.1. Installation de Gnome](#121-installation-de-gnome)
+    - [1.2.2. Clients de connexion distante](#122-clients-de-connexion-distante)
+  - [1.3. Implémentation sur Raspberry Pi 3b](#13-implémentation-sur-raspberry-pi-3b)
+    - [1.3.1. SSH 2 factor authentification](#131-ssh-2-factor-authentification)
+    - [1.3.2. RealVNC 2 factor authentification](#132-realvnc-2-factor-authentification)
+    - [1.3.3. Filezilla 2 factor authentification](#133-filezilla-2-factor-authentification)
+  - [1.4. Installation Capteur](#14-installation-capteur)
+    - [1.4.1. Capteur - les données sont recueillies](#141-capteur---les-données-sont-recueillies)
+    - [1.4.2. Gateway parametrage chirpstack](#142-gateway-parametrage-chirpstack)
+      - [1.4.2.1. INSTALLATION CAPTEUR ADEUNIS](#1421-installation-capteur-adeunis)
+    - [1.4.3. Installation capteur Watteco Flasho](#143-installation-capteur-watteco-flasho)
+- [2. Codage Decodage Capteur Codec](#2-codage-decodage-capteur-codec)
+  - [2.1. modification du decodage pour chirpstack -\> thingsboard](#21-modification-du-decodage-pour-chirpstack---thingsboard)
+  - [2.2. Codage Decodage Capteur Codec ADEUNIS](#22-codage-decodage-capteur-codec-adeunis)
+  - [2.3. Codage Decodage Capteur Codec NKE](#23-codage-decodage-capteur-codec-nke)
+- [3. MQTT TTN et Nodered](#3-mqtt-ttn-et-nodered)
+      - [3.0.0.1. Lopy](#3001-lopy)
+    - [3.0.1. Gateway - les grandes oreilles sont à l'écoute](#301-gateway---les-grandes-oreilles-sont-à-lécoute)
+      - [3.0.1.1. Rakwireless RAK7246 LPWAN Developer Gateway - RAK7246 - EU868](#3011-rakwireless-rak7246-lpwan-developer-gateway---rak7246---eu868)
+      - [3.0.1.2. Lopy Nano Gateway](#3012-lopy-nano-gateway)
+    - [3.0.2. Serveur - on stock et on affiche](#302-serveur---on-stock-et-on-affiche)
+      - [3.0.2.1. Chirpstack - on gère les élément de notre réseau](#3021-chirpstack---on-gère-les-élément-de-notre-réseau)
+        - [3.0.2.1.1. Chirpstack quickstart](#30211-chirpstack-quickstart)
+        - [3.0.2.1.2. Chirpstack bridge](#30212-chirpstack-bridge)
+        - [3.0.2.1.3. Chirpstack server](#30213-chirpstack-server)
+        - [3.0.2.1.4. Chirpstack application server](#30214-chirpstack-application-server)
+      - [3.0.2.2. Thingsboard - on gère les tableaux de bord et les alertes](#3022-thingsboard---on-gère-les-tableaux-de-bord-et-les-alertes)
+- [4. Local LwM2M transport parameters](#4-local-lwm2m-transport-parameters)
+      - [4.0.0.1. Intégration Thingsboard - Chirpstack](#4001-intégration-thingsboard---chirpstack)
+      - [4.0.0.2. Node-red - pour aider au décryptage des messages](#4002-node-red---pour-aider-au-décryptage-des-messages)
+        - [4.0.0.2.1. Installation](#40021-installation)
+        - [4.0.0.2.2. PRE DECODAGE DU PAYLOAD PAR TTN OU CHIRPSTACK CONVERSION EN STRING](#40022-pre-decodage-du-payload-par-ttn-ou-chirpstack-conversion-en-string)
+        - [4.0.0.2.3. Exemple de Flux / Flow nodered](#40023-exemple-de-flux--flow-nodered)
+  - [4.1. Securisation](#41-securisation)
+    - [4.1.1. Sécurisation de Node-Red](#411-sécurisation-de-node-red)
+    - [4.1.2. Sécurisation de Chirpstack](#412-sécurisation-de-chirpstack)
+    - [4.1.3. Sécurisation de ThingsBoard](#413-sécurisation-de-thingsboard)
+    - [4.1.4. Génération manuelle des Certificats pour le protocole https](#414-génération-manuelle-des-certificats-pour-le-protocole-https)
+    - [4.1.5. HTTPS avec Nginx](#415-https-avec-nginx)
+      - [4.1.5.1. Installation de Nginx](#4151-installation-de-nginx)
+      - [4.1.5.2. Configurer Nginx pour utiliser une connexion SSL](#4152-configurer-nginx-pour-utiliser-une-connexion-ssl)
+      - [4.1.5.3. Configuration du fichier hosts](#4153-configuration-du-fichier-hosts)
+      - [4.1.5.4. Autre fichier de configuration de Nginx](#4154-autre-fichier-de-configuration-de-nginx)
+    - [4.1.6. Nginx et démarrage des services](#416-nginx-et-démarrage-des-services)
+    - [4.1.7. Oauth2-Proxy: Nginx et 2 facteur authentication](#417-oauth2-proxy-nginx-et-2-facteur-authentication)
+    - [4.1.8. Oauth2-Proxy: service sur RaspberryPi](#418-oauth2-proxy-service-sur-raspberrypi)
+  - [4.2. frontend: login](#42-frontend-login)
+  - [4.3. frontend: Cartographie / Leaflet / Progressive web app](#43-frontend-cartographie--leaflet--progressive-web-app)
+    - [4.3.1. Debugage smartphone / android](#431-debugage-smartphone--android)
+    - [4.3.2. mongodb et cartographie](#432-mongodb-et-cartographie)
+- [5. Docker container](#5-docker-container)
+  - [5.1. install](#51-install)
+  - [5.2. Change Docker’s root dir](#52-change-dockers-root-dir)
+- [6. Docker-compose](#6-docker-compose)
+- [7. Docker developement](#7-docker-developement)
+  - [7.1. Nginx container](#71-nginx-container)
+  - [7.2. Cerbot nginx container](#72-cerbot-nginx-container)
+  - [7.3. Oauth2-proxy container](#73-oauth2-proxy-container)
+  - [7.4. mongo / mongo-express container](#74-mongo--mongo-express-container)
+  - [7.5. Nodejs container](#75-nodejs-container)
+  - [7.6. Nodered Container](#76-nodered-container)
+  - [7.7. THINGSBOARD container](#77-thingsboard-container)
+- [8. ERROR lwM2M](#8-error-lwm2m)
+  - [8.1. Grafana container](#81-grafana-container)
+  - [8.2. Chirpstack container](#82-chirpstack-container)
+  - [8.3. XTREMUS XTR container](#83-xtremus-xtr-container)
+- [9. align existing files : give rw to group xtr to all files in xtr/](#9-align-existing-files--give-rw-to-group-xtr-to-all-files-in-xtr)
+- [10. KUBERNETES](#10-kubernetes)
+  - [10.1. Install Kubetcl](#101-install-kubetcl)
+- [11. install minikube](#11-install-minikube)
+  - [11.1. install Helm option](#111-install-helm-option)
+    - [11.1.1. From Apt (Debian/Ubuntu)](#1111-from-apt-debianubuntu)
+    - [11.1.2. from snap](#1112-from-snap)
+  - [11.2. install Kompose docker-compose vers kubenetes](#112-install-kompose-docker-compose-vers-kubenetes)
+- [12. Kubernetes course](#12-kubernetes-course)
+- [13. kubernetes cert-manager](#13-kubernetes-cert-manager)
+- [14. kubernetes chirpstack](#14-kubernetes-chirpstack)
+- [15. UDP tunnelling](#15-udp-tunnelling)
+- [16. various linux command](#16-various-linux-command)
+  - [16.1. Alternatives](#161-alternatives)
+    - [16.1.1. The thing network](#1611-the-thing-network)
+    - [16.1.2. Grafana](#1612-grafana)
+  - [16.2. Technical data](#162-technical-data)
+    - [16.2.1. port list](#1621-port-list)
+  - [16.3. Graphique Path](#163-graphique-path)
+    - [16.3.1. LGM Centrale solaire du lycée du Grésivaudan](#1631-lgm-centrale-solaire-du-lycée-du-grésivaudan)
+    - [16.3.2. INPG acepi polygone pulse atex](#1632-inpg-acepi-polygone-pulse-atex)
 
-# openenergy project
+# 1. Openenergy project
 
 Un projet pour effectuer du suivi énergétique ouvert dans les bâtiments.
-## Architecture
-**illustration**
+
+## 1.1. Architecture
+---
+
+**Illustration**
 Se référer au diagramme suivant: openenergy_architecture.jpg
 Le pdf présent à l'adresse suivante openenergy.bicyclopresto.fr peut être consulté.
 
-## Echinix Gnome
+## 1.2. Implémentation serveur Debian: Echinix 
+---
+
+Le serveur Echinix est déployé sur un OS Debian 12
+
+  ### 1.2.1. Installation de Gnome
+  ---
+
 pour installer gnome
 sudo apt install tasksel
 sudo tasksel
 sudo apt-get install task-gnome-desktop
 
-
 pour demarrer gnome automatiquement
 sudo update-alternatives --config x-session-manager
 
-## Raspberry Pi
+
+  ### 1.2.2. Clients de connexion distante
+  ---
+Le protocole ssh est utilisé pour une connexion terminale distante.
+Le protocole sshfs permet de monter un répertoire distant dans l'arborescence locale.
+Le logiciel Remmina permet de ce connecter via le protocole RDP
+
+
+  
+
+## 1.3. Implémentation sur Raspberry Pi 3b
 
 Pour les administrateur le Raspberry Pi peut être accédé via SSH et RealVNC
 
-### SSH 2 factor authentification
+### 1.3.1. SSH 2 factor authentification
 source: https://www.raspberrypi.org/blog/setting-up-two-factor-authentication-on-your-raspberry-pi/
 
 Especially if you intend to make the server accessible from the Internet, you probably want to enable two-factor authentication (2FA) using Time-based One-Time Password (TOTP).
@@ -260,7 +283,7 @@ You’ll now need your phone, and a TOTP, every time you ssh into, or scp to and
 
 Now you have the Google Authenticator app on your phone, you should probably start enabling 2FA for your important services and sites — like Google, Twitter, Amazon, and others — since most bigger sites, and many smaller ones, now support two-factor authentication.
 
-### RealVNC 2 factor authentification
+### 1.3.2. RealVNC 2 factor authentification
 source: https://help.realvnc.com/hc/en-us/articles/360003110878-How-do-I-set-up-2-step-authentication-for-my-RealVNC-account#enabling-2-step-authentication-0-0
 
 Enabling 2-step authentication
@@ -274,28 +297,28 @@ A QR code will be displayed which you can scan with your TOTP app (e.g. Google A
 
 Enter the code and backup real vnc code in case your brake your smartphone.
 
-### Filezilla 2 factor authentification
+### 1.3.3. Filezilla 2 factor authentification
 
 Pour utiliser le 2 factor authentification il faut dans le gestionnaire de site utiliser le réglage type d'authentification interactif.
 Pour éviter de devoir retaper les codes pour chacun des fichiers il faut cocher la case limiter le nombre de connexions simultannées dans les paramètres de transfert.
 
-## Installation Capteur
+## 1.4. Installation Capteur
 
 **Une copie locale de l'ensemble des pages internet référencées est présente dans le dossier web_content**
 
-### Capteur - les données sont recueillies
+### 1.4.1. Capteur - les données sont recueillies
 
 rappel sur les différentes key: https://stackoverflow.com/questions/54096980/lorawan-deveui-appeui-and-appkey
 
 
-### Gateway parametrage chirpstack  
+### 1.4.2. Gateway parametrage chirpstack  
 
 La gateway a a priori selon la documentation 8 channel a parametrer dans la gateway profil
 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 
 
 
-#### INSTALLATION CAPTEUR ADEUNIS
+#### 1.4.2.1. INSTALLATION CAPTEUR ADEUNIS
 La société Adeunis propose tout une série de capteur Lorawan avec une bibliothèque qui permet de décoder les messages dans de nombreux logiciel par un appel de la librairie de décodage.
 A partir de The Thing Network (TTN) ou Chirpstack il faut préalablement décodé les message en hexa vers un format de chaine de caractère qui est nécessaire pour l'appel de la librairie de décodage
 
@@ -315,7 +338,7 @@ NONFAIT A CAUSE CONNEXION SMARTPHONE USB: avec une cle torx ouvir le capteur et 
 Pour activer sous chirpstack il faut le DevEUI et l'Appkey... puis attendre 12 heures... La nuit porte conseil!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
-### Installation capteur Watteco Flasho
+### 1.4.3. Installation capteur Watteco Flasho
 pour l'installation physique
 source: http://support.nke-watteco.com/flasho/
 pour la configuration lora
@@ -328,14 +351,14 @@ LW:D0:70B3D5E75F600000:70B3D5E75E00F27A:01280017:P5070071006:S002E484C81:CFC83
 JoinEUI: 70B3D5E75F600000
 DevEUI: 70B3D5E75E00F27A
 
-# Codage Decodage Capteur Codec
+# 2. Codage Decodage Capteur Codec
 
-## modification du decodage pour chirpstack -> thingsboard
+## 2.1. modification du decodage pour chirpstack -> thingsboard
 source: https://www.chirpstack.io/application-server/integrations/thingsboard/
 
 Decoded uplink data is prefixed with the **data_ prefix**. Make sure to configure a coded in the Device Profile.
 
-## Codage Decodage Capteur Codec ADEUNIS
+## 2.2. Codage Decodage Capteur Codec ADEUNIS
 source: https://codec-adeunis.com/download
 
 **utiliser https://cryptii.com/ bytes en hexa a gauche, encode base 64 rfc 3548, text à droite**
@@ -372,7 +395,7 @@ on peut envoyer deux informations a la fois... 41 15 01 2C 01 00 06 -> 10 minute
 10 minutes toutes les 3h soit toutes les 18 mesures (12 en hexa)... 41 15 01 2C 01 00 12
 -> QRUBLAEAEg==
 
-## Codage Decodage Capteur Codec NKE
+## 2.3. Codage Decodage Capteur Codec NKE
 source: https://support.nke-watteco.com/downloads/
 pour du flashO : https://github.com/TheThingsNetwork/lorawan-devices/blob/master/vendor/nke-watteco/flasho-sensor.js
 
@@ -529,7 +552,7 @@ endpoint:0
 report:"standard"
 status:0
 
-# MQTT TTN et Nodered
+# 3. MQTT TTN et Nodered
 
 Subscribing to Upstream Traffic
 The Application Server publishes uplink traffic on the following topics:
@@ -550,7 +573,7 @@ db.frames.find({$where:"JSON.stringify(this).indexOf('adpul')!=-1", "uplink_mess
 
 
 
-#### Lopy
+#### 3.0.0.1. Lopy
 
 Le LoPy 4.0 est une carte de développement miniature dédiée aux objets connectés, basée sur le langage Python 3, de faible consommation et disposant de connectivité WiFi, Bluetooth (compatible BLE), LoRa et Sigfox.
 Une solution pour programmer le Lopy 4 est d'utiliser le Pymakr Plugin for Atom et d'interagir avec le Lopy via le port Usb de la carte PyMakr.
@@ -571,8 +594,8 @@ Dans les fichiers lopy device de la partie setting vous avez un exemple de progr
 https://docs.pycom.io/pymakr/installation/atom/
 
 
-### Gateway - les grandes oreilles sont à l'écoute
-#### Rakwireless RAK7246 LPWAN Developer Gateway - RAK7246 - EU868
+### 3.0.1. Gateway - les grandes oreilles sont à l'écoute
+#### 3.0.1.1. Rakwireless RAK7246 LPWAN Developer Gateway - RAK7246 - EU868
 
 **ATTENTION AVANT LA MISE SOUS TENSION DE LA GATEWAY BIEN INSTALLER L ANTENNE LORA SINON IL Y A UN RISQUE D ENDOMAGEMENT**
 
@@ -657,7 +680,7 @@ En effet dans la documentation il est dit localhost:8000. Il faut lui préferer 
 raspberrypi.home:8000 meme réseau privé??? port??? /el001.is-a-green.com:8000 depuis l'extérieur?? port???? 
 différence entre rakwireless sudo gateway-config sans le port et la configuration chirpstack avec le port dans la partie network server raspberrypi.home:8000
 
-#### Lopy Nano Gateway
+#### 3.0.1.2. Lopy Nano Gateway
 
 On peut utiliser un Lopy 4 pour se comporter comme une gateway monocanal afin de transmettre les messages des capteurs.
 
@@ -679,9 +702,9 @@ Dans les fichiers lopy nano de la partie setting vous avez un exemple de program
     - gère la connexion au réseau lorawan
     - puis avec le module nanogateway.py capte et transmet les éléments recu par les capteur au serveur TTN ou Chirpstack.
 
-### Serveur - on stock et on affiche
-#### Chirpstack - on gère les élément de notre réseau
-##### Chirpstack quickstart
+### 3.0.2. Serveur - on stock et on affiche
+#### 3.0.2.1. Chirpstack - on gère les élément de notre réseau
+##### 3.0.2.1.1. Chirpstack quickstart
 [Chirpstack quickstart guide](https://www.chirpstack.io/guides/debian-ubuntu/ "Chirpstack quick guide in English")
 
 **Installation de programmes complémentaires**
@@ -814,7 +837,7 @@ Afin de voir si il n'y a pas d'erreur vous pouvez visualiser le log de ChirpStac
 ```sudo journalctl -f -n 100 -u chirpstack-application-server```
 
 
-##### Chirpstack bridge
+##### 3.0.2.1.2. Chirpstack bridge
 Selon la typologie de votre gateway, deux mode sont disponible pour transmettre les messages:
 
 - Semtech UDP Packet Forwarder c'est le cas qui correspond à la gateway RakWireless
@@ -887,7 +910,7 @@ gateway+ 23060  0.1  2.1 214260 10664 ?        Ssl  Aug30  47:55 /usr/bin/chirps
 
 ```mosquitto_sub -v -t "gateway/#"```
 Si vous ne voyer aucun message lorsque le capteur envoie des données, il faut alors s'assurer que  ChirpStack Gateway Bridge est autorisé de publier des données sur le sujet MQTT et que le client  mosquitto_sub client est autorisé de souscrire à ce sujet MQTT Ce problème apparait habituellement lorsque vous avec configuré le MQTT Broker afin que les client doivent s'authentifier lors de la connexion.
-##### Chirpstack server
+##### 3.0.2.1.3. Chirpstack server
 Configuration file
 Par défaut chirpstack-network-server va regarder dans l'ordre les chemins suivant si l'instruction en comporte pas explicitement la spécification suivante --config:
 
@@ -905,7 +928,7 @@ dsn="postgres://localhost/chirpstack_ns?sslmode=disable"
 Le détail de toute les options est présent à l'adresse suivante https://www.chirpstack.io/network-server/install/config/
 
 
-##### Chirpstack application server
+##### 3.0.2.1.4. Chirpstack application server
 Configuration file
 Par défaut chirpstack-application-server va regarder dans l'ordre les chemins suivant si l'instruction en comporte pas explicitement la spécification suivante --config:
 - chirpstack-application-server.toml (current working directory)
@@ -946,7 +969,7 @@ Il ne faut pas oublier de remplir la partie JWT secret (cf chirpstack quickstart
 Commme les différentes partie du serveur sont sur la même machine je ne me suis pas occupé de sécuriser la communication interne comme spécifié. La partie Nginx s'occupe de cela.
 
 Le détail de toute les options est présent à l'adresse suivante https://www.chirpstack.io/application-server/install/config/
-#### Thingsboard - on gère les tableaux de bord et les alertes
+#### 3.0.2.2. Thingsboard - on gère les tableaux de bord et les alertes
 
 La procédure d'installation et de configuration est présente à l'adresse suivante https://thingsboard.io/docs/user-guide/install/rpi/ ou dans la partie web_content
 Elle se compose des étapes suivantes
@@ -1180,7 +1203,7 @@ org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating
 
 Dans thingsboard.yml mettre le enabled a false...
 
- # Local LwM2M transport parameters
+ # 4. Local LwM2M transport parameters
   lwm2m:
     # Enable/disable lvm2m transport protocol.
     enabled: "${LWM2M_ENABLED:false}"
@@ -1246,7 +1269,7 @@ sudo find /var/lib/docker/ -name "*.pid"
 redemarrer le container DANS TOUS LES CAS PREFERER UN ARRET CORRECT DES CONTAINER ;-) docker-compose stop.
 
 
-#### Intégration Thingsboard - Chirpstack
+#### 4.0.0.1. Intégration Thingsboard - Chirpstack
 
 Le détail de l'intégration est présent à l'adresse suivante: https://www.chirpstack.io/guides/thingsboard/
 
@@ -1292,10 +1315,10 @@ for (my $i=0;$i<$#measures;$i++){
     system('mosquitto_pub -d -q 1 -h "192.168.1.101" -p "8883" -t "v1/devices/me/telemetry" -u "access_token" -m {"temperature":'.$temp.'}');
 ```
 
-#### Node-red - pour aider au décryptage des messages
+#### 4.0.0.2. Node-red - pour aider au décryptage des messages
 
 Node-red peut permettre d'effectuer des opérations plus complexe sur les messages des capteurs. Chirpstack et The things network permettent d'écrire des éléments decoder et encoder afin de realiser cela. Openenergy utilise la partie decoder pour transformer le meassage payload d'hexadecimal en chaine de caractère (string)
-##### Installation
+##### 4.0.0.2.1. Installation
 
 Les explications d'installations sont ici:
 https://nodered.org/docs/getting-started/raspberrypi
@@ -1335,7 +1358,7 @@ node-red-pi --max-old-space-size=256
 Opening the editor
 L'éditeur est accessble à l'adresse suivante: http://localhost:1880.
 
-##### PRE DECODAGE DU PAYLOAD PAR TTN OU CHIRPSTACK CONVERSION EN STRING
+##### 4.0.0.2.2. PRE DECODAGE DU PAYLOAD PAR TTN OU CHIRPSTACK CONVERSION EN STRING
 
 Pour:
     - The Things Network (TTN) dans la partie application / payload format
@@ -1480,7 +1503,7 @@ function Decode(fPort, bytes, variables) {
 
 ```
 
-##### Exemple de Flux / Flow nodered
+##### 4.0.0.2.3. Exemple de Flux / Flow nodered
 
 Pour décoder les données d'un capteur adeunis et le transmettre dans une variable d'un device dans le logiciel ubidots on peut utiliser les noeux / nodes suivants:
     - ttn uplink node pour souscrire aux informations d'un capteur en précisant le nom de l'application et le device id
@@ -1505,11 +1528,11 @@ return msg;
     ```
     - ubidots_out node pour envoyer les données en précisant le nom de la variable / le jeton d'authentification / le label du capteur défini dans ubidots
 
-## Securisation
+## 4.1. Securisation
 
 Les éléments qui participent à la sécurisation de la solution openenergy sont décrite ci-dessous. D'autres éléments peuvent être mis en place afin de sécuriser l'ensemble et les instructions ci-dessous sont loins d'être exhaustive.
 
-### Sécurisation de Node-Red
+### 4.1.1. Sécurisation de Node-Red
 
 Les différents éléments de sécurisation de Node-red sont décrit ici:
 https://nodered.org/docs/user-guide/runtime/securing-node-red
@@ -1556,7 +1579,7 @@ L'instruction d'installation suivante vous permettra de l'utiliser directement d
 npm install -g node-red-admin
 ```
 
-### Sécurisation de Chirpstack
+### 4.1.2. Sécurisation de Chirpstack
 
 La sécurisation de Chirpstack s'effectue en changeant le login et le mot de passe par défaut à minima de l'administrateur. Le passage au protocole https s'effectue avec NGINX.
 
@@ -1567,7 +1590,7 @@ Password: admin
 ```
 Il vous faut le modifier pour une utilisation en production. En haut à droite cliquer sur Admin et changer de mot de passe.
 
-### Sécurisation de ThingsBoard
+### 4.1.3. Sécurisation de ThingsBoard
 
 
 La sécurisation de Thingsboard s'effectue en changeant le login et le mot de passe par défaut à minima de l'administrateur. Le passage au protocole https s'effectue avec NGINX.
@@ -1595,7 +1618,7 @@ Customer C users - customerC@thingsboard.org.
 all users have “customer” password.
 ```
 
-### Génération manuelle des Certificats pour le protocole https
+### 4.1.4. Génération manuelle des Certificats pour le protocole https
 Le tuto permettant de générer des certificats tout en simulant une autorité de certification est disponnible à l'adresse suivante:
 https://fabianlee.org/2018/02/17/ubuntu-creating-a-trusted-ca-and-san-certificate-using-openssl-on-ubuntu/
 
@@ -1784,12 +1807,12 @@ ssl_certificate_key /etc/letsencrypt/live/el001.is-a-green.com/privkey.pem; # ma
 ```
 
 
-### HTTPS avec Nginx
+### 4.1.5. HTTPS avec Nginx
 
 Il est maintenant tant de procéder à la sécurisation du protocole Http en le passant en Https et en utilisant Nginx.
 La documentation ci-dessous s'inspire largement de la mise en place de Nginx telle que décrite ici: https://projetsdiy.fr/securiser-node-red-nginx-openssl-ubuntu/
 
-#### Installation de Nginx
+#### 4.1.5.1. Installation de Nginx
 Nginx s’installe très simplement à l’aide d’une simple commande apt-get.
 ```
 sudo apt-get update
@@ -1804,7 +1827,7 @@ Le fichier de configuration final utilisé est disponible dans la partie setting
 - 1447 vers Chirpstack
 - 1448 vers Thingsboard
 
-#### Configurer Nginx pour utiliser une connexion SSL
+#### 4.1.5.2. Configurer Nginx pour utiliser une connexion SSL
 
 Dans le chapitre précédent nous avons générer une clé et un certificat, nous allons créer un fichier de configuration. Nous pourrons l’appeler my_server.securise.com.
 
@@ -1857,7 +1880,7 @@ Il reste à créer un lien symbolique vers le dossier sites-enabled pour rendre 
 ```
 sudo ln -s /etc/nginx/sites-available/node-red.securise.com /etc/nginx/sites-enabled/
 ```
-#### Configuration du fichier hosts
+#### 4.1.5.3. Configuration du fichier hosts
 Pour que l’URL soit accessible depuis un navigateur, il faut modifier le fichier hosts. Récupérez l’adresse IP de votre PC avec la commande ifconfig ou ipconfig sur windows puis modifiez le fichier /etc/hosts
 ```
 sudo nano /etc/hosts
@@ -1872,7 +1895,7 @@ Enregistrez avec CTRL+X puis O.
 
 Il se peut que des éléments de configuration du firewall soient nécessaires. Ceci est détaillé dans le fichier d'origine de ce chapitre
 
-#### Autre fichier de configuration de Nginx
+#### 4.1.5.4. Autre fichier de configuration de Nginx
 Attendu que le redémarrage de Nginx ne s'effectuait pas correctement du notamment à des problématiques lié à la ligne ssl_ciphers 
 le fichier de configuration suivant present dans cette documentation à été largement utilisé car il était bien commenté sur la redirection des requetes http vers https: https://korben.info/nginx-rediriger-http-https.html
 
@@ -1945,7 +1968,7 @@ nginx -s reload
 ```
 Pour vérifier que tout fonctionne correctement, allez faire un tour sur la version HTTP de votre site. Si vous êtes rebasculé automatiquement sur la version en HTTPS et que tout fonctionne, vous avez réussi !
 
-### Nginx et démarrage des services
+### 4.1.6. Nginx et démarrage des services
 Il faut que Nginx attende que les services de chirpstack nodered et thingsboard soient démarré.
 Il faut editer la configuration du service
 ```
@@ -1962,7 +1985,7 @@ After=network.target nss-lookup.target chirpstack-application-server.service chi
 
 
 
-### Oauth2-Proxy: Nginx et 2 facteur authentication
+### 4.1.7. Oauth2-Proxy: Nginx et 2 facteur authentication
 Afin de permettre la sécurite sur nginx avant d'autoriser l'acces a chirpstack nodered et thingsboard
 
 source: https://oauth2-proxy.github.io/oauth2-proxy/docs/
@@ -2128,7 +2151,7 @@ Sur nginx il faut permettre l'affichage du button dans l'écran de login
        proxy_pass http://localhost:8085;
 ```
 
-### Oauth2-Proxy: service sur RaspberryPi
+### 4.1.8. Oauth2-Proxy: service sur RaspberryPi
 https://github.com/oauth2-proxy/oauth2-proxy/blob/master/contrib/oauth2-proxy.service.example
 et
 https://www.raspberrypi.org/documentation/linux/usage/systemd.md
@@ -2181,7 +2204,7 @@ sudo systemctl enable oauth2-proxy.service
 ```
 The systemctl command can also be used to restart the service or disable it from boot up!
 
-## frontend: login
+## 4.2. frontend: login
 tutorial: https://www.youtube.com/watch?v=b91XgdyX-SM
 github: https://github.com/mehulmpt/node-auth-youtube
 
@@ -2193,9 +2216,9 @@ mongoose.connect('mongodb://root:example@172.25.0.5:27017/login-app-db?authSourc
 })
 
 
-## frontend: Cartographie / Leaflet / Progressive web app
+## 4.3. frontend: Cartographie / Leaflet / Progressive web app
 
-### Debugage smartphone / android
+### 4.3.1. Debugage smartphone / android
 démarrer le android debug bridge
 adb start-server
 passer en mode developper sur le smartphone autoriser le mode USB debugage
@@ -2207,13 +2230,13 @@ se rendre sur OpenEnergy Mobile Leaflet Map
 https://el001.is-a-green.com/
 et sur chrome du pc choisir le bon onglet et cliquer sur inspect
 
-### mongodb et cartographie
+### 4.3.2. mongodb et cartographie
 schema mongodb pour mongoose: https://transform.tools/json-to-mongoose
 mongo db geospatial query:  https://examples.javacodegeeks.com/software-development/mongodb/mongodb-geospatial-query-operators-example/
                             http://thecodebarbarian.com/80-20-guide-to-mongodb-geospatial-queries
 
-# Docker container
-## install
+# 5. Docker container
+## 5.1. install
 source https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository
 
 Avant toute chose - et pour eviter tout ennui lié à l'installation - s'assurer d'une bonne désinstallation ;-)
@@ -2270,7 +2293,7 @@ REBOOT!!!!!!! to avoid pb with sudo rights
 
 to have a home .docker folder you must login to docker hub
 
-## Change Docker’s root dir
+## 5.2. Change Docker’s root dir
 Par défaut les images sont dans /var/lib/docker
 
 source: https://tienbm90.medium.com/how-to-change-docker-root-data-directory-89a39be1a70b
@@ -2325,7 +2348,7 @@ Alter all, we should clean old data:
 rm -rf /var/lib/docker.old
 ```
 
-# Docker-compose
+# 6. Docker-compose
 
 source: https://docs.docker.com/compose/install/
 installation - choisir la version plus récente en se reportant au lien ci dessus
@@ -2349,7 +2372,7 @@ docker-compose --version
 ```
 
 
-# Docker developement
+# 7. Docker developement
 
 Use vs codium with docker plugin
 source: https://vscodium.com/#install
@@ -2360,12 +2383,12 @@ Version : 1.17.0
 Serveur de publication : ms-azuretools
 Lien de la Place de marché pour VS : https://open-vsx.org/vscode/item?itemName=ms-azuretools.vscode-docker
 
-## Nginx container
+## 7.1. Nginx container
 https://hub.docker.com/_/nginx
 abandonné
 preferez certbot nginx container
 
-## Cerbot nginx container
+## 7.2. Cerbot nginx container
 https://hub.docker.com/r/certbot/certbot
 tuto / howto: https://pentacent.medium.com/nginx-and-lets-encrypt-with-docker-in-less-than-5-minutes-b4b8a60d3a71
 script: https://github.com/wmnnd/nginx-certbot
@@ -2525,7 +2548,7 @@ networks:
           
 
 
-## Oauth2-proxy container
+## 7.3. Oauth2-proxy container
 source: https://hub.docker.com/r/bitnami/oauth2-proxy
 command line to launch direct: docker run -p 4180:4180 -p 8443:8443 bitnami/oauth2-proxy:7     --cookie-secure=false     --upstream="file:///dev/null"     --http-address="0.0.0.0:4180"     --https-address="0.0.0.0:8443"     --redirect-url="http://internal.website.com/oauth2/callback"     --cookie-secret="NXA4K2lMUGsrSnFLYnprWnZESE5GUDNINzIrc2NHUnQ="     --client-id=changeme     --client-secret=changeme     --email-domain=*
 via docker compose pour configurer le proxy et les email autorisé via des volumes sur l'hote:
@@ -2541,7 +2564,7 @@ volumes:
     #http_address = "127.0.0.1:4180" #when operating on same server
  http_address = "0.0.0.0:4180" #when operating frome another server
 
-## mongo / mongo-express container
+## 7.4. mongo / mongo-express container
 source: https://hub.docker.com/_/mongo
 
 ajouter les element suivant au docker-compose.yml
@@ -2606,7 +2629,7 @@ https://transform.tools/json-to-mongoose
 
 
 
-## Nodejs container
+## 7.5. Nodejs container
 source: https://hub.docker.com/_/node
 instructions: https://github.com/nodejs/docker-node/blob/main/README.md#how-to-use-this-image
 
@@ -2614,10 +2637,10 @@ instructions: https://github.com/nodejs/docker-node/blob/main/README.md#how-to-u
 
 
 
-## Nodered Container
+## 7.6. Nodered Container
 https://hub.docker.com/r/nodered/node-red
 
-## THINGSBOARD container
+## 7.7. THINGSBOARD container
 thingsboard docker documentation here: https://thingsboard.io/docs/user-guide/install/docker/?ubuntuThingsboardQueue=inmemory
 https://hub.docker.com/r/thingsboard/tb-postgres
 
@@ -2719,7 +2742,7 @@ pour des probleme de jdbc connection.
 
 #troubleshooting thingsboard container
 
-# ERROR lwM2M
+# 8. ERROR lwM2M
 2022-03-31 19:23:59,966 [main] ERROR o.s.boot.SpringApplication - Application run failed
 org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'lwM2MServiceImpl' defined in URL [jar:file:/usr/share/thingsboard/bin/thingsboard.jar!/BOOT-INF/classes!/org/thingsboard/server/service/lwm2m/LwM2MServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'lwM2MTransportServerConfig': Unsatisfied dependency expressed through field 'credentialsConfig'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'lwm2mServerCredentials': Invocation of init method failed; nested exception is java.lang.RuntimeException: LWM2M Server DTLS Credentials: Invalid SSL credentials configuration. None of the PEM or KEYSTORE configurations can be used!
 
@@ -2731,13 +2754,13 @@ lwm2m:
     enabled: "${LWM2M_ENABLED:false}"
 ```
 
-## Grafana container
+## 8.1. Grafana container
 https://hub.docker.com/r/grafana/grafana
 https://grafana.com/docs/grafana/latest/administration/configure-docker/
 
 le lien ci dessus contient les chemins vers les data et la config de grafana.
 
-## Chirpstack container
+## 8.2. Chirpstack container
  https://hub.docker.com/r/chirpstack/chirpstack-application-server
  https://hub.docker.com/r/chirpstack/chirpstack-network-server
  https://hub.docker.com/r/chirpstack/chirpstack-gateway-bridge
@@ -2751,7 +2774,7 @@ Ce container contient une base postgres et un mqtt mosquitto que l'on peut enlev
 
 PROBLEME AVEC LE FICHIER COMPOSE QUE J AI CREE... POUR LES VOLUMES MOSQUITTO ET LES VOLUME CHIRPSTACK...par exemple mosquitto.conf qui est pris pour un dossier
 
-## XTREMUS XTR container
+## 8.3. XTREMUS XTR container
 pour faire tourner le site web d xtremus il faut:
 -apache
 -php
@@ -2759,11 +2782,96 @@ pour faire tourner le site web d xtremus il faut:
 
 source: https://gist.github.com/jcavat/2ed51c6371b9b488d6a940ba1049189b
 
+import de la base sql xtremus dans xtr
+renommer table user en User
+pb pour le ogin sql>5.7 jouer la commande suivante dans adminer
+SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
 
 
-# KUBERNETES
 
-## install Kubetcl
+/shared/xtr
+
+
+mkdir -p /shared/work
+mount --bind /x/y/z/work /shared/work
+That wouldn't survive across reboots though, so in case you want it to persist, append the following line to /etc/fstab :
+
+/x/y/z/work /shared/work none bind
+
+525  addgroup xtr
+  526  sudo addgroup xtr
+  527  man usermod
+  528  sudo usermod -a -G xtr eleq
+  529  sudo usermod -a -G xtr xtrmus
+  530  sudo chgrp xtr /home/eleq/el/compose/apache/www/
+  531  sudo chmod g+rwx /home/eleq/el/compose/apache/www/
+  532  sudo usermod -a -G xtr jemesmain
+  533  sudo chgrp -R xtr /home/eleq/el/compose/apache/www/
+  534  ls /
+  535  mkdir -p /shared/xtr
+  536  sudo mkdir -p /shared/xtr
+  537  ls /
+  538  chmod 777 /shared/
+  539  sudo chmod 777 /shared/
+  540  chmod -w /shared/
+  541  sudo chmod -w /shared/
+  542  sudo chmod ugo -w /shared/
+  543  sudo chmod g-r  /shared/
+  544  sudo chmod o-r  /shared/
+  545  ls -l /
+  546  sudo chmod o-w  /shared/
+  547  sudo chmod g-w  /shared/
+  548  ls -l
+  549  ls
+  550  ls -l /
+  551  sudo chmod g+r  /shared/
+  552  sudo chmod o+r  /shared/
+  553  ls -l /
+  554  sudo mount --bind /home/eleq/el/compose/apache/www/ /shared/xtr/
+  555  cd /shared/
+  556  ls -l
+  557  id
+  558  sudo usermod -a -G xtr jemesmain
+  559  id
+  560  cat /etc/group
+  561  id
+  562  sudo nano /etc/fstab 
+  563  sudo usermod -a -G xtr xtrmus
+  564  cat /etc/group
+  565  ls -l /shared
+
+
+
+
+
+cd /shared/xtr/
+#https://www.linuxnix.com/sgid-set-sgid-linuxunix/
+chmod g+s xtr  
+find xtr -type d -exec chmod g+s {} \;
+#https://www.linuxnix.com/linux-security-hardening-for-beginners-part-04-using-access-control-lists/
+setfacl -m "default:group::rwx" xtr
+find xtr -type d -exec setfacl -m "default:group::rwx" {} \;
+# 9. align existing files : give rw to group xtr to all files in xtr/
+find xtr/ -exec chmod g+rw {} \;
+
+Jean-Yves Rialhon, 06:07
+le test que j'ai fait : 
+ xtrmus@echinix:/shared/xtr$ ls -l index.html
+-rw-r--r--  1 eleq xtr   18925 Apr 17 16:21 index.html
+xtrmus@echinix:/shared/xtr$ vi index.html 
+xtrmus@echinix:/shared/xtr$ ls -l index.html 
+-rw-rw-r-- 1 eleq xtr 18963 Apr 28 05:57 index.html
+
+Jean-Yves Rialhon, 08:22
+il faut corriger un peu le setfact pour que ce soit bon : setfacl -dRm u:eleq:rwX,g:xtr:rwX xtr
+tu vas detester ... getfacl /shared/xtr/newfile.txt vs ls -l /shared/xtr/newfile.txt. les appearances sont trompeuses
+
+
+
+
+# 10. KUBERNETES
+
+## 10.1. Install Kubetcl
 source: https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
 Update the apt package index and install packages needed to use the Kubernetes apt repository:
 ```
@@ -2787,7 +2895,7 @@ test
 ```
 kubectl version --client
 ```
-# install minikube
+# 11. install minikube
 source:https://kubernetes.io/fr/docs/tasks/tools/install-minikube/
 
 Installez Minikube par téléchargement direct
@@ -2828,11 +2936,11 @@ minikube delete
 minikube start
 
 ```
-## install Helm option
+## 11.1. install Helm option
 source www.helm.sh
 helm est un package manager pour kubernetes
 
-### From Apt (Debian/Ubuntu)
+### 11.1.1. From Apt (Debian/Ubuntu)
 Members of the Helm community have contributed a Helm package for Apt. This package is generally up to date.
 
 '''
@@ -2843,12 +2951,12 @@ sudo apt-get update
 sudo apt-get install helm
 '''
 
-### from snap
+### 11.1.2. from snap
 ```
 sudo snap install helm --classic
 ```
 
-## install Kompose docker-compose vers kubenetes
+## 11.2. install Kompose docker-compose vers kubenetes
 source: https://kubernetes.io/fr/docs/tasks/configure-pod-container/translate-compose-kubernetes/
 
 install on linux
@@ -2886,7 +2994,7 @@ Si vous utilisez déjà minikube pour votre processus de développement :
 $ minikube service nom du service présent dans le docker-compose
 ```
 
-# Kubernetes course
+# 12. Kubernetes course
 absolute beginer: https://www.youtube.com/watch?v=s_o8dwzRlu4
 exemple of a project 40 min.
 
@@ -2898,7 +3006,7 @@ volume explained: https://www.youtube.com/watch?v=0swOh5C3OVM
 
 config file: https://www.youtube.com/watch?v=FAnQTgr04mU
 
-# kubernetes cert-manager
+# 13. kubernetes cert-manager
 
 source nginx/letsencrypt: https://medium.com/avmconsulting-blog/encrypting-the-certificate-for-kubernetes-lets-encrypt-805d2bf88b2a
 and: https://github.com/jetstack/cert-manager/
@@ -2929,7 +3037,7 @@ kubectl apply -f cert-manager.crds.yaml
 helm install   cert-manager jetstack/cert-manager   --namespace cert-manager   --create-namespace   --version v1.6.1   #--set installCRDs=true
 
 
-# kubernetes chirpstack
+# 14. kubernetes chirpstack
 
 source chirpstack deploy: https://github.com/Mekrache/chirpstack-kubernetes
 
@@ -2999,7 +3107,7 @@ Add Network Server
 When adding the Network Server in the ChirpStack Application Server web-interface (see Network Servers), you must enter chirpstack-network-server:8000 as the Network Server hostname:IP.
 ```
 
-# UDP tunnelling
+# 15. UDP tunnelling
 Pour passer les elements via SSH qui ne fait pas du tunnelling pour le port 1701/30002
 http://zarb.org/~gc/html/udp-in-ssh-tunneling.html
 
@@ -3027,11 +3135,17 @@ sudo nc -l -u -p 1700 < /tmp/fifo | nc localhost 6667 > /tmp/fifo
 
 
 
+# 16. various linux command
+
+lorsque un process  comme ssh ne souhaite plus se connecter
+ps -eaf |grep ssh
+netstat -apne
+kill pid
 
 
-## Alternatives
-### The thing network
-### Grafana
+## 16.1. Alternatives
+### 16.1.1. The thing network
+### 16.1.2. Grafana
 source: https://simonhearne.com/2020/pi-influx-grafana/
 video illustrative notamment les noeud node red à utiliser pour inserer des données dans influxdb
 video: https://www.youtube.com/watch?v=JdV4x925au0
@@ -3065,16 +3179,16 @@ Done!
 Grafana oauth2 authentification.
 https://grafana.com/docs/grafana/latest/auth/google/
 
-## Technical data
-### port list
+## 16.2. Technical data
+### 16.2.1. port list
 voir l'illustration architecture
 
-## Graphique Path
+## 16.3. Graphique Path
 
-### LGM Centrale solaire du lycée du Grésivaudan
+### 16.3.1. LGM Centrale solaire du lycée du Grésivaudan
 
 
-### INPG acepi polygone pulse atex
+### 16.3.2. INPG acepi polygone pulse atex
 adeunis pulse atex
 ttn and nodered ttn uplink node: pulse_atex app device_id pulse_atex_polygone
 nodered  flow inpg acepi polygon pulse atex
