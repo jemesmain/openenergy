@@ -2908,7 +2908,7 @@ PROBLEME AVEC LE FICHIER COMPOSE QUE J AI CREE... POUR LES VOLUMES MOSQUITTO ET 
 
 ### 4.4.10. XTRMUS XTR container
 ---
-pour faire tourner le site web d xtremus il faut:
+pour faire tourner le site web d xtrmus il faut:
 -apache
 -php
 -sql
@@ -2922,6 +2922,54 @@ pb pour le ogin sql>5.7 jouer la commande suivante dans adminer
 ```
 SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
 ```
+
+Tweak du container php apache pour l'installation de postfix
+```
+#FROM httpd:2.4
+#COPY ./www-html/ /usr/local/apache2/htdocs/
+FROM php:8.1.18-apache
+COPY ./scripts/wrapper.sh /wrapper.sh 
+COPY ./etcpostfix/main.cf /etc/postfix/main.cf
+RUN docker-php-ext-install mysqli
+RUN usermod -u 1002 www-data && apt-get update && apt-get -y install mailutils vim && chmod u+x /wrapper.sh
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y postfix &&  cp -f /etc/services /var/spool/postfix/etc/services
+
+#RUN echo "postfix postfix/main_mailer_type    select  Internet Site" > preseed.txt && echo "postfix postfix/protocols   select ipv4" >> preseed.txt && echo "postfix postfix/destinations    string  $myhostname, xtr.echinix.energyleaks.org, xtr, localhost.localdomain, localhost" >> preseed.txt && debconf-set-selections preseed.txt && DEBIAN_FRONTEND=noninteractive apt-get install -y postfix && postconf relayhost=smtp.free.fr:25 && cp -f /etc/resolv.conf /var/spool/postfix/etc/resolv.conf && cp -f /etc/services /var/spool/postfix/etc/services
+
+CMD /wrapper.sh
+
+```
+Contenu de wrapper.sh
+```
+#!/bin/bash
+
+cp -f /etc/resolv.conf /var/spool/postfix/etc/resolv.conf 
+# Start the first process
+postfix start 
+  
+# Start the second process
+apache2-foreground &
+  
+# Wait for any process to exit
+wait -n
+  
+# Exit with status of process that exited first
+exit $?
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
 Création d'un répertoire partagé xtr: /shared/xtr
 ```
 
