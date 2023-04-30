@@ -8,96 +8,105 @@
     - [1.3.1. SSH 2 factor authentification](#131-ssh-2-factor-authentification)
     - [1.3.2. RealVNC 2 factor authentification](#132-realvnc-2-factor-authentification)
     - [1.3.3. Filezilla 2 factor authentification](#133-filezilla-2-factor-authentification)
-  - [1.4. Installation Capteur](#14-installation-capteur)
-    - [1.4.1. Capteur - les données sont recueillies](#141-capteur---les-données-sont-recueillies)
-    - [1.4.2. Gateway parametrage chirpstack](#142-gateway-parametrage-chirpstack)
-      - [1.4.2.1. INSTALLATION CAPTEUR ADEUNIS](#1421-installation-capteur-adeunis)
-    - [1.4.3. Installation capteur Watteco Flasho](#143-installation-capteur-watteco-flasho)
-- [2. Codage Decodage Capteur Codec](#2-codage-decodage-capteur-codec)
-  - [2.1. modification du decodage pour chirpstack -\> thingsboard](#21-modification-du-decodage-pour-chirpstack---thingsboard)
-  - [2.2. Codage Decodage Capteur Codec ADEUNIS](#22-codage-decodage-capteur-codec-adeunis)
-  - [2.3. Codage Decodage Capteur Codec NKE](#23-codage-decodage-capteur-codec-nke)
-- [3. MQTT TTN et Nodered](#3-mqtt-ttn-et-nodered)
-      - [3.0.0.1. Lopy](#3001-lopy)
-    - [3.0.1. Gateway - les grandes oreilles sont à l'écoute](#301-gateway---les-grandes-oreilles-sont-à-lécoute)
-      - [3.0.1.1. Rakwireless RAK7246 LPWAN Developer Gateway - RAK7246 - EU868](#3011-rakwireless-rak7246-lpwan-developer-gateway---rak7246---eu868)
-      - [3.0.1.2. Lopy Nano Gateway](#3012-lopy-nano-gateway)
-    - [3.0.2. Serveur - on stock et on affiche](#302-serveur---on-stock-et-on-affiche)
-      - [3.0.2.1. Chirpstack - on gère les élément de notre réseau](#3021-chirpstack---on-gère-les-élément-de-notre-réseau)
-        - [3.0.2.1.1. Chirpstack quickstart](#30211-chirpstack-quickstart)
-        - [3.0.2.1.2. Chirpstack bridge](#30212-chirpstack-bridge)
-        - [3.0.2.1.3. Chirpstack server](#30213-chirpstack-server)
-        - [3.0.2.1.4. Chirpstack application server](#30214-chirpstack-application-server)
-      - [3.0.2.2. Thingsboard - on gère les tableaux de bord et les alertes](#3022-thingsboard---on-gère-les-tableaux-de-bord-et-les-alertes)
-- [4. Local LwM2M transport parameters](#4-local-lwm2m-transport-parameters)
-      - [4.0.0.1. Intégration Thingsboard - Chirpstack](#4001-intégration-thingsboard---chirpstack)
-      - [4.0.0.2. Node-red - pour aider au décryptage des messages](#4002-node-red---pour-aider-au-décryptage-des-messages)
-        - [4.0.0.2.1. Installation](#40021-installation)
-        - [4.0.0.2.2. PRE DECODAGE DU PAYLOAD PAR TTN OU CHIRPSTACK CONVERSION EN STRING](#40022-pre-decodage-du-payload-par-ttn-ou-chirpstack-conversion-en-string)
-        - [4.0.0.2.3. Exemple de Flux / Flow nodered](#40023-exemple-de-flux--flow-nodered)
-  - [4.1. Securisation](#41-securisation)
-    - [4.1.1. Sécurisation de Node-Red](#411-sécurisation-de-node-red)
-    - [4.1.2. Sécurisation de Chirpstack](#412-sécurisation-de-chirpstack)
-    - [4.1.3. Sécurisation de ThingsBoard](#413-sécurisation-de-thingsboard)
-    - [4.1.4. Génération manuelle des Certificats pour le protocole https](#414-génération-manuelle-des-certificats-pour-le-protocole-https)
-    - [4.1.5. HTTPS avec Nginx](#415-https-avec-nginx)
-      - [4.1.5.1. Installation de Nginx](#4151-installation-de-nginx)
-      - [4.1.5.2. Configurer Nginx pour utiliser une connexion SSL](#4152-configurer-nginx-pour-utiliser-une-connexion-ssl)
-      - [4.1.5.3. Configuration du fichier hosts](#4153-configuration-du-fichier-hosts)
-      - [4.1.5.4. Autre fichier de configuration de Nginx](#4154-autre-fichier-de-configuration-de-nginx)
-    - [4.1.6. Nginx et démarrage des services](#416-nginx-et-démarrage-des-services)
-    - [4.1.7. Oauth2-Proxy: Nginx et 2 facteur authentication](#417-oauth2-proxy-nginx-et-2-facteur-authentication)
-    - [4.1.8. Oauth2-Proxy: service sur RaspberryPi](#418-oauth2-proxy-service-sur-raspberrypi)
-  - [4.2. frontend: login](#42-frontend-login)
-  - [4.3. frontend: Cartographie / Leaflet / Progressive web app](#43-frontend-cartographie--leaflet--progressive-web-app)
-    - [4.3.1. Debugage smartphone / android](#431-debugage-smartphone--android)
-    - [4.3.2. mongodb et cartographie](#432-mongodb-et-cartographie)
-- [5. Docker container](#5-docker-container)
-  - [5.1. install](#51-install)
-  - [5.2. Change Docker’s root dir](#52-change-dockers-root-dir)
-- [6. Docker-compose](#6-docker-compose)
-- [7. Docker developement](#7-docker-developement)
-  - [7.1. Nginx container](#71-nginx-container)
-  - [7.2. Cerbot nginx container](#72-cerbot-nginx-container)
-  - [7.3. Oauth2-proxy container](#73-oauth2-proxy-container)
-  - [7.4. mongo / mongo-express container](#74-mongo--mongo-express-container)
-  - [7.5. Nodejs container](#75-nodejs-container)
-  - [7.6. Nodered Container](#76-nodered-container)
-  - [7.7. THINGSBOARD container](#77-thingsboard-container)
-- [8. ERROR lwM2M](#8-error-lwm2m)
-  - [8.1. Grafana container](#81-grafana-container)
-  - [8.2. Chirpstack container](#82-chirpstack-container)
-  - [8.3. XTREMUS XTR container](#83-xtremus-xtr-container)
-- [9. align existing files : give rw to group xtr to all files in xtr/](#9-align-existing-files--give-rw-to-group-xtr-to-all-files-in-xtr)
-- [10. KUBERNETES](#10-kubernetes)
-  - [10.1. Install Kubetcl](#101-install-kubetcl)
-- [11. install minikube](#11-install-minikube)
-  - [11.1. install Helm option](#111-install-helm-option)
-    - [11.1.1. From Apt (Debian/Ubuntu)](#1111-from-apt-debianubuntu)
-    - [11.1.2. from snap](#1112-from-snap)
-  - [11.2. install Kompose docker-compose vers kubenetes](#112-install-kompose-docker-compose-vers-kubenetes)
-- [12. Kubernetes course](#12-kubernetes-course)
-- [13. kubernetes cert-manager](#13-kubernetes-cert-manager)
-- [14. kubernetes chirpstack](#14-kubernetes-chirpstack)
-- [15. UDP tunnelling](#15-udp-tunnelling)
-- [16. various linux command](#16-various-linux-command)
-  - [16.1. Alternatives](#161-alternatives)
-    - [16.1.1. The thing network](#1611-the-thing-network)
-    - [16.1.2. Grafana](#1612-grafana)
-  - [16.2. Technical data](#162-technical-data)
-    - [16.2.1. port list](#1621-port-list)
-  - [16.3. Graphique Path](#163-graphique-path)
-    - [16.3.1. LGM Centrale solaire du lycée du Grésivaudan](#1631-lgm-centrale-solaire-du-lycée-du-grésivaudan)
-    - [16.3.2. INPG acepi polygone pulse atex](#1632-inpg-acepi-polygone-pulse-atex)
+- [2. Capteur et gateway](#2-capteur-et-gateway)
+  - [2.1. Gateway - les grandes oreilles sont à l'écoute](#21-gateway---les-grandes-oreilles-sont-à-lécoute)
+    - [2.1.1. Gateway parametrage chirpstack](#211-gateway-parametrage-chirpstack)
+    - [2.1.2. gateway parametrage TTN](#212-gateway-parametrage-ttn)
+    - [2.1.3. Rakwireless RAK7246 LPWAN Developer Gateway - RAK7246 - EU868](#213-rakwireless-rak7246-lpwan-developer-gateway---rak7246---eu868)
+    - [2.1.4. Lopy Nano Gateway](#214-lopy-nano-gateway)
+  - [2.2. Capteur - les données sont recueillies](#22-capteur---les-données-sont-recueillies)
+    - [2.2.1. Installation capteur ADEUNIS](#221-installation-capteur-adeunis)
+    - [2.2.2. Installation capteur NKE Watteco FlashO](#222-installation-capteur-nke-watteco-flasho)
+    - [2.2.3. Lopy as a device](#223-lopy-as-a-device)
+  - [2.3. Codage Decodage Capteur: les Codec](#23-codage-decodage-capteur-les-codec)
+    - [2.3.1. modification du decodage pour chirpstack -\> thingsboard](#231-modification-du-decodage-pour-chirpstack---thingsboard)
+    - [2.3.2. Codage Decodage Capteur Codec ADEUNIS](#232-codage-decodage-capteur-codec-adeunis)
+  - [2.4. Codage Decodage Capteur Codec NKE](#24-codage-decodage-capteur-codec-nke)
+  - [2.5. Recuperation des données: le protocole MQTT](#25-recuperation-des-données-le-protocole-mqtt)
+- [3. Serveur - on stock et on affiche](#3-serveur---on-stock-et-on-affiche)
+  - [3.1. LoRaWAN Network Server (LNS)Chirpstack - on gère les élément de notre réseau](#31-lorawan-network-server-lnschirpstack---on-gère-les-élément-de-notre-réseau)
+    - [3.1.1. Chirpstack quickstart](#311-chirpstack-quickstart)
+    - [3.1.2. Chirpstack bridge](#312-chirpstack-bridge)
+    - [3.1.3. Chirpstack Bridge TROUBLESHOOTING](#313-chirpstack-bridge-troubleshooting)
+    - [3.1.4. Chirpstack server](#314-chirpstack-server)
+    - [3.1.5. Chirpstack application server](#315-chirpstack-application-server)
+  - [3.2. Thingsboard - on gère les tableaux de bord et les alertes](#32-thingsboard---on-gère-les-tableaux-de-bord-et-les-alertes)
+    - [3.2.1. Intégration Thingsboard - Chirpstack](#321-intégration-thingsboard---chirpstack)
+    - [3.2.2. Thingsboard TROUBLESHOOTING](#322-thingsboard-troubleshooting)
+      - [3.2.2.1. ERROR o.s.w.s.s.s.DefaultHandshakeHandler - Handshake failed due to invalid Upgrade header: null](#3221-error-oswsssdefaulthandshakehandler---handshake-failed-due-to-invalid-upgrade-header-null)
+      - [3.2.2.2. Error HikaryPool](#3222-error-hikarypool)
+      - [3.2.2.3. Error lwM2MServiceImpl](#3223-error-lwm2mserviceimpl)
+      - [3.2.2.4. Error jdbc connection / connection refused](#3224-error-jdbc-connection--connection-refused)
+  - [3.3. Node-red - pour aider au décryptage des messages](#33-node-red---pour-aider-au-décryptage-des-messages)
+    - [3.3.1. Installation](#331-installation)
+    - [3.3.2. PRE DECODAGE DU PAYLOAD PAR TTN OU CHIRPSTACK CONVERSION EN STRING](#332-pre-decodage-du-payload-par-ttn-ou-chirpstack-conversion-en-string)
+    - [3.3.3. Exemple de Flux / Flow nodered](#333-exemple-de-flux--flow-nodered)
+  - [3.4. Securisation](#34-securisation)
+    - [3.4.1. Sécurisation de Node-Red](#341-sécurisation-de-node-red)
+    - [3.4.2. Sécurisation de Chirpstack](#342-sécurisation-de-chirpstack)
+    - [3.4.3. Sécurisation de ThingsBoard](#343-sécurisation-de-thingsboard)
+    - [3.4.4. Génération manuelle des Certificats pour le protocole https](#344-génération-manuelle-des-certificats-pour-le-protocole-https)
+    - [3.4.5. HTTPS avec Nginx](#345-https-avec-nginx)
+      - [3.4.5.1. Installation de Nginx](#3451-installation-de-nginx)
+      - [3.4.5.2. Configurer Nginx pour utiliser une connexion SSL](#3452-configurer-nginx-pour-utiliser-une-connexion-ssl)
+      - [3.4.5.3. Configuration du fichier hosts](#3453-configuration-du-fichier-hosts)
+      - [3.4.5.4. Autre fichier de configuration de Nginx](#3454-autre-fichier-de-configuration-de-nginx)
+    - [3.4.6. Nginx et démarrage des services](#346-nginx-et-démarrage-des-services)
+    - [3.4.7. Oauth2-Proxy: Nginx et 2 facteur authentication](#347-oauth2-proxy-nginx-et-2-facteur-authentication)
+    - [3.4.8. Oauth2-Proxy: service sur RaspberryPi](#348-oauth2-proxy-service-sur-raspberrypi)
+    - [3.4.9. frontend: login](#349-frontend-login)
+    - [3.4.10. frontend: Cartographie / Leaflet / Progressive web app](#3410-frontend-cartographie--leaflet--progressive-web-app)
+      - [3.4.10.1. Debugage smartphone / android](#34101-debugage-smartphone--android)
+      - [3.4.10.2. mongodb et cartographie](#34102-mongodb-et-cartographie)
+- [4. Docker Architecture](#4-docker-architecture)
+  - [4.1. install](#41-install)
+  - [4.2. Change Docker’s root dir](#42-change-dockers-root-dir)
+  - [4.3. Docker-compose](#43-docker-compose)
+  - [4.4. Docker developement](#44-docker-developement)
+    - [4.4.1. Nginx container](#441-nginx-container)
+    - [4.4.2. Cerbot nginx container](#442-cerbot-nginx-container)
+      - [4.4.2.1. certbot nginx container TROUBLESHOOTING](#4421-certbot-nginx-container-troubleshooting)
+    - [4.4.3. Oauth2-proxy container](#443-oauth2-proxy-container)
+    - [4.4.4. mongo / mongo-express container](#444-mongo--mongo-express-container)
+    - [4.4.5. Nodejs container](#445-nodejs-container)
+    - [4.4.6. Nodered Container](#446-nodered-container)
+    - [4.4.7. Thingsboard container](#447-thingsboard-container)
+      - [4.4.7.1. Thingsboard container TROUBLESHOOTING](#4471-thingsboard-container-troubleshooting)
+        - [4.4.7.1.1. ERROR lwM2M](#44711-error-lwm2m)
+    - [4.4.8. Grafana container](#448-grafana-container)
+    - [4.4.9. Chirpstack container](#449-chirpstack-container)
+    - [4.4.10. XTRMUS XTR container](#4410-xtrmus-xtr-container)
+- [5. KUBERNETES](#5-kubernetes)
+  - [5.1. Install Kubetcl](#51-install-kubetcl)
+  - [5.2. install minikube](#52-install-minikube)
+  - [5.3. install Helm option](#53-install-helm-option)
+    - [5.3.1. From Apt (Debian/Ubuntu)](#531-from-apt-debianubuntu)
+    - [5.3.2. from snap](#532-from-snap)
+  - [5.4. install Kompose docker-compose vers kubenetes](#54-install-kompose-docker-compose-vers-kubenetes)
+  - [5.5. Kubernetes course](#55-kubernetes-course)
+  - [5.6. kubernetes cert-manager](#56-kubernetes-cert-manager)
+  - [5.7. kubernetes chirpstack](#57-kubernetes-chirpstack)
+  - [5.8. UDP tunnelling dans miniKube](#58-udp-tunnelling-dans-minikube)
+- [6. various linux command](#6-various-linux-command)
+- [7. Alternatives](#7-alternatives)
+  - [7.1. The thing network](#71-the-thing-network)
+  - [7.2. Grafana](#72-grafana)
+- [8. Technical data](#8-technical-data)
+  - [8.1. port list](#81-port-list)
+  - [8.2. Graphique Path](#82-graphique-path)
+  - [8.3. LGM Centrale solaire du lycée du Grésivaudan](#83-lgm-centrale-solaire-du-lycée-du-grésivaudan)
+  - [8.4. INPG acepi polygone pulse atex](#84-inpg-acepi-polygone-pulse-atex)
 
 # 1. Openenergy project
 
-Un projet pour effectuer du suivi énergétique ouvert dans les bâtiments.
+
+
+Un projet pour effectuer du suivi énergétique avec des logiciels ouverts dans le secteur du bâtiment.
 
 ## 1.1. Architecture
 ---
 
-**Illustration**
+**Illustration:**
 Se référer au diagramme suivant: openenergy_architecture.jpg
 Le pdf présent à l'adresse suivante openenergy.bicyclopresto.fr peut être consulté.
 
@@ -122,17 +131,17 @@ sudo update-alternatives --config x-session-manager
   ---
 Le protocole ssh est utilisé pour une connexion terminale distante.
 Le protocole sshfs permet de monter un répertoire distant dans l'arborescence locale.
-Le logiciel Remmina permet de ce connecter via le protocole RDP
+sshfs user@hostname:/remote_directory /local_directory -o follow_symlinks
+Le logiciel Remmina permet de ce connecter via le protocole RDP ie. remote desktop protocol.
 
-
-  
 
 ## 1.3. Implémentation sur Raspberry Pi 3b
-
+---
 Pour les administrateur le Raspberry Pi peut être accédé via SSH et RealVNC
 
 ### 1.3.1. SSH 2 factor authentification
-source: https://www.raspberrypi.org/blog/setting-up-two-factor-authentication-on-your-raspberry-pi/
+---
+**source**: https://www.raspberrypi.org/blog/setting-up-two-factor-authentication-on-your-raspberry-pi/
 
 Especially if you intend to make the server accessible from the Internet, you probably want to enable two-factor authentication (2FA) using Time-based One-Time Password (TOTP).
 
@@ -149,7 +158,7 @@ $ sudo apt-get full-upgrade
 ```
 If you’re pulling your Raspberry Pi out of a drawer for the first time in a while, though, you might want to go as far as to install a new copy of Raspbian using the new Raspberry Pi Imager, so you know you’re working from a good image.
 
-Enabling Secure Shell
+**Enabling Secure Shell:**
 The Raspbian operating system has the SSH server disabled on boot. However, since we’re intending to run the board without a monitor or keyboard, we need to enable it if we want to be able to SSH into our Raspberry Pi.
 
 The easiest way to enable SSH is from the desktop. Go to the Raspbian menu and select “Preferences > Raspberry Pi Configuration”. Next, select the “Interfaces” tab and click on the radio button to enable SSH, then hit “OK.”
@@ -181,11 +190,12 @@ $ sudo systemctl restart ssh
 ```
 It’s good idea to open up a terminal on your laptop and make sure you can still SSH into your Raspberry Pi at this point — although you won’t be prompted for a 2FA code quite yet. It’s sensible to check that everything still works at this stage.
 
-Installing two-factor authentication
+**Installing two-factor authentication:**
+
 The first thing you need to do is download an app to your phone that will generate the TOTP. One of the most commonly used is Google Authenticator. It’s available for Android, iOS, and Blackberry, and there is even an open source version of the app available on GitHub.
 
 
-Google Authenticator in the App Store.
+**Google Authenticator in the App Store:**
 
 So go ahead and install Google Authenticator, or another 2FA app like Authy, on your phone. Afterwards, install the Google Authenticator PAM module on your Raspberry Pi:
 ```
@@ -219,7 +229,7 @@ Scanning the QR code with the Google Authenticator app.
 As soon as your phone app recognises the QR code it will add your new account, and it will start generating TOTP codes automatically.
 
 
-The TOTP in Google Authenticator app.
+**The TOTP in Google Authenticator app.**
 
 Your phone will generate a new one-time password every thirty seconds. However, this code isn’t going to be all that useful until we finish what we were doing on your Raspberry Pi. Switch back to your terminal window and answer “Y” when asked whether Google Authenticator should update your .google_authenticator file.
 
@@ -227,12 +237,14 @@ Then answer “Y” to disallow multiple uses of the same authentication token, 
 
 You’re done here. Now all we have to do is enable 2FA.
 
-Enabling two-factor authentication
+**Enabling two-factor authentication**
 We’re going to use Linux Pluggable Authentication Modules (PAM), which provides dynamic authentication support for applications and services, to add 2FA to SSH on Raspberry Pi.
 
 Now we need to configure PAM to add 2FA:
-
+```
 $ sudo nano /etc/pam.d/sshd
+```
+
 Add auth required pam_google_authenticator.so to the top of the file. You can do this either above or below the line that says @include common-auth.
 
 
@@ -275,7 +287,7 @@ Wrapping things up
 If everything has gone to plan, when you SSH into the Raspberry Pi, you should be prompted for a TOTP after being prompted for your password.
 
 
-SSH’ing into my Raspberry Pi.
+**SSH’ing into my Raspberry Pi:**
 
 You should go ahead and open Google Authenticator on your phone, and enter the six-digit code when prompted. Then you should be logged into your Raspberry Pi as normal.
 
@@ -284,7 +296,8 @@ You’ll now need your phone, and a TOTP, every time you ssh into, or scp to and
 Now you have the Google Authenticator app on your phone, you should probably start enabling 2FA for your important services and sites — like Google, Twitter, Amazon, and others — since most bigger sites, and many smaller ones, now support two-factor authentication.
 
 ### 1.3.2. RealVNC 2 factor authentification
-source: https://help.realvnc.com/hc/en-us/articles/360003110878-How-do-I-set-up-2-step-authentication-for-my-RealVNC-account#enabling-2-step-authentication-0-0
+---
+**source:**  https://help.realvnc.com/hc/en-us/articles/360003110878-How-do-I-set-up-2-step-authentication-for-my-RealVNC-account#enabling-2-step-authentication-0-0
 
 Enabling 2-step authentication
 To set up 2-step authentication for your RealVNC account, sign into the portal at https://manage.realvnc.com and click Security.
@@ -298,304 +311,37 @@ A QR code will be displayed which you can scan with your TOTP app (e.g. Google A
 Enter the code and backup real vnc code in case your brake your smartphone.
 
 ### 1.3.3. Filezilla 2 factor authentification
+---
 
 Pour utiliser le 2 factor authentification il faut dans le gestionnaire de site utiliser le réglage type d'authentification interactif.
 Pour éviter de devoir retaper les codes pour chacun des fichiers il faut cocher la case limiter le nombre de connexions simultannées dans les paramètres de transfert.
 
-## 1.4. Installation Capteur
+# 2. Capteur et gateway
 
 **Une copie locale de l'ensemble des pages internet référencées est présente dans le dossier web_content**
 
-### 1.4.1. Capteur - les données sont recueillies
+Nous avons tenté d'utiliser notre propre réseau Chirpstack. Pour des problème de nombre de gateway nous nous sommes rabattu sur le réseau the thing network TTN.
 
-rappel sur les différentes key: https://stackoverflow.com/questions/54096980/lorawan-deveui-appeui-and-appkey
+Le conseil général de l'isère CG 38 développe sont propre réseau.
 
+## 2.1. Gateway - les grandes oreilles sont à l'écoute
+---
+Les gateways servent a récupérer les données des capteur et à les transmettre au Lora Network Server LNS
 
-### 1.4.2. Gateway parametrage chirpstack  
-
+### 2.1.1. Gateway parametrage chirpstack
+---
 La gateway a a priori selon la documentation 8 channel a parametrer dans la gateway profil
 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 
-
-
-#### 1.4.2.1. INSTALLATION CAPTEUR ADEUNIS
-La société Adeunis propose tout une série de capteur Lorawan avec une bibliothèque qui permet de décoder les messages dans de nombreux logiciel par un appel de la librairie de décodage.
-A partir de The Thing Network (TTN) ou Chirpstack il faut préalablement décodé les message en hexa vers un format de chaine de caractère qui est nécessaire pour l'appel de la librairie de décodage
-
-L'outil qui permet de décoder les messages est ici:
-http://codec-adeunis.com/decoder
-
-La librairie est accessible ici:
-
-http://codec-adeunis.com/download
-
-
-source: https://www.adeunis.com/device-management/configuration-des-capteurs/
-app: https://play.google.com/store/apps/details?id=com.adeunis.IoTConfiguratorApp
-
-NONFAIT A CAUSE CONNEXION SMARTPHONE USB: avec une cle torx ouvir le capteur et connecter ce dernier a votre smartphone  mini usb mini usb.
-
-Pour activer sous chirpstack il faut le DevEUI et l'Appkey... puis attendre 12 heures... La nuit porte conseil!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
-### 1.4.3. Installation capteur Watteco Flasho
-pour l'installation physique
-source: http://support.nke-watteco.com/flasho/
-pour la configuration lora
-source: https://support.nke-watteco.com/
-
-Le capteur flashO est un CAPTEURLORAWAN DE CLASS A
-
-scanner le qrcode sur mobile et le partager
-LW:D0:70B3D5E75F600000:70B3D5E75E00F27A:01280017:P5070071006:S002E484C81:CFC83
-JoinEUI: 70B3D5E75F600000
-DevEUI: 70B3D5E75E00F27A
-
-# 2. Codage Decodage Capteur Codec
-
-## 2.1. modification du decodage pour chirpstack -> thingsboard
-source: https://www.chirpstack.io/application-server/integrations/thingsboard/
-
-Decoded uplink data is prefixed with the **data_ prefix**. Make sure to configure a coded in the Device Profile.
-
-## 2.2. Codage Decodage Capteur Codec ADEUNIS
-source: https://codec-adeunis.com/download
-
-**utiliser https://cryptii.com/ bytes en hexa a gauche, encode base 64 rfc 3548, text à droite**
-**le port a utiliser est le 1**
-**périodicité de l'envoi de la mesure: toutes les X mesures**
-0x41 0x41 register to modify 301
-envoi toute les mesures
-S301 : trame  41 01 00 01 (register to modify is 300+1 01-> 41 01 -> valeur de 1 toutes les mesures 00 01 -> 41 01 00 01  )->en text "QQEAAQ=="
-envoi toute les 6 mesures (soit 1h si la périodicité est a 10 minutes)
-S301 : trame  41 01 00 06 (register to modify is 300+1 01-> 41 01 -> valeur de 6 toutes les 6 mesures 00 06 -> 41 01 00 06  )->en text "QQEABg=="
-envoi toute les 24 mesures (soit 4h si la périodicité est a 10 minutes)
-S301 : trame  41 01 00 18 (register to modify is 300+1 01-> 41 01 -> valeur de 6 toutes les 24 mesures 00 18 -> 41 01 00 18  )->en text "QQEAGA=="
-envoi toute les 48 mesures (soit 8h si la périodicité est a 10 minutes)
-S301 : trame  41 01 00 30 (register to modify is 300+1 01-> 41 01 -> valeur de 48 toutes les 48 mesures 00 30 -> 41 01 00 30  )->en text "QQEAMA=="
-envoi toute les 72 mesures (soit 12h si la périodicité est a 10 minutes)
-S301 : trame  41 01 00 48 (register to modify is 300+1 01-> 41 01 -> valeur de 72 toutes les 72 mesures 00 48 -> 41 01 00 48  )->en text "QQEASA=="
-envoi toute les 144 mesures (soit 24h si la périodicité est a 10 minutes)
-S301 : trame  41 01 00 90 (register to modify is 300+1 01-> 41 01 -> valeur de 144 toutes les 144 mesures 00 90 -> 41 01 00 90  )->en text "QQEAkA=="
-
-**périodicité de la mesure**
-0x41 register to modify 321
-réglage à 600s soit 10 minutes
-s321 :  trame 41 15 01 2c (register to modify 300+21-> 41 15 (21=16+5->15)-> 1 point toute les 10 min 300*2s on envoi 300 -> 41 15 01 2C) )-> en text "QRUBLA=="
-**reboot**
-0x48
-pour un reboot dans 120 minutes après l'envois du message
-120 minutes = 0x0078 la trame est donc 48 00 78 -> en text "SAB4"
-30 minutes = 0x001E -> en text "SAAe"
-10 minutes = 0x000A -> en text "SAAK"
-5 minutes la trame est 48 00 05 -> en text "SAAF"
-
-on peut envoyer deux informations a la fois... 41 15 01 2C 01 00 06 -> 10 minutes / envois toutes les 6 mesures soit toute les heures
--> QRUBLAEABg==
-10 minutes toutes les 3h soit toutes les 18 mesures (12 en hexa)... 41 15 01 2C 01 00 12
--> QRUBLAEAEg==
-
-## 2.3. Codage Decodage Capteur Codec NKE
-source: https://support.nke-watteco.com/downloads/
-pour du flashO : https://github.com/TheThingsNetwork/lorawan-devices/blob/master/vendor/nke-watteco/flasho-sensor.js
-
-périodicité de la mesure
-réglage à 600s en downlink message sur le **port 125** (en bas de la partie stat du device sur chirpstack)
-/* pas ok
-trame 11 06 00 0f 00 04 02 23 00 00 02 58 00 00 00 00 -> en text "EQYADwAEAiMAAAJYAAAAAA=="
-réglage à 600s avec un envoi toutes les 6 mesures sur le **port 125** (en bas de la partie stat du device sur chirpstack)
-trame 11 06 00 0f 00 04 02 23 00 00 02 58 00 00 00 06- > en text "EQYADwAEAiMAAAJYAAAABg=="
-pas ok */
-
-EQYADwAEAiMAAAJYAAAAAA==
-
-PLUTOT
-d'après l'exemple de la configuration https://support.nke-watteco.com/configuration-cluster/
-example: report the battery level once a day.
-Send on the fport 125: 11 06 00 50 00 00 06 41 800A 85A0 05 00 04 00C8 00
-with 800A : 8000(minutes) | 000A (10)  => periodicity of measure all 10 minutes
-with 85A0 : 8000(minutes) | 05A0 (1440)  => periodicity of sending all 1440 minutes = 1 day
-with 04: set a delta variation on disposable battery.
-with 00C8 : the delta variation for which a report will be sent is 200 mV
-
-c'est ici que les trame peuvent etre encodé.
-http://support.nke.fr/Lora/LoraEncoder/Index.html
-```
-Choisissez tout d'abord le modèle de capteur, puis sélectionnez une commande et éditez les paramètres disponibles.
-
-① Choisissez un produit : 
-Flash'O (50-70-071)
-② Choisissez une fonction : 
-Comptage - Configurer les rapports de nombre de changements d'état
-
-Avancé
-③ Modifiez les paramètres suivants afin de générer la trame souhaitée :
-Paramètre	Valeur	Commentaire
-EndPoint	
-0
+### 2.1.2. gateway parametrage TTN
 ---
-Type de rapport	
-Batch // c'est batch qui défini que l'on veut de l'historisation cad un envoi périodique de plusieurs mesures
+
+see on TTN website
+
+
+
+### 2.1.3. Rakwireless RAK7246 LPWAN Developer Gateway - RAK7246 - EU868
 ---
-Intervalle de rapport minimal	
-10 minutes --- (0 à 32767 secondes) // mesures toutes les 10 minutes
-Intervalle de rapport maximal	
-180 minutes --- (0 à 32767 secondes) // périodicité de l'envois toutes les 3 h
-Delta	
-0 // IMPORTANT ENFIXANT A 0 ON FORCE LE COMPORTEMENT D 4UN ENVOIS TOUTES LES TROIS HEURE SINON CELA SEMBLE ETRE UN DELTA MAX POUR DECLENCHER UN ENVOI 5 CE COMPORTEMENT PERMET DE SURVEILLER DES FUITE 6 ON DECLENCHE UN ENVOIS PREMATRURE SUR DELTA TROP IMPORTANT
---- (0 à 32767 )
-Résolution	
-1 --- (0 à 32767 )
-TagLabel	
-0 --- (0 à 31 )
-TagSize	
-1 --- (1 à 7 )
-```
-Downlink sur port 125
-1106000f01040200800a80b4000000000000000101
--> "EQYADwEEAgCACoC0AAAAAAAAAAEB"
-1106000f1d040200800a80b4000000000000000101
-plutot
-1106000f11005500800a80b4000101
-
-quand on configure le state
-Decoded frame (json) : 1106000f11005500800a80b4000101
-{"version": "NKE_Frame_Codec_v_1.0.svn5087", "TimeStamp": "2022-01-15 19:09:18.814959"}
-{
- "EndPoint": 0,
- "Report": "Standard",
- "CommandID": "ConfigureReporting",
- "ClusterID": "BinaryInput",
- "ReportParameters": {
-  "Batch": "Yes",
-  "Size": 8
- },
- "AttributeID": "PresentValue",
- "Batches": [
-  {
-   "FieldIndex": 0,
-   "MinReport": {
-    "Unit": "Minutes",
-    "Value": 10
-   },
-   "MaxReport": {
-    "Unit": "Minutes",
-    "Value": 180
-   },
-   "Delta": false,
-   "Resolution": true,
-   "TagValue": {
-    "TagLabel": 0,
-    "TagSize": 1
-   }
-  }
- ]
-}
-
-
-
-quand on configure le count
-Decoded frame (json) : 110Decoded frame (json) : 1106000f1d040200800a80b40000000000000001016000f1d040200800a80b4000000000000000101
-{"version": "NKE_Frame_Codec_v_1.0.svn5087", "TimeStamp": "2022-01-15 19:16:33.117499"}
-{
- "EndPoint": 0,
- "Report": "Standard",
- "CommandID": "ConfigureReporting",
- "ClusterID": "BinaryInput",
- "ReportParameters": {
-  "Batch": "Yes",
-  "Size": 14
- },
- "AttributeID": "Count",
- "Batches": [
-  {
-   "FieldIndex": 0,
-   "MinReport": {
-    "Unit": "Minutes",
-    "Value": 10
-   },
-   "MaxReport": {
-    "Unit": "Minutes",
-    "Value": 180
-   },
-   "Delta": 0,
-   "Resolution": 1,
-   "TagValue": {
-    "TagLabel": 0,
-    "TagSize": 1
-   }
-  }
- ]
-}
-
-
-
-
-
-read de la configuration version du codec
-1108000f000055
--> EQgADwAAVQ==
-read de la configuration from manual jyria
-11080050000006
--> EQgAUAAABg==
-
-downlink  simple flash O configure reporting report standart min 10 max 180 reportable change 0
-1106000f00040223800a80b400000000
-->EQYADwAEAiOACoC0AAAAAA==
-trame up chirpstack
-data:"EQcADwAABAI="
-attributID:"0x0402"
-clusterdID:"0x000F"
-cmdID:"0x07"
-decodedBatch:0
-endpoint:0
-report:"standard"
-status:0
-
-# 3. MQTT TTN et Nodered
-
-Subscribing to Upstream Traffic
-The Application Server publishes uplink traffic on the following topics:
-
-v3/{application id}@{tenant id}/devices/{device id}/join
-v3/{application id}@{tenant id}/devices/{device id}/up
-v3/{application id}@{tenant id}/devices/{device id}/down/queued
-v3/{application id}@{tenant id}/devices/{device id}/down/sent
-v3/{application id}@{tenant id}/devices/{device id}/down/ack
-v3/{application id}@{tenant id}/devices/{device id}/down/nack
-v3/{application id}@{tenant id}/devices/{device id}/down/failed
-v3/{application id}@{tenant id}/devices/{device id}/service/data
-v3/{application id}@{tenant id}/devices/{device id}/location/solved
-
-
-db.frames.find({$where:"JSON.stringify(this).indexOf('adpul')!=-1", "uplink_message.frm_payload":{"$exists": true}},{_id:1, "end_device_ids.device_id":1, received_at:1, "uplink_message.frm_payload":1}).sort({"_id" : -1})
-
-
-
-
-#### 3.0.0.1. Lopy
-
-Le LoPy 4.0 est une carte de développement miniature dédiée aux objets connectés, basée sur le langage Python 3, de faible consommation et disposant de connectivité WiFi, Bluetooth (compatible BLE), LoRa et Sigfox.
-Une solution pour programmer le Lopy 4 est d'utiliser le Pymakr Plugin for Atom et d'interagir avec le Lopy via le port Usb de la carte PyMakr.
-Le plugin est désormais fiable et facile d'utilisation.
-https://docs.pycom.io/pymakr/installation/atom/
-
-Dans les fichiers lopy device de la partie setting vous avez un exemple de programmation:
-
-- Le fichier config.py:
-    -  défini une mac avec FFFE en sont centre pour le réseau TTN ou FFEE pour le réseau Chirpstack. Cette mac est l'identifiant du device pour chacun des deux réseaux
-    - myserver doit être remplacé par le DNS du réseau qui héberge votre serveur chirpstack.
-- le fichier main.py:
-    - gère la connexion au réseau lorawan
-    - envoie avec la boucle pour / for la valeur value = 22.5 pendant 60 itérations de 2 minutes afin de simuler une valeur de température
-- le fichier boot.py gère le démarrage du Lopy 4.
-
-
-https://docs.pycom.io/pymakr/installation/atom/
-
-
-### 3.0.1. Gateway - les grandes oreilles sont à l'écoute
-#### 3.0.1.1. Rakwireless RAK7246 LPWAN Developer Gateway - RAK7246 - EU868
 
 **ATTENTION AVANT LA MISE SOUS TENSION DE LA GATEWAY BIEN INSTALLER L ANTENNE LORA SINON IL Y A UN RISQUE D ENDOMAGEMENT**
 
@@ -680,7 +426,8 @@ En effet dans la documentation il est dit localhost:8000. Il faut lui préferer 
 raspberrypi.home:8000 meme réseau privé??? port??? /el001.is-a-green.com:8000 depuis l'extérieur?? port???? 
 différence entre rakwireless sudo gateway-config sans le port et la configuration chirpstack avec le port dans la partie network server raspberrypi.home:8000
 
-#### 3.0.1.2. Lopy Nano Gateway
+### 2.1.4. Lopy Nano Gateway
+---
 
 On peut utiliser un Lopy 4 pour se comporter comme une gateway monocanal afin de transmettre les messages des capteurs.
 
@@ -702,9 +449,307 @@ Dans les fichiers lopy nano de la partie setting vous avez un exemple de program
     - gère la connexion au réseau lorawan
     - puis avec le module nanogateway.py capte et transmet les éléments recu par les capteur au serveur TTN ou Chirpstack.
 
-### 3.0.2. Serveur - on stock et on affiche
-#### 3.0.2.1. Chirpstack - on gère les élément de notre réseau
-##### 3.0.2.1.1. Chirpstack quickstart
+## 2.2. Capteur - les données sont recueillies
+---
+Les capteurs sont dans la pluspart des cas installés directement sur les compteurs d'eau ou d'énergie.
+
+rappel sur les différentes key: https://stackoverflow.com/questions/54096980/lorawan-deveui-appeui-and-appkey
+
+
+### 2.2.1. Installation capteur ADEUNIS
+---
+La société Adeunis propose tout une série de capteur Lorawan avec une bibliothèque qui permet de décoder les messages dans de nombreux logiciel par un appel de la librairie de décodage.
+A partir de The Thing Network (TTN) ou Chirpstack il faut préalablement décodé les message en hexa vers un format de chaine de caractère qui est nécessaire pour l'appel de la librairie de décodage
+
+L'outil qui permet de décoder les messages est ici:
+http://codec-adeunis.com/decoder
+
+La librairie est accessible ici:
+
+http://codec-adeunis.com/download
+
+
+source: https://www.adeunis.com/device-management/configuration-des-capteurs/
+app: https://play.google.com/store/apps/details?id=com.adeunis.IoTConfiguratorApp
+
+NONFAIT A CAUSE CONNEXION SMARTPHONE USB: avec une cle torx ouvir le capteur et connecter ce dernier a votre smartphone  mini usb mini usb.
+
+Pour activer sous chirpstack il faut le DevEUI et l'Appkey... puis attendre 12 heures... ;) La nuit porte conseil!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+### 2.2.2. Installation capteur NKE Watteco FlashO
+---
+pour l'installation physique
+source: http://support.nke-watteco.com/flasho/
+pour la configuration lora
+source: https://support.nke-watteco.com/
+
+Le capteur flashO est un CAPTEURLORAWAN DE CLASS A
+
+scanner le qrcode sur mobile et le partager
+LW:D0:70B3D5E75F600000:70B3D5E75E00F27A:01280017:P5070071006:S002E484C81:CFC83
+JoinEUI: 70B3D5E75F600000
+DevEUI: 70B3D5E75E00F27A
+
+### 2.2.3. Lopy as a device
+---
+
+Le LoPy 4.0 est une carte de développement miniature dédiée aux objets connectés, basée sur le langage Python 3, de faible consommation et disposant de connectivité WiFi, Bluetooth (compatible BLE), LoRa et Sigfox.
+Une solution pour programmer le Lopy 4 est d'utiliser le Pymakr Plugin for Atom et d'interagir avec le Lopy via le port Usb de la carte PyMakr.
+Le plugin est désormais fiable et facile d'utilisation.
+https://docs.pycom.io/pymakr/installation/atom/
+
+Dans les fichiers lopy device de la partie setting vous avez un exemple de programmation:
+
+- Le fichier config.py:
+    -  défini une mac avec FFFE en sont centre pour le réseau TTN ou FFEE pour le réseau Chirpstack. Cette mac est l'identifiant du device pour chacun des deux réseaux
+    - myserver doit être remplacé par le DNS du réseau qui héberge votre serveur chirpstack.
+- le fichier main.py:
+    - gère la connexion au réseau lorawan
+    - envoie avec la boucle pour / for la valeur value = 22.5 pendant 60 itérations de 2 minutes afin de simuler une valeur de température
+- le fichier boot.py gère le démarrage du Lopy 4.
+
+
+https://docs.pycom.io/pymakr/installation/atom/
+
+## 2.3. Codage Decodage Capteur: les Codec
+---
+
+### 2.3.1. modification du decodage pour chirpstack -> thingsboard
+---
+source: https://www.chirpstack.io/application-server/integrations/thingsboard/
+
+Decoded uplink data is prefixed with the **data_ prefix**. Make sure to configure a coded in the Device Profile.
+
+### 2.3.2. Codage Decodage Capteur Codec ADEUNIS
+---
+source: https://codec-adeunis.com/download
+
+**utiliser https://cryptii.com/ bytes en hexa a gauche, encode base 64 rfc 3548, text à droite**
+**le port a utiliser est le 1**
+**périodicité de l'envoi de la mesure: toutes les X mesures**
+0x41 0x41 register to modify 301
+envoi toute les mesures
+S301 : trame  41 01 00 01 (register to modify is 300+1 01-> 41 01 -> valeur de 1 toutes les mesures 00 01 -> 41 01 00 01  )->en text "QQEAAQ=="
+envoi toute les 6 mesures (soit 1h si la périodicité est a 10 minutes)
+S301 : trame  41 01 00 06 (register to modify is 300+1 01-> 41 01 -> valeur de 6 toutes les 6 mesures 00 06 -> 41 01 00 06  )->en text "QQEABg=="
+envoi toute les 24 mesures (soit 4h si la périodicité est a 10 minutes)
+S301 : trame  41 01 00 18 (register to modify is 300+1 01-> 41 01 -> valeur de 6 toutes les 24 mesures 00 18 -> 41 01 00 18  )->en text "QQEAGA=="
+envoi toute les 48 mesures (soit 8h si la périodicité est a 10 minutes)
+S301 : trame  41 01 00 30 (register to modify is 300+1 01-> 41 01 -> valeur de 48 toutes les 48 mesures 00 30 -> 41 01 00 30  )->en text "QQEAMA=="
+envoi toute les 72 mesures (soit 12h si la périodicité est a 10 minutes)
+S301 : trame  41 01 00 48 (register to modify is 300+1 01-> 41 01 -> valeur de 72 toutes les 72 mesures 00 48 -> 41 01 00 48  )->en text "QQEASA=="
+envoi toute les 144 mesures (soit 24h si la périodicité est a 10 minutes)
+S301 : trame  41 01 00 90 (register to modify is 300+1 01-> 41 01 -> valeur de 144 toutes les 144 mesures 00 90 -> 41 01 00 90  )->en text "QQEAkA=="
+
+**périodicité de la mesure**
+0x41 register to modify 321
+réglage à 600s soit 10 minutes
+s321 :  trame 41 15 01 2c (register to modify 300+21-> 41 15 (21=16+5->15)-> 1 point toute les 10 min 300*2s on envoi 300 -> 41 15 01 2C) )-> en text "QRUBLA=="
+**reboot**
+0x48
+pour un reboot dans 120 minutes après l'envois du message
+120 minutes = 0x0078 la trame est donc 48 00 78 -> en text "SAB4"
+30 minutes = 0x001E -> en text "SAAe"
+10 minutes = 0x000A -> en text "SAAK"
+5 minutes la trame est 48 00 05 -> en text "SAAF"
+
+on peut envoyer deux informations a la fois... 41 15 01 2C 01 00 06 -> 10 minutes / envois toutes les 6 mesures soit toute les heures
+-> QRUBLAEABg==
+10 minutes toutes les 3h soit toutes les 18 mesures (12 en hexa)... 41 15 01 2C 01 00 12
+-> QRUBLAEAEg==
+
+## 2.4. Codage Decodage Capteur Codec NKE
+---
+
+source: https://support.nke-watteco.com/downloads/
+pour du flashO : https://github.com/TheThingsNetwork/lorawan-devices/blob/master/vendor/nke-watteco/flasho-sensor.js
+
+périodicité de la mesure
+réglage à 600s en downlink message sur le **port 125** (en bas de la partie stat du device sur chirpstack)
+/* pas ok
+trame 11 06 00 0f 00 04 02 23 00 00 02 58 00 00 00 00 -> en text "EQYADwAEAiMAAAJYAAAAAA=="
+réglage à 600s avec un envoi toutes les 6 mesures sur le **port 125** (en bas de la partie stat du device sur chirpstack)
+trame 11 06 00 0f 00 04 02 23 00 00 02 58 00 00 00 06- > en text "EQYADwAEAiMAAAJYAAAABg=="
+pas ok */
+
+EQYADwAEAiMAAAJYAAAAAA==
+
+PLUTOT
+d'après l'exemple de la configuration https://support.nke-watteco.com/configuration-cluster/
+example: report the battery level once a day.
+Send on the fport 125: 11 06 00 50 00 00 06 41 800A 85A0 05 00 04 00C8 00
+with 800A : 8000(minutes) | 000A (10)  => periodicity of measure all 10 minutes
+with 85A0 : 8000(minutes) | 05A0 (1440)  => periodicity of sending all 1440 minutes = 1 day
+with 04: set a delta variation on disposable battery.
+with 00C8 : the delta variation for which a report will be sent is 200 mV
+
+c'est ici que les trame peuvent etre encodé.
+http://support.nke.fr/Lora/LoraEncoder/Index.html
+```
+Choisissez tout d'abord le modèle de capteur, puis sélectionnez une commande et éditez les paramètres disponibles.
+
+① Choisissez un produit : 
+Flash'O (50-70-071)
+② Choisissez une fonction : 
+Comptage - Configurer les rapports de nombre de changements d'état
+
+Avancé
+③ Modifiez les paramètres suivants afin de générer la trame souhaitée :
+Paramètre	Valeur	Commentaire
+EndPoint	
+0
+---
+Type de rapport	
+Batch // c'est batch qui défini que l'on veut de l'historisation cad un envoi périodique de plusieurs mesures
+---
+Intervalle de rapport minimal	
+10 minutes --- (0 à 32767 secondes) // mesures toutes les 10 minutes
+Intervalle de rapport maximal	
+180 minutes --- (0 à 32767 secondes) // périodicité de l'envois toutes les 3 h
+Delta	
+0 // IMPORTANT ENFIXANT A 0 ON FORCE LE COMPORTEMENT D 4UN ENVOIS TOUTES LES TROIS HEURE SINON CELA SEMBLE ETRE UN DELTA MAX POUR DECLENCHER UN ENVOI 5 CE COMPORTEMENT PERMET DE SURVEILLER DES FUITE 6 ON DECLENCHE UN ENVOIS PREMATRURE SUR DELTA TROP IMPORTANT
+--- (0 à 32767 )
+Résolution	
+1 --- (0 à 32767 )
+TagLabel	
+0 --- (0 à 31 )
+TagSize	
+1 --- (1 à 7 )
+```
+Downlink sur port 125
+1106000f01040200800a80b4000000000000000101
+-> "EQYADwEEAgCACoC0AAAAAAAAAAEB"
+1106000f1d040200800a80b4000000000000000101
+plutot
+1106000f11005500800a80b4000101
+
+quand on configure le state
+```
+Decoded frame (json) : 1106000f11005500800a80b4000101
+{"version": "NKE_Frame_Codec_v_1.0.svn5087", "TimeStamp": "2022-01-15 19:09:18.814959"}
+{
+ "EndPoint": 0,
+ "Report": "Standard",
+ "CommandID": "ConfigureReporting",
+ "ClusterID": "BinaryInput",
+ "ReportParameters": {
+  "Batch": "Yes",
+  "Size": 8
+ },
+ "AttributeID": "PresentValue",
+ "Batches": [
+  {
+   "FieldIndex": 0,
+   "MinReport": {
+    "Unit": "Minutes",
+    "Value": 10
+   },
+   "MaxReport": {
+    "Unit": "Minutes",
+    "Value": 180
+   },
+   "Delta": false,
+   "Resolution": true,
+   "TagValue": {
+    "TagLabel": 0,
+    "TagSize": 1
+   }
+  }
+ ]
+}
+```
+
+
+quand on configure le count
+```
+Decoded frame (json) : 110Decoded frame (json) : 1106000f1d040200800a80b40000000000000001016000f1d040200800a80b4000000000000000101
+{"version": "NKE_Frame_Codec_v_1.0.svn5087", "TimeStamp": "2022-01-15 19:16:33.117499"}
+{
+ "EndPoint": 0,
+ "Report": "Standard",
+ "CommandID": "ConfigureReporting",
+ "ClusterID": "BinaryInput",
+ "ReportParameters": {
+  "Batch": "Yes",
+  "Size": 14
+ },
+ "AttributeID": "Count",
+ "Batches": [
+  {
+   "FieldIndex": 0,
+   "MinReport": {
+    "Unit": "Minutes",
+    "Value": 10
+   },
+   "MaxReport": {
+    "Unit": "Minutes",
+    "Value": 180
+   },
+   "Delta": 0,
+   "Resolution": 1,
+   "TagValue": {
+    "TagLabel": 0,
+    "TagSize": 1
+   }
+  }
+ ]
+}
+```
+
+read de la configuration version du codec
+1108000f000055
+-> EQgADwAAVQ==
+read de la configuration from manual jyria
+11080050000006
+-> EQgAUAAABg==
+
+downlink  simple flash O configure reporting report standart min 10 max 180 reportable change 0
+1106000f00040223800a80b400000000
+->EQYADwAEAiOACoC0AAAAAA==
+trame up chirpstack
+data:"EQcADwAABAI="
+attributID:"0x0402"
+clusterdID:"0x000F"
+cmdID:"0x07"
+decodedBatch:0
+endpoint:0
+report:"standard"
+status:0
+
+## 2.5. Recuperation des données: le protocole MQTT
+---
+Le protocole MQTT (Message Queuing Telemetry Transport) permet de recuperer les données de TTN via un noeud MQTT avec Nodered
+
+
+Subscribing to Upstream Traffic
+The Application Server publishes uplink traffic on the following topics:
+
+v3/{application id}@{tenant id}/devices/{device id}/join
+v3/{application id}@{tenant id}/devices/{device id}/up
+v3/{application id}@{tenant id}/devices/{device id}/down/queued
+v3/{application id}@{tenant id}/devices/{device id}/down/sent
+v3/{application id}@{tenant id}/devices/{device id}/down/ack
+v3/{application id}@{tenant id}/devices/{device id}/down/nack
+v3/{application id}@{tenant id}/devices/{device id}/down/failed
+v3/{application id}@{tenant id}/devices/{device id}/service/data
+v3/{application id}@{tenant id}/devices/{device id}/location/solved
+
+
+db.frames.find({$where:"JSON.stringify(this).indexOf('adpul')!=-1", "uplink_message.frm_payload":{"$exists": true}},{_id:1, "end_device_ids.device_id":1, received_at:1, "uplink_message.frm_payload":1}).sort({"_id" : -1})
+
+
+
+
+
+
+# 3. Serveur - on stock et on affiche
+## 3.1. LoRaWAN Network Server (LNS)Chirpstack - on gère les élément de notre réseau
+---
+Voici détaillé les éléments de parmétrage d'un serveur LNS de type Chripstack
+
+### 3.1.1. Chirpstack quickstart
+---
 [Chirpstack quickstart guide](https://www.chirpstack.io/guides/debian-ubuntu/ "Chirpstack quick guide in English")
 
 **Installation de programmes complémentaires**
@@ -789,14 +834,20 @@ Pour la configuration détaillée voir la partie chirpstack gateway bridge ci-de
 Il y a deux manières de démarrer les service de ce bridge:
 - Manuellement:
 
-```sudo systemctl start chirpstack-gateway-bridge```
+```
+sudo systemctl start chirpstack-gateway-bridge
+```
 - au démarrage:
-```sudo systemctl enable chirpstack-gateway-bridge```
+```
+sudo systemctl enable chirpstack-gateway-bridge
+```
 
 **Installation du ChirpStack Network Server**
 Installation des paquet en utilisant apt apt:
 
+```
 sudo apt install chirpstack-network-server
+```
 
 Le fichier de configuration est situé /etc/chirpstack-network-server/chirpstack-network-server.toml et doit être configuré pour correspondre avec les bases de données, les utilisateur et les mots de passe PostgreSQL. Il doit aussi correspondre aux réglage des fréquence d'émission. Pour l'Europe c'est le EU868 et pour les USA US915. Pour plus d'option voir avec la partie ChirpStack Network Server configuration
 
@@ -804,19 +855,27 @@ Après la modification du fichier de configuration, vous devez redémarrer Chirp
 
 Il y a deux manières de démarrer les service de ce server:
 - Manuellement:
-```sudo systemctl start chirpstack-network-server```
+```
+sudo systemctl start chirpstack-network-server
+```
 - au démarrage
-```sudo systemctl enable chirpstack-network-server```
+```
+sudo systemctl enable chirpstack-network-server
+```
 
 Afin de visualiser les log du network server.
-```sudo journalctl -f -n 100 -u chirpstack-network-server```
+```
+sudo journalctl -f -n 100 -u chirpstack-network-server
+```
 
 Pour la configuration détaillée voir la partie chirpstack server ci-dessous.
 
 **Installation de  ChirpStack Application Server**
 Installation des paquets en utilisant apt:
 
-```sudo apt install chirpstack-application-server```
+```
+sudo apt install chirpstack-application-server
+```
 
 le chemin du fichiers de configuration est le suivant /etc/chirpstack-application-server/chirpstack-application-server.toml et doit être mis à jour pour correspondre à la configuration de la base de données PostgreSQL.
 
@@ -827,17 +886,24 @@ Note: il faut impérativement remplacé le paramètre jwt_secret avec une chaine
 Le ChirpStack Application Server service peut être démarré de deux manières:
 
 - manuellement:
-```sudo systemctl start chirpstack-application-server```
+```
+sudo systemctl start chirpstack-application-server
+```
 
 - au démarrage:
-```sudo systemctl enable chirpstack-application-server```
+```
+sudo systemctl enable chirpstack-application-server
+```
 
 Afin de voir si il n'y a pas d'erreur vous pouvez visualiser le log de ChirpStack Application Server avec la commande suivante:
 
-```sudo journalctl -f -n 100 -u chirpstack-application-server```
+```
+sudo journalctl -f -n 100 -u chirpstack-application-server
+```
 
 
-##### 3.0.2.1.2. Chirpstack bridge
+### 3.1.2. Chirpstack bridge
+---
 Selon la typologie de votre gateway, deux mode sont disponible pour transmettre les messages:
 
 - Semtech UDP Packet Forwarder c'est le cas qui correspond à la gateway RakWireless
@@ -853,20 +919,26 @@ Il spécifie:
 - qu'il écoute sur le port 1700. Un port mapping pouvant être effectué sur la box de votre FAI c'est vers ce port ou le port correspondant au port mapping qui doit etre spécifié dans les réglages de la gateway.
 - que le protocole MQTT est actif sur le port 1883.
 
-**TROUBLESHOOTING**
+### 3.1.3. Chirpstack Bridge TROUBLESHOOTING
+---
 
 https://www.chirpstack.io/guides/troubleshooting/gateway/
 Il s'agit de verifier que l'on recoive bien des informations de la gateway
 
 Tout d'abord il faut s'assurer que le Semtech Packet Forwarder de la gateway recoive bien des données du capteur. Ainsi on utilise la commande TCP dump pour suivre les messages échangés. Le port doit correspondre à celui de la configuration de ChirpStack Gateway Bridge.
 - Lorsqque ChirpStack Gateway Bridge tourne sur la gateway l'instruction suivante vérifiera cela: 
-```sudo tcpdump -AUq -i lo port 1700```
+```
+sudo tcpdump -AUq -i lo port 1700
+```
 - Lorsque ChirpStack Gateway Bridge est installé sur une machine / serveur différents dans ce cas c'est l'intruction suivante:
 
-```sudo tcpdump -AUq port 1700```
+```
+sudo tcpdump -AUq port 1700
+```
 
 On doit constater une réponse équivalente à ci-dessous pour valider le bon fonctionement
-```11:42:00.114726 IP localhost.34268 > localhost.1700: UDP, length 12 E..(..@.@."................'.....UZ.....
+```
+11:42:00.114726 IP localhost.34268 > localhost.1700: UDP, length 12 E..(..@.@."................'.....UZ.....
 11:42:00.130292 IP localhost.1700 > localhost.34268: UDP, length 4E.. ..@.@.".....................
 ```
 
@@ -884,11 +956,14 @@ Si l'instruction TCP dump ne permet pas de constater de message alors il vous fa
 ```
 
 Ensuite on peut s'assurer que le chirpstack-gateway-bridge recoivent des données.
-- journalctl -f -n 100 -u chirpstack-gateway-bridge
-- tail -f -n 100 /var/log/chirpstack-gateway-bridge/chirpstack-gateway-bridge.log
+  ```
+  journalctl -f -n 100 -u chirpstack-gateway-bridge
+tail -f -n 100 /var/log/chirpstack-gateway-bridge/chirpstack-gateway-bridge.log
+```
 
 On devrait ainsi avoir ce type de contenu à l'écran
-```INFO[0013] mqtt: subscribing to topic qos=0 topic=gateway/7276ff002e062c18/command/#
+```
+INFO[0013] mqtt: subscribing to topic qos=0 topic=gateway/7276ff002e062c18/command/#
 
 INFO[0267] mqtt: publishing message qos=0 topic=gateway/7276ff002e062c18/event/up
 ```
@@ -896,21 +971,26 @@ INFO[0267] mqtt: publishing message qos=0 topic=gateway/7276ff002e062c18/event/u
 Si le contenu de l'écran n'est pas de ce type il faut
 - revérifier la configuration de la gateway
 - vérifier que le service du ChirpStack Gateway Bridge est en fonctionnement. Pour vérifier on utilise la commande suivante:
-
-```ps aux |grep chirpstack-gateway-bridge
+```
+ps aux |grep chirpstack-gateway-bridge
 ```
 Le résultat devrait ressembler à cela:
 
-```root      6403  0.0  0.2  12944  1088 pts/0    S+   12:53   0:00 grep --color=auto chirpstack-gateway-bridge
+```
+root      6403  0.0  0.2  12944  1088 pts/0    S+   12:53   0:00 grep --color=auto chirpstack-gateway-bridge
 gateway+ 23060  0.1  2.1 214260 10664 ?        Ssl  Aug30  47:55 /usr/bin/chirpstack-gateway-bridge
 ```
 - Vérifier ChirpStack Gateway Bridge configuration pour s'assurer des réglages machine:port dans le fichier de configuration chirpstack-gateway-bridge.toml.
 
 - Vérifier que ChirpStack Gateway Bridge publie des données sur le broker MQTT. On effectue cela en souscrivant "au fil" concernant les gateway: gateway/# MQTT. on effectue cela avec l'instruction mosquitto_sub:
 
-```mosquitto_sub -v -t "gateway/#"```
+```
+mosquitto_sub -v -t "gateway/#"
+```
 Si vous ne voyer aucun message lorsque le capteur envoie des données, il faut alors s'assurer que  ChirpStack Gateway Bridge est autorisé de publier des données sur le sujet MQTT et que le client  mosquitto_sub client est autorisé de souscrire à ce sujet MQTT Ce problème apparait habituellement lorsque vous avec configuré le MQTT Broker afin que les client doivent s'authentifier lors de la connexion.
-##### 3.0.2.1.3. Chirpstack server
+
+### 3.1.4. Chirpstack server
+---
 Configuration file
 Par défaut chirpstack-network-server va regarder dans l'ordre les chemins suivant si l'instruction en comporte pas explicitement la spécification suivante --config:
 
@@ -921,14 +1001,16 @@ Par défaut chirpstack-network-server va regarder dans l'ordre les chemins suiva
 Le fichier de configuration est présent dans la partie settings
 
 Dans le fichier de configuration le minimum a vérifier est le chemin vers la base de données postgres
-```# * verify-full - Always SSL (verify that the certification presented by the server was signed by a trusted CA and the server host name matches the one in the certificate)
+```
+# * verify-full - Always SSL (verify that the certification presented by the server was signed by a trusted CA and the server host name matches the one in the certificate)
 dsn="postgres://localhost/chirpstack_ns?sslmode=disable"
 ```
 
 Le détail de toute les options est présent à l'adresse suivante https://www.chirpstack.io/network-server/install/config/
 
 
-##### 3.0.2.1.4. Chirpstack application server
+### 3.1.5. Chirpstack application server
+---
 Configuration file
 Par défaut chirpstack-application-server va regarder dans l'ordre les chemins suivant si l'instruction en comporte pas explicitement la spécification suivante --config:
 - chirpstack-application-server.toml (current working directory)
@@ -938,7 +1020,8 @@ Par défaut chirpstack-application-server va regarder dans l'ordre les chemins s
 Le fichier de configuration est présent dans la partie settings
 
 Dans le fichier de configuration le minimum a vérifier est le chemin vers la base de données postgres
-```# * verify-full - Always SSL (verify that the certification presented by the server was signed by a trusted CA and the server host name matches the one in the certificate)
+```
+# * verify-full - Always SSL (verify that the certification presented by the server was signed by a trusted CA and the server host name matches the one in the certificate)
 dsn="postgres://localhost/chirpstack_as?sslmode=disable"
 ```
 Le uuid de l'application serveur ne doit pas être modifié à priori:
@@ -949,7 +1032,8 @@ Le uuid de l'application serveur ne doit pas être modifié à priori:
 id="6d5db27e-4ce2-4b2b-b5d7-91f069397978"
 ```
 Le protocol mqtt écoute par défaut sur 1883
-```# MQTT server (e.g. scheme://host:port where scheme is tcp, ssl or ws)
+```
+# MQTT server (e.g. scheme://host:port where scheme is tcp, ssl or ws)
   server="tcp://localhost:1883"
   ```
 Ceci peut rentrer en conflit avec un mqtt comme mosquito qui serait déja démarré sur votre machine ou avec celui qui est démarré par thingsboard. Les fichiers de configurations ou tout est installé sur le meme serveur contiennent des valeurs compatibles. (Cf technical data port list si dessous) Les mêmes conflit de port sont valable pour le port qui va etre utilisé sur votre explorateur web.
@@ -962,14 +1046,17 @@ Le port de l'explorateur web est le 8080 par défaut
   bind="0.0.0.0:8080"
   ```
 Il ne faut pas oublier de remplir la partie JWT secret (cf chirpstack quickstart)
-```# JWT secret used for api authentication / authorization
+```
+# JWT secret used for api authentication / authorization
   # You could generate this by executing 'openssl rand -base64 32' for example
   jwt_secret=""
   ```
 Commme les différentes partie du serveur sont sur la même machine je ne me suis pas occupé de sécuriser la communication interne comme spécifié. La partie Nginx s'occupe de cela.
 
 Le détail de toute les options est présent à l'adresse suivante https://www.chirpstack.io/application-server/install/config/
-#### 3.0.2.2. Thingsboard - on gère les tableaux de bord et les alertes
+
+## 3.2. Thingsboard - on gère les tableaux de bord et les alertes
+---
 
 La procédure d'installation et de configuration est présente à l'adresse suivante https://thingsboard.io/docs/user-guide/install/rpi/ ou dans la partie web_content
 Elle se compose des étapes suivantes
@@ -987,7 +1074,7 @@ Elle se compose des étapes suivantes
 
 Ce guide décrit l'installation de ThingsBoard sur un Raspberry Pi 3 doté du système d'exploitation Raspbian Buster.
 
-** 1. Installation de composents tiers Java 8 (OpenJDK)**
+ **1. Installation de composents tiers Java 8 (OpenJDK)**
 
 Le service ThingsBoard tourne sur Java 8. Suivre ces instruction pour installer OpenJDK 8:
 ```
@@ -1019,7 +1106,7 @@ Installation du service ThingsBoard.
 ```
 sudo dpkg -i thingsboard-2.4.3.deb
 ```
-3. Configuration de la base de données ThingsBoard
+**3. Configuration de la base de données ThingsBoard**
      
     
 L''équipe ThingsBoard recommande d'utiliser PostgreSQL pour le développement et des environnements de production avec une charge raisonable de  (< 5000 msg/sec).
@@ -1045,7 +1132,7 @@ psql -U postgres -d postgres -h 127.0.0.1 -W
 CREATE DATABASE thingsboard;
 \q
 ```
-    **- Configuration ThingsBoard**
+   **- Configuration ThingsBoard**
 
 Editer le fichier de configuration ThingsBoard
 ```
@@ -1074,13 +1161,14 @@ Ajouter les lignes suivantes au fichier.
 export JAVA_OPTS="$JAVA_OPTS -Xms256M -Xmx256M"
 ```
 **5. Script d'installation**
+
 Une fois le service ThingsBoard installée et la configuration de la base de données renseignée, il faut executer le script suivant.:
 ```
 # --loadDemo option will load demo data: users, devices, assets, rules, widgets.
 sudo /usr/share/thingsboard/bin/install/install.sh --loadDemo
 
 ```
-** - 6. Démarrage des services ThingsBoard**
+  **6. Démarrage des services ThingsBoard**
 
 Exécuter la commande suivante pour  démarrer ThingsBoard:
 ```
@@ -1103,7 +1191,7 @@ Vous pouvez toujours changer les mots de passe dans les logins utilisateurs
 
 Merci de bien attendre environ 240 secondes pour que l'interface démarre en particulier pour les machines lentes avec 1-2 CPUs ou 1-2 GB RAM.
 
-** - 7. Réglages complémentaires - conflits**
+**7. Réglages complémentaires - conflits**
 
 Le fichier de configuration utilisé est présent dans la partie settings.
 Du fait que thingsboard est installé sur la même machine que Chirpstack leur port de l'explorateur web sont en conflit sur le 8080
@@ -1132,144 +1220,8 @@ sudo service mosquitto stop
 pour chirpstack: erreur / error context deadline exceeded (code: 2) 
 réglage pour la partie via l'interface web network server 192.168.1.101:8000 doit correspondre a la partie public_host="192.168.1.101:8001" du fichier /etc/chirpstack-application-server/chirpstack-application-server.toml
 
-
-**- Troubleshooting thingsboard**
-
-Si le service Thingsboard ne démarre pas malgré les modifications ci-dessus il vous faut analyser les éléments plus précisement à l'aide des instructions suivantes:
-Les logs de ThingsBoard logs sont enregistré dans le répertoire suivant:
-```
-/var/log/thingsboard
-
-```
-Vous pouvez toujours utiliser la commande suivante pour vérifier les erreur du coté "backend":
-```
-cat /var/log/thingsboard/thingsboard.log | grep ERROR
-```
-
-ERROR o.s.w.s.s.s.DefaultHandshakeHandler - Handshake failed due to invalid Upgrade header: null
-Il faut valider les web socket dans nginx pour permettre l'affichage des widget et eviter cette erreur
-ajouter ces lignes
-
-```
-# handle websocket for thingsboard widget like showing latest telemetry
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
-```
-
-Thingsboard troubleshooting HikaryPool
-Au bout d'un moment mon service exit...
-thingsboard service status
-oct. 09 06:17:37 raspberrypi thingsboard.jar[19855]: /usr/share/thingsboard/bin/thingsboard.jar : ligne 278 : 19869 Processus arrêté      "$javaexe" "${argum
-oct. 09 06:17:38 raspberrypi systemd[1]: thingsboard.service: Main process exited, code=exited, status=137/n/a
-oct. 09 06:17:38 raspberrypi systemd[1]: thingsboard.service: Failed with result 'exit-code'.
-
-pi@raspberrypi:~ $ cat /var/log/thingsboard/thingsboard.log | grep ERROR
-2021-10-09 06:12:39,420 [sql-queue-0-ts latest-7-thread-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - HikariPool-1 - Connection is not available, request timed out after 139526ms.
-2021-10-09 06:12:51,602 [sql-queue-0-ts latest-7-thread-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - This connection has been closed.
-2021-10-09 06:12:59,689 [pool-7-thread-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - HikariPool-1 - Connection is not available, request timed out after 116121ms.
-2021-10-09 06:13:07,792 [pool-7-thread-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - This connection has been closed.
-2021-10-09 06:14:51,473 [sql-queue-0-ts-3-thread-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - HikariPool-1 - Connection is not available, request timed out after 273688ms.
-2021-10-09 06:14:54,849 [sql-queue-0-ts-3-thread-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - This connection has been closed.
-2021-10-09 06:14:57,508 [ForkJoinPool-11-worker-3] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - HikariPool-1 - Connection is not available, request timed out after 127704ms.
-2021-10-09 06:15:57,842 [ForkJoinPool-11-worker-3] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - This connection has been closed.
-2021-10-09 06:14:56,439 [sql-queue-0-ts latest-7-thread-1] ERROR o.t.s.dao.sql.TbSqlBlockingQueue - [TS Latest] Failed to save 1 entities
-2021-10-09 06:15:57,609 [sql-queue-0-ts-3-thread-1] ERROR c.g.c.u.concurrent.AggregateFuture - Got more than one input Future failure. Logging failures after the first
-2021-10-09 06:15:58,070 [sql-queue-0-ts-3-thread-1] ERROR o.t.s.dao.sql.TbSqlBlockingQueue - [TS] Failed to save 1 entities
-
-trouvé une information sur HikariPool
-source: https://stackoverflow.com/questions/60301008/failed-to-validate-connection-this-connection-has-been-closed-possibly-consi
-changement des setting du coté database en decommentant les trois parametres suivants dans le fichier /etc/postgresql/11/main/postgresql.conf
-```
-# - TCP Keepalives -
-# see "man 7 tcp" for details
-
-#tcp_keepalives_idle = 0		# TCP_KEEPIDLE, in seconds;
-					# 0 selects the system default
-#tcp_keepalives_interval = 0		# TCP_KEEPINTVL, in seconds;
-					# 0 selects the system default
-#tcp_keepalives_count = 0		# TCP_KEEPCNT;
-					# 0 selects the system default
-```
-redemarrer le service postgres puis le service thingsboard
-
-Thingsboard troubleshooting lwM2MServiceImpl
-2022-03-31 19:23:59,738 [main] INFO  o.t.s.c.SystemInfoController - System build info: {"version":"3.3.3","artifact":"application","name":"ThingsBoard Server Application"}
-2022-03-31 19:23:59,899 [main] INFO  o.t.s.c.t.c.ssl.SslCredentialsConfig - LWM2M Server DTLS Credentials: Initializing SSL credentials.
-2022-03-31 19:23:59,903 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'lwM2MServiceImpl' defined in URL [jar:file:/usr/share/thingsboard/bin/thingsboard.jar!/BOOT-INF/classes!/org/thingsboard/server/service/lwm2m/LwM2MServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'lwM2MTransportServerConfig': Unsatisfied dependency expressed through field 'credentialsConfig'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'lwm2mServerCredentials': Invocation of init method failed; nested exception is java.lang.RuntimeException: LWM2M Server DTLS Credentials: Invalid SSL credentials configuration. None of the PEM or KEYSTORE configurations can be used!
-Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
-2022-03-31 19:23:59,966 [main] ERROR o.s.boot.SpringApplication - Application run failed
-org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'lwM2MServiceImpl' defined in URL [jar:file:/usr/share/thingsboard/bin/thingsboard.jar!/BOOT-INF/classes!/org/thingsboard/server/service/lwm2m/LwM2MServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'lwM2MTransportServerConfig': Unsatisfied dependency expressed through field 'credentialsConfig'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'lwm2mServerCredentials': Invocation of init method failed; nested exception is java.lang.RuntimeException: LWM2M Server DTLS Credentials: Invalid SSL credentials configuration. None of the PEM or KEYSTORE configurations can be used!
-
-Dans thingsboard.yml mettre le enabled a false...
-
- # 4. Local LwM2M transport parameters
-  lwm2m:
-    # Enable/disable lvm2m transport protocol.
-    enabled: "${LWM2M_ENABLED:false}"
-
-thingsboard troubleshooting jdbc connection / connection refused
-Caused by: java.net.ConnectException: Connection refused (Connection refused)
-
-2022-05-09 11:04:30,851 [main] ERROR com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Exception during pool initialization.
-org.postgresql.util.PSQLException: Connection to localhost:5432 refused. 
-Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections.
-Caused by: java.net.ConnectException: Connection refused (Connection refused)
-
-2022-05-09 11:04:30,853 [main] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Connection to localhost:5432 refused.
- Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections.
-
-Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
-2022-05-09 11:04:30,981 [main] ERROR o.s.boot.SpringApplication - Application run failed
-org.springframework.context.ApplicationContextException: Unable to start web server;
- nested exception is org.springframework.boot.web.server.WebServerException: Unable to start embedded Tomcat
-
-Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'thingsboardSecurityConfiguration': Unsatisfied dependency expressed through field 'oauth2AuthenticationSuccessHandler'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'oauth2AuthenticationSuccessHandler' defined in URL [jar:file:/usr/share/thingsboard/bin/thingsboard.jar!/BOOT-INF/classes!/org/thingsboard/server/service/security/auth/oauth2/Oauth2AuthenticationSuccessHandler.class]: Unsatisfied dependency expressed through constructor parameter 6; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'defaultSystemSecurityService': Unsatisfied dependency expressed through field 'mailService'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'defaultMailService': Invocation of init method failed; nested exception is org.springframework.dao.DataAccessResourceFailureException:
- Unable to acquire JDBC Connection;
-  nested exception is org.hibernate.exception.JDBCConnectionException:
-   Unable to acquire JDBC Connection
-
-Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'oauth2AuthenticationSuccessHandler' defined in URL [jar:file:/usr/share/thingsboard/bin/thingsboard.jar!/BOOT-INF/classes!/org/thingsboard/server/service/security/auth/oauth2/Oauth2AuthenticationSuccessHandler.class]: Unsatisfied dependency expressed through constructor parameter 6; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'defaultSystemSecurityService': Unsatisfied dependency expressed through field 'mailService'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'defaultMailService': Invocation of init method failed; nested exception is org.springframework.dao.DataAccessResourceFailureException:
- Unable to acquire JDBC Connection;
-  nested exception is org.hibernate.exception.JDBCConnectionException:
-   Unable to acquire JDBC Connection
-
-Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'defaultSystemSecurityService': Unsatisfied dependency expressed through field 'mailService'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'defaultMailService': Invocation of init method failed; nested exception is org.springframework.dao.DataAccessResourceFailureException:
- Unable to acquire JDBC Connection; 
- nested exception is org.hibernate.exception.JDBCConnectionException:
-  Unable to acquire JDBC Connection
-
-Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'defaultMailService': Invocation of init method failed; nested exception is org.springframework.dao.DataAccessResourceFailureException:
- Unable to acquire JDBC Connection;
-  nested exception is org.hibernate.exception.JDBCConnectionException: Unable to acquire JDBC Connection
-
-Caused by: org.springframework.dao.DataAccessResourceFailureException:
- Unable to acquire JDBC Connection;
-  nested exception is org.hibernate.exception.JDBCConnectionException:
-   Unable to acquire JDBC Connection
-
-Caused by: org.hibernate.exception.JDBCConnectionException: Unable to acquire JDBC Connection
-
-Caused by: org.postgresql.util.PSQLException: Connection to localhost:5432 refused.
- Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections.
-
-On monte le répertoire supplémentaire
-./thingsboard/logpostgres:/var/log/postgres dans le docker compose
-
-ainsi on obtient cela dans posgres.log de var/log/postgres
-2022-05-09 16:42:08.499 UTC [9] FATAL:  lock file "postmaster.pid" already exists
-2022-05-09 16:42:08.499 UTC [9] HINT:  Is another postmaster (PID 10) running in data directory "/data/db"?
-
-il faut virer le postmaster.pid dans le repertoire data du bon container /var/lib/docker
-ce fichier empeche les acces concurrent à la db
-sudo find /var/lib/docker/ -name "*.pid"
-/var/lib/docker/volumes/thingsboarddata/_data/db/postmaster.pid
-/var/lib/docker/volumes/compose_thingsboarddata/_data/db/postmaster.pid
-
-redemarrer le container DANS TOUS LES CAS PREFERER UN ARRET CORRECT DES CONTAINER ;-) docker-compose stop.
-
-
-#### 4.0.0.1. Intégration Thingsboard - Chirpstack
+### 3.2.1. Intégration Thingsboard - Chirpstack
+---
 
 Le détail de l'intégration est présent à l'adresse suivante: https://www.chirpstack.io/guides/thingsboard/
 
@@ -1315,10 +1267,163 @@ for (my $i=0;$i<$#measures;$i++){
     system('mosquitto_pub -d -q 1 -h "192.168.1.101" -p "8883" -t "v1/devices/me/telemetry" -u "access_token" -m {"temperature":'.$temp.'}');
 ```
 
-#### 4.0.0.2. Node-red - pour aider au décryptage des messages
+
+### 3.2.2. Thingsboard TROUBLESHOOTING
+---
+
+Si le service Thingsboard ne démarre pas malgré les modifications ci-dessus il vous faut analyser les éléments plus précisement à l'aide des instructions suivantes:
+Les logs de ThingsBoard logs sont enregistré dans le répertoire suivant:
+```
+/var/log/thingsboard
+
+```
+Vous pouvez toujours utiliser la commande suivante pour vérifier les erreur du coté "backend":
+```
+cat /var/log/thingsboard/thingsboard.log | grep ERROR
+```
+
+#### 3.2.2.1. ERROR o.s.w.s.s.s.DefaultHandshakeHandler - Handshake failed due to invalid Upgrade header: null
+---
+
+Il faut valider les web socket dans nginx pour permettre l'affichage des widget et eviter cette erreur
+ajouter ces lignes
+
+```
+# handle websocket for thingsboard widget like showing latest telemetry
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+```
+
+#### 3.2.2.2. Error HikaryPool
+---
+
+Au bout d'un moment mon service exit...
+thingsboard service status
+oct. 09 06:17:37 raspberrypi thingsboard.jar[19855]: /usr/share/thingsboard/bin/thingsboard.jar : ligne 278 : 19869 Processus arrêté      "$javaexe" "${argum
+oct. 09 06:17:38 raspberrypi systemd[1]: thingsboard.service: Main process exited, code=exited, status=137/n/a
+oct. 09 06:17:38 raspberrypi systemd[1]: thingsboard.service: Failed with result 'exit-code'.
+
+pi@raspberrypi:~ $ cat /var/log/thingsboard/thingsboard.log | grep ERROR
+2021-10-09 06:12:39,420 [sql-queue-0-ts latest-7-thread-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - HikariPool-1 - Connection is not available, request timed out after 139526ms.
+2021-10-09 06:12:51,602 [sql-queue-0-ts latest-7-thread-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - This connection has been closed.
+2021-10-09 06:12:59,689 [pool-7-thread-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - HikariPool-1 - Connection is not available, request timed out after 116121ms.
+2021-10-09 06:13:07,792 [pool-7-thread-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - This connection has been closed.
+2021-10-09 06:14:51,473 [sql-queue-0-ts-3-thread-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - HikariPool-1 - Connection is not available, request timed out after 273688ms.
+2021-10-09 06:14:54,849 [sql-queue-0-ts-3-thread-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - This connection has been closed.
+2021-10-09 06:14:57,508 [ForkJoinPool-11-worker-3] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - HikariPool-1 - Connection is not available, request timed out after 127704ms.
+2021-10-09 06:15:57,842 [ForkJoinPool-11-worker-3] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - This connection has been closed.
+2021-10-09 06:14:56,439 [sql-queue-0-ts latest-7-thread-1] ERROR o.t.s.dao.sql.TbSqlBlockingQueue - [TS Latest] Failed to save 1 entities
+2021-10-09 06:15:57,609 [sql-queue-0-ts-3-thread-1] ERROR c.g.c.u.concurrent.AggregateFuture - Got more than one input Future failure. Logging failures after the first
+2021-10-09 06:15:58,070 [sql-queue-0-ts-3-thread-1] ERROR o.t.s.dao.sql.TbSqlBlockingQueue - [TS] Failed to save 1 entities
+
+trouvé une information sur HikariPool
+source: https://stackoverflow.com/questions/60301008/failed-to-validate-connection-this-connection-has-been-closed-possibly-consi
+changement des setting du coté database en decommentant les trois parametres suivants dans le fichier /etc/postgresql/11/main/postgresql.conf
+```
+# - TCP Keepalives -
+# see "man 7 tcp" for details
+
+#tcp_keepalives_idle = 0		# TCP_KEEPIDLE, in seconds;
+					# 0 selects the system default
+#tcp_keepalives_interval = 0		# TCP_KEEPINTVL, in seconds;
+					# 0 selects the system default
+#tcp_keepalives_count = 0		# TCP_KEEPCNT;
+					# 0 selects the system default
+```
+redemarrer le service postgres puis le service thingsboard
+
+#### 3.2.2.3. Error lwM2MServiceImpl
+---
+2022-03-31 19:23:59,738 [main] INFO  o.t.s.c.SystemInfoController - System build info: {"version":"3.3.3","artifact":"application","name":"ThingsBoard Server Application"}
+2022-03-31 19:23:59,899 [main] INFO  o.t.s.c.t.c.ssl.SslCredentialsConfig - LWM2M Server DTLS Credentials: Initializing SSL credentials.
+2022-03-31 19:23:59,903 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'lwM2MServiceImpl' defined in URL [jar:file:/usr/share/thingsboard/bin/thingsboard.jar!/BOOT-INF/classes!/org/thingsboard/server/service/lwm2m/LwM2MServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'lwM2MTransportServerConfig': Unsatisfied dependency expressed through field 'credentialsConfig'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'lwm2mServerCredentials': Invocation of init method failed; nested exception is java.lang.RuntimeException: LWM2M Server DTLS Credentials: Invalid SSL credentials configuration. None of the PEM or KEYSTORE configurations can be used!
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-03-31 19:23:59,966 [main] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'lwM2MServiceImpl' defined in URL [jar:file:/usr/share/thingsboard/bin/thingsboard.jar!/BOOT-INF/classes!/org/thingsboard/server/service/lwm2m/LwM2MServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'lwM2MTransportServerConfig': Unsatisfied dependency expressed through field 'credentialsConfig'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'lwm2mServerCredentials': Invocation of init method failed; nested exception is java.lang.RuntimeException: LWM2M Server DTLS Credentials: Invalid SSL credentials configuration. None of the PEM or KEYSTORE configurations can be used!
+
+Dans thingsboard.yml mettre le enabled a false...
+```
+ # 4. Local LwM2M transport parameters
+  lwm2m:
+    # Enable/disable lvm2m transport protocol.
+    enabled: "${LWM2M_ENABLED:false}"
+```    
+
+#### 3.2.2.4. Error jdbc connection / connection refused
+---
+Caused by: java.net.ConnectException: Connection refused (Connection refused)
+
+2022-05-09 11:04:30,851 [main] ERROR com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Exception during pool initialization.
+org.postgresql.util.PSQLException: Connection to localhost:5432 refused. 
+Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections.
+Caused by: java.net.ConnectException: Connection refused (Connection refused)
+
+2022-05-09 11:04:30,853 [main] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Connection to localhost:5432 refused.
+ Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections.
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-05-09 11:04:30,981 [main] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.context.ApplicationContextException: Unable to start web server;
+ nested exception is org.springframework.boot.web.server.WebServerException: Unable to start embedded Tomcat
+
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'thingsboardSecurityConfiguration': Unsatisfied dependency expressed through field 'oauth2AuthenticationSuccessHandler'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'oauth2AuthenticationSuccessHandler' defined in URL [jar:file:/usr/share/thingsboard/bin/thingsboard.jar!/BOOT-INF/classes!/org/thingsboard/server/service/security/auth/oauth2/Oauth2AuthenticationSuccessHandler.class]: Unsatisfied dependency expressed through constructor parameter 6; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'defaultSystemSecurityService': Unsatisfied dependency expressed through field 'mailService'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'defaultMailService': Invocation of init method failed; nested exception is org.springframework.dao.DataAccessResourceFailureException:
+ Unable to acquire JDBC Connection;
+  nested exception is org.hibernate.exception.JDBCConnectionException:
+   Unable to acquire JDBC Connection
+
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'oauth2AuthenticationSuccessHandler' defined in URL [jar:file:/usr/share/thingsboard/bin/thingsboard.jar!/BOOT-INF/classes!/org/thingsboard/server/service/security/auth/oauth2/Oauth2AuthenticationSuccessHandler.class]: Unsatisfied dependency expressed through constructor parameter 6; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'defaultSystemSecurityService': Unsatisfied dependency expressed through field 'mailService'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'defaultMailService': Invocation of init method failed; nested exception is org.springframework.dao.DataAccessResourceFailureException:
+ Unable to acquire JDBC Connection;
+  nested exception is org.hibernate.exception.JDBCConnectionException:
+   Unable to acquire JDBC Connection
+
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'defaultSystemSecurityService': Unsatisfied dependency expressed through field 'mailService'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'defaultMailService': Invocation of init method failed; nested exception is org.springframework.dao.DataAccessResourceFailureException:
+ Unable to acquire JDBC Connection; 
+ nested exception is org.hibernate.exception.JDBCConnectionException:
+  Unable to acquire JDBC Connection
+
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'defaultMailService': Invocation of init method failed; nested exception is org.springframework.dao.DataAccessResourceFailureException:
+ Unable to acquire JDBC Connection;
+  nested exception is org.hibernate.exception.JDBCConnectionException: Unable to acquire JDBC Connection
+
+Caused by: org.springframework.dao.DataAccessResourceFailureException:
+ Unable to acquire JDBC Connection;
+  nested exception is org.hibernate.exception.JDBCConnectionException:
+   Unable to acquire JDBC Connection
+
+Caused by: org.hibernate.exception.JDBCConnectionException: Unable to acquire JDBC Connection
+
+Caused by: org.postgresql.util.PSQLException: Connection to localhost:5432 refused.
+ Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections.
+
+**On monte le répertoire supplémentaire**
+```
+./thingsboard/logpostgres:/var/log/postgres dans le docker compose
+```
+
+ainsi on obtient cela dans posgres.log de var/log/postgres
+2022-05-09 16:42:08.499 UTC [9] FATAL:  lock file "postmaster.pid" already exists
+2022-05-09 16:42:08.499 UTC [9] HINT:  Is another postmaster (PID 10) running in data directory "/data/db"?
+
+**il faut virer le postmaster.pid dans le repertoire data du bon container /var/lib/docker,ce fichier empeche les acces concurrent à la db**
+```
+sudo find /var/lib/docker/ -name "*.pid"
+/var/lib/docker/volumes/thingsboarddata/_data/db/postmaster.pid
+/var/lib/docker/volumes/compose_thingsboarddata/_data/db/postmaster.pid
+```
+
+**redemarrer le container DANS TOUS LES CAS PREFERER UN ARRET CORRECT DES CONTAINER ;-) docker-compose stop.**
+
+
+
+
+## 3.3. Node-red - pour aider au décryptage des messages
+---
 
 Node-red peut permettre d'effectuer des opérations plus complexe sur les messages des capteurs. Chirpstack et The things network permettent d'écrire des éléments decoder et encoder afin de realiser cela. Openenergy utilise la partie decoder pour transformer le meassage payload d'hexadecimal en chaine de caractère (string)
-##### 4.0.0.2.1. Installation
+
+### 3.3.1. Installation
+---
 
 Les explications d'installations sont ici:
 https://nodered.org/docs/getting-started/raspberrypi
@@ -1358,7 +1463,8 @@ node-red-pi --max-old-space-size=256
 Opening the editor
 L'éditeur est accessble à l'adresse suivante: http://localhost:1880.
 
-##### 4.0.0.2.2. PRE DECODAGE DU PAYLOAD PAR TTN OU CHIRPSTACK CONVERSION EN STRING
+### 3.3.2. PRE DECODAGE DU PAYLOAD PAR TTN OU CHIRPSTACK CONVERSION EN STRING
+---
 
 Pour:
     - The Things Network (TTN) dans la partie application / payload format
@@ -1503,7 +1609,8 @@ function Decode(fPort, bytes, variables) {
 
 ```
 
-##### 4.0.0.2.3. Exemple de Flux / Flow nodered
+### 3.3.3. Exemple de Flux / Flow nodered
+---
 
 Pour décoder les données d'un capteur adeunis et le transmettre dans une variable d'un device dans le logiciel ubidots on peut utiliser les noeux / nodes suivants:
     - ttn uplink node pour souscrire aux informations d'un capteur en précisant le nom de l'application et le device id
@@ -1528,11 +1635,11 @@ return msg;
     ```
     - ubidots_out node pour envoyer les données en précisant le nom de la variable / le jeton d'authentification / le label du capteur défini dans ubidots
 
-## 4.1. Securisation
+## 3.4. Securisation
 
 Les éléments qui participent à la sécurisation de la solution openenergy sont décrite ci-dessous. D'autres éléments peuvent être mis en place afin de sécuriser l'ensemble et les instructions ci-dessous sont loins d'être exhaustive.
 
-### 4.1.1. Sécurisation de Node-Red
+### 3.4.1. Sécurisation de Node-Red
 
 Les différents éléments de sécurisation de Node-red sont décrit ici:
 https://nodered.org/docs/user-guide/runtime/securing-node-red
@@ -1579,7 +1686,7 @@ L'instruction d'installation suivante vous permettra de l'utiliser directement d
 npm install -g node-red-admin
 ```
 
-### 4.1.2. Sécurisation de Chirpstack
+### 3.4.2. Sécurisation de Chirpstack
 
 La sécurisation de Chirpstack s'effectue en changeant le login et le mot de passe par défaut à minima de l'administrateur. Le passage au protocole https s'effectue avec NGINX.
 
@@ -1590,7 +1697,7 @@ Password: admin
 ```
 Il vous faut le modifier pour une utilisation en production. En haut à droite cliquer sur Admin et changer de mot de passe.
 
-### 4.1.3. Sécurisation de ThingsBoard
+### 3.4.3. Sécurisation de ThingsBoard
 
 
 La sécurisation de Thingsboard s'effectue en changeant le login et le mot de passe par défaut à minima de l'administrateur. Le passage au protocole https s'effectue avec NGINX.
@@ -1618,7 +1725,7 @@ Customer C users - customerC@thingsboard.org.
 all users have “customer” password.
 ```
 
-### 4.1.4. Génération manuelle des Certificats pour le protocole https
+### 3.4.4. Génération manuelle des Certificats pour le protocole https
 Le tuto permettant de générer des certificats tout en simulant une autorité de certification est disponnible à l'adresse suivante:
 https://fabianlee.org/2018/02/17/ubuntu-creating-a-trusted-ca-and-san-certificate-using-openssl-on-ubuntu/
 
@@ -1807,12 +1914,12 @@ ssl_certificate_key /etc/letsencrypt/live/el001.is-a-green.com/privkey.pem; # ma
 ```
 
 
-### 4.1.5. HTTPS avec Nginx
+### 3.4.5. HTTPS avec Nginx
 
 Il est maintenant tant de procéder à la sécurisation du protocole Http en le passant en Https et en utilisant Nginx.
 La documentation ci-dessous s'inspire largement de la mise en place de Nginx telle que décrite ici: https://projetsdiy.fr/securiser-node-red-nginx-openssl-ubuntu/
 
-#### 4.1.5.1. Installation de Nginx
+#### 3.4.5.1. Installation de Nginx
 Nginx s’installe très simplement à l’aide d’une simple commande apt-get.
 ```
 sudo apt-get update
@@ -1827,7 +1934,7 @@ Le fichier de configuration final utilisé est disponible dans la partie setting
 - 1447 vers Chirpstack
 - 1448 vers Thingsboard
 
-#### 4.1.5.2. Configurer Nginx pour utiliser une connexion SSL
+#### 3.4.5.2. Configurer Nginx pour utiliser une connexion SSL
 
 Dans le chapitre précédent nous avons générer une clé et un certificat, nous allons créer un fichier de configuration. Nous pourrons l’appeler my_server.securise.com.
 
@@ -1880,7 +1987,7 @@ Il reste à créer un lien symbolique vers le dossier sites-enabled pour rendre 
 ```
 sudo ln -s /etc/nginx/sites-available/node-red.securise.com /etc/nginx/sites-enabled/
 ```
-#### 4.1.5.3. Configuration du fichier hosts
+#### 3.4.5.3. Configuration du fichier hosts
 Pour que l’URL soit accessible depuis un navigateur, il faut modifier le fichier hosts. Récupérez l’adresse IP de votre PC avec la commande ifconfig ou ipconfig sur windows puis modifiez le fichier /etc/hosts
 ```
 sudo nano /etc/hosts
@@ -1895,7 +2002,7 @@ Enregistrez avec CTRL+X puis O.
 
 Il se peut que des éléments de configuration du firewall soient nécessaires. Ceci est détaillé dans le fichier d'origine de ce chapitre
 
-#### 4.1.5.4. Autre fichier de configuration de Nginx
+#### 3.4.5.4. Autre fichier de configuration de Nginx
 Attendu que le redémarrage de Nginx ne s'effectuait pas correctement du notamment à des problématiques lié à la ligne ssl_ciphers 
 le fichier de configuration suivant present dans cette documentation à été largement utilisé car il était bien commenté sur la redirection des requetes http vers https: https://korben.info/nginx-rediriger-http-https.html
 
@@ -1968,7 +2075,7 @@ nginx -s reload
 ```
 Pour vérifier que tout fonctionne correctement, allez faire un tour sur la version HTTP de votre site. Si vous êtes rebasculé automatiquement sur la version en HTTPS et que tout fonctionne, vous avez réussi !
 
-### 4.1.6. Nginx et démarrage des services
+### 3.4.6. Nginx et démarrage des services
 Il faut que Nginx attende que les services de chirpstack nodered et thingsboard soient démarré.
 Il faut editer la configuration du service
 ```
@@ -1985,7 +2092,7 @@ After=network.target nss-lookup.target chirpstack-application-server.service chi
 
 
 
-### 4.1.7. Oauth2-Proxy: Nginx et 2 facteur authentication
+### 3.4.7. Oauth2-Proxy: Nginx et 2 facteur authentication
 Afin de permettre la sécurite sur nginx avant d'autoriser l'acces a chirpstack nodered et thingsboard
 
 source: https://oauth2-proxy.github.io/oauth2-proxy/docs/
@@ -2151,7 +2258,7 @@ Sur nginx il faut permettre l'affichage du button dans l'écran de login
        proxy_pass http://localhost:8085;
 ```
 
-### 4.1.8. Oauth2-Proxy: service sur RaspberryPi
+### 3.4.8. Oauth2-Proxy: service sur RaspberryPi
 https://github.com/oauth2-proxy/oauth2-proxy/blob/master/contrib/oauth2-proxy.service.example
 et
 https://www.raspberrypi.org/documentation/linux/usage/systemd.md
@@ -2204,7 +2311,8 @@ sudo systemctl enable oauth2-proxy.service
 ```
 The systemctl command can also be used to restart the service or disable it from boot up!
 
-## 4.2. frontend: login
+### 3.4.9. frontend: login
+---
 tutorial: https://www.youtube.com/watch?v=b91XgdyX-SM
 github: https://github.com/mehulmpt/node-auth-youtube
 
@@ -2216,9 +2324,11 @@ mongoose.connect('mongodb://root:example@172.25.0.5:27017/login-app-db?authSourc
 })
 
 
-## 4.3. frontend: Cartographie / Leaflet / Progressive web app
+### 3.4.10. frontend: Cartographie / Leaflet / Progressive web app
+---
 
-### 4.3.1. Debugage smartphone / android
+#### 3.4.10.1. Debugage smartphone / android
+---
 démarrer le android debug bridge
 adb start-server
 passer en mode developper sur le smartphone autoriser le mode USB debugage
@@ -2230,13 +2340,18 @@ se rendre sur OpenEnergy Mobile Leaflet Map
 https://el001.is-a-green.com/
 et sur chrome du pc choisir le bon onglet et cliquer sur inspect
 
-### 4.3.2. mongodb et cartographie
+#### 3.4.10.2. mongodb et cartographie
+---
 schema mongodb pour mongoose: https://transform.tools/json-to-mongoose
 mongo db geospatial query:  https://examples.javacodegeeks.com/software-development/mongodb/mongodb-geospatial-query-operators-example/
                             http://thecodebarbarian.com/80-20-guide-to-mongodb-geospatial-queries
 
-# 5. Docker container
-## 5.1. install
+# 4. Docker Architecture
+
+After playing with raspberry we implemented on real infrastructure thanks to Echinix ;)
+
+## 4.1. install
+---
 source https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository
 
 Avant toute chose - et pour eviter tout ennui lié à l'installation - s'assurer d'une bonne désinstallation ;-)
@@ -2293,7 +2408,8 @@ REBOOT!!!!!!! to avoid pb with sudo rights
 
 to have a home .docker folder you must login to docker hub
 
-## 5.2. Change Docker’s root dir
+## 4.2. Change Docker’s root dir
+---
 Par défaut les images sont dans /var/lib/docker
 
 source: https://tienbm90.medium.com/how-to-change-docker-root-data-directory-89a39be1a70b
@@ -2348,7 +2464,9 @@ Alter all, we should clean old data:
 rm -rf /var/lib/docker.old
 ```
 
-# 6. Docker-compose
+## 4.3. Docker-compose
+---
+Docker compose permet d'orchester plusieurs container.
 
 source: https://docs.docker.com/compose/install/
 installation - choisir la version plus récente en se reportant au lien ci dessus
@@ -2372,7 +2490,8 @@ docker-compose --version
 ```
 
 
-# 7. Docker developement
+## 4.4. Docker developement
+---
 
 Use vs codium with docker plugin
 source: https://vscodium.com/#install
@@ -2383,12 +2502,14 @@ Version : 1.17.0
 Serveur de publication : ms-azuretools
 Lien de la Place de marché pour VS : https://open-vsx.org/vscode/item?itemName=ms-azuretools.vscode-docker
 
-## 7.1. Nginx container
+### 4.4.1. Nginx container
+---
 https://hub.docker.com/_/nginx
 abandonné
 preferez certbot nginx container
 
-## 7.2. Cerbot nginx container
+### 4.4.2. Cerbot nginx container
+---
 https://hub.docker.com/r/certbot/certbot
 tuto / howto: https://pentacent.medium.com/nginx-and-lets-encrypt-with-docker-in-less-than-5-minutes-b4b8a60d3a71
 script: https://github.com/wmnnd/nginx-certbot
@@ -2492,7 +2613,8 @@ docker-compose run --rm --entrypoint " certbot renew" certbot
 faut faire relire les certificats par le nginx cad redemmarrer le container
 
 
-#troubleshooting certbot nginx
+#### 4.4.2.1. certbot nginx container TROUBLESHOOTING
+---
 Troubleshoot sur le ./init-letsencrypt.sh
 Certbot failed to authenticate some domains (authenticator: webroot). The Certificate Authority reported these problems:
   Domain: nodered.echinix.energyleaks.org
@@ -2548,7 +2670,8 @@ networks:
           
 
 
-## 7.3. Oauth2-proxy container
+### 4.4.3. Oauth2-proxy container
+---
 source: https://hub.docker.com/r/bitnami/oauth2-proxy
 command line to launch direct: docker run -p 4180:4180 -p 8443:8443 bitnami/oauth2-proxy:7     --cookie-secure=false     --upstream="file:///dev/null"     --http-address="0.0.0.0:4180"     --https-address="0.0.0.0:8443"     --redirect-url="http://internal.website.com/oauth2/callback"     --cookie-secret="NXA4K2lMUGsrSnFLYnprWnZESE5GUDNINzIrc2NHUnQ="     --client-id=changeme     --client-secret=changeme     --email-domain=*
 via docker compose pour configurer le proxy et les email autorisé via des volumes sur l'hote:
@@ -2564,7 +2687,8 @@ volumes:
     #http_address = "127.0.0.1:4180" #when operating on same server
  http_address = "0.0.0.0:4180" #when operating frome another server
 
-## 7.4. mongo / mongo-express container
+### 4.4.4. mongo / mongo-express container
+---
 source: https://hub.docker.com/_/mongo
 
 ajouter les element suivant au docker-compose.yml
@@ -2629,7 +2753,8 @@ https://transform.tools/json-to-mongoose
 
 
 
-## 7.5. Nodejs container
+### 4.4.5. Nodejs container
+---
 source: https://hub.docker.com/_/node
 instructions: https://github.com/nodejs/docker-node/blob/main/README.md#how-to-use-this-image
 
@@ -2637,10 +2762,12 @@ instructions: https://github.com/nodejs/docker-node/blob/main/README.md#how-to-u
 
 
 
-## 7.6. Nodered Container
+### 4.4.6. Nodered Container
+---
 https://hub.docker.com/r/nodered/node-red
 
-## 7.7. THINGSBOARD container
+### 4.4.7. Thingsboard container
+---
 thingsboard docker documentation here: https://thingsboard.io/docs/user-guide/install/docker/?ubuntuThingsboardQueue=inmemory
 https://hub.docker.com/r/thingsboard/tb-postgres
 
@@ -2740,9 +2867,12 @@ postgresql.conf: ligne 64 / 5432 ->15432
 pour des probleme de jdbc connection.
 
 
-#troubleshooting thingsboard container
+#### 4.4.7.1. Thingsboard container TROUBLESHOOTING
+---
+see also Thingsboard TROUBLESHOOTING part
 
-# 8. ERROR lwM2M
+##### 4.4.7.1.1. ERROR lwM2M
+---
 2022-03-31 19:23:59,966 [main] ERROR o.s.boot.SpringApplication - Application run failed
 org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'lwM2MServiceImpl' defined in URL [jar:file:/usr/share/thingsboard/bin/thingsboard.jar!/BOOT-INF/classes!/org/thingsboard/server/service/lwm2m/LwM2MServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'lwM2MTransportServerConfig': Unsatisfied dependency expressed through field 'credentialsConfig'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'lwm2mServerCredentials': Invocation of init method failed; nested exception is java.lang.RuntimeException: LWM2M Server DTLS Credentials: Invalid SSL credentials configuration. None of the PEM or KEYSTORE configurations can be used!
 
@@ -2754,13 +2884,15 @@ lwm2m:
     enabled: "${LWM2M_ENABLED:false}"
 ```
 
-## 8.1. Grafana container
+### 4.4.8. Grafana container
+---
 https://hub.docker.com/r/grafana/grafana
 https://grafana.com/docs/grafana/latest/administration/configure-docker/
 
 le lien ci dessus contient les chemins vers les data et la config de grafana.
 
-## 8.2. Chirpstack container
+### 4.4.9. Chirpstack container
+---
  https://hub.docker.com/r/chirpstack/chirpstack-application-server
  https://hub.docker.com/r/chirpstack/chirpstack-network-server
  https://hub.docker.com/r/chirpstack/chirpstack-gateway-bridge
@@ -2774,7 +2906,8 @@ Ce container contient une base postgres et un mqtt mosquitto que l'on peut enlev
 
 PROBLEME AVEC LE FICHIER COMPOSE QUE J AI CREE... POUR LES VOLUMES MOSQUITTO ET LES VOLUME CHIRPSTACK...par exemple mosquitto.conf qui est pris pour un dossier
 
-## 8.3. XTREMUS XTR container
+### 4.4.10. XTRMUS XTR container
+---
 pour faire tourner le site web d xtremus il faut:
 -apache
 -php
@@ -2784,20 +2917,25 @@ source: https://gist.github.com/jcavat/2ed51c6371b9b488d6a940ba1049189b
 
 import de la base sql xtremus dans xtr
 renommer table user en User
+
 pb pour le ogin sql>5.7 jouer la commande suivante dans adminer
+```
 SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
-
-
-
-/shared/xtr
-
+```
+Création d'un répertoire partagé xtr: /shared/xtr
+```
 
 mkdir -p /shared/work
 mount --bind /x/y/z/work /shared/work
+```
 That wouldn't survive across reboots though, so in case you want it to persist, append the following line to /etc/fstab :
-
+```
 /x/y/z/work /shared/work none bind
+```
 
+usefull instruction to setup people in xtr group
+
+```
 525  addgroup xtr
   526  sudo addgroup xtr
   527  man usermod
@@ -2839,11 +2977,9 @@ That wouldn't survive across reboots though, so in case you want it to persist, 
   563  sudo usermod -a -G xtr xtrmus
   564  cat /etc/group
   565  ls -l /shared
-
-
-
-
-
+```
+other instructions
+```
 cd /shared/xtr/
 #https://www.linuxnix.com/sgid-set-sgid-linuxunix/
 chmod g+s xtr  
@@ -2851,27 +2987,36 @@ find xtr -type d -exec chmod g+s {} \;
 #https://www.linuxnix.com/linux-security-hardening-for-beginners-part-04-using-access-control-lists/
 setfacl -m "default:group::rwx" xtr
 find xtr -type d -exec setfacl -m "default:group::rwx" {} \;
-# 9. align existing files : give rw to group xtr to all files in xtr/
+# 6. align existing files : give rw to group xtr to all files in xtr/
 find xtr/ -exec chmod g+rw {} \;
-
+```
 Jean-Yves Rialhon, 06:07
 le test que j'ai fait : 
+```
  xtrmus@echinix:/shared/xtr$ ls -l index.html
 -rw-r--r--  1 eleq xtr   18925 Apr 17 16:21 index.html
 xtrmus@echinix:/shared/xtr$ vi index.html 
 xtrmus@echinix:/shared/xtr$ ls -l index.html 
 -rw-rw-r-- 1 eleq xtr 18963 Apr 28 05:57 index.html
-
+```
 Jean-Yves Rialhon, 08:22
-il faut corriger un peu le setfact pour que ce soit bon : setfacl -dRm u:eleq:rwX,g:xtr:rwX xtr
-tu vas detester ... getfacl /shared/xtr/newfile.txt vs ls -l /shared/xtr/newfile.txt. les appearances sont trompeuses
+il faut corriger un peu le setfact pour que ce soit bon : 
+```
+setfacl -dRm u:eleq:rwX,g:xtr:rwX xtr
+```
+tu vas detester ...
+```
+ getfacl /shared/xtr/newfile.txt vs ls -l /shared/xtr/newfile.txt. les appearances sont trompeuses
+```
 
 
 
+# 5. KUBERNETES
 
-# 10. KUBERNETES
+finally this has not been implemented yet
 
-## 10.1. Install Kubetcl
+## 5.1. Install Kubetcl
+---
 source: https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
 Update the apt package index and install packages needed to use the Kubernetes apt repository:
 ```
@@ -2895,7 +3040,8 @@ test
 ```
 kubectl version --client
 ```
-# 11. install minikube
+## 5.2. install minikube
+---
 source:https://kubernetes.io/fr/docs/tasks/tools/install-minikube/
 
 Installez Minikube par téléchargement direct
@@ -2936,11 +3082,13 @@ minikube delete
 minikube start
 
 ```
-## 11.1. install Helm option
+## 5.3. install Helm option
+---
 source www.helm.sh
 helm est un package manager pour kubernetes
 
-### 11.1.1. From Apt (Debian/Ubuntu)
+### 5.3.1. From Apt (Debian/Ubuntu)
+---
 Members of the Helm community have contributed a Helm package for Apt. This package is generally up to date.
 
 '''
@@ -2951,12 +3099,14 @@ sudo apt-get update
 sudo apt-get install helm
 '''
 
-### 11.1.2. from snap
+### 5.3.2. from snap
+---
 ```
 sudo snap install helm --classic
 ```
 
-## 11.2. install Kompose docker-compose vers kubenetes
+## 5.4. install Kompose docker-compose vers kubenetes
+---
 source: https://kubernetes.io/fr/docs/tasks/configure-pod-container/translate-compose-kubernetes/
 
 install on linux
@@ -2994,7 +3144,8 @@ Si vous utilisez déjà minikube pour votre processus de développement :
 $ minikube service nom du service présent dans le docker-compose
 ```
 
-# 12. Kubernetes course
+## 5.5. Kubernetes course
+---
 absolute beginer: https://www.youtube.com/watch?v=s_o8dwzRlu4
 exemple of a project 40 min.
 
@@ -3006,7 +3157,8 @@ volume explained: https://www.youtube.com/watch?v=0swOh5C3OVM
 
 config file: https://www.youtube.com/watch?v=FAnQTgr04mU
 
-# 13. kubernetes cert-manager
+## 5.6. kubernetes cert-manager
+---
 
 source nginx/letsencrypt: https://medium.com/avmconsulting-blog/encrypting-the-certificate-for-kubernetes-lets-encrypt-805d2bf88b2a
 and: https://github.com/jetstack/cert-manager/
@@ -3037,7 +3189,8 @@ kubectl apply -f cert-manager.crds.yaml
 helm install   cert-manager jetstack/cert-manager   --namespace cert-manager   --create-namespace   --version v1.6.1   #--set installCRDs=true
 
 
-# 14. kubernetes chirpstack
+## 5.7. kubernetes chirpstack
+---
 
 source chirpstack deploy: https://github.com/Mekrache/chirpstack-kubernetes
 
@@ -3107,7 +3260,8 @@ Add Network Server
 When adding the Network Server in the ChirpStack Application Server web-interface (see Network Servers), you must enter chirpstack-network-server:8000 as the Network Server hostname:IP.
 ```
 
-# 15. UDP tunnelling
+## 5.8. UDP tunnelling dans miniKube
+---
 Pour passer les elements via SSH qui ne fait pas du tunnelling pour le port 1701/30002
 http://zarb.org/~gc/html/udp-in-ssh-tunneling.html
 
@@ -3135,7 +3289,7 @@ sudo nc -l -u -p 1700 < /tmp/fifo | nc localhost 6667 > /tmp/fifo
 
 
 
-# 16. various linux command
+# 6. various linux command
 
 lorsque un process  comme ssh ne souhaite plus se connecter
 ps -eaf |grep ssh
@@ -3143,9 +3297,11 @@ netstat -apne
 kill pid
 
 
-## 16.1. Alternatives
-### 16.1.1. The thing network
-### 16.1.2. Grafana
+# 7. Alternatives
+## 7.1. The thing network
+---
+## 7.2. Grafana
+---
 source: https://simonhearne.com/2020/pi-influx-grafana/
 video illustrative notamment les noeud node red à utiliser pour inserer des données dans influxdb
 video: https://www.youtube.com/watch?v=JdV4x925au0
@@ -3179,16 +3335,19 @@ Done!
 Grafana oauth2 authentification.
 https://grafana.com/docs/grafana/latest/auth/google/
 
-## 16.2. Technical data
-### 16.2.1. port list
+# 8. Technical data
+## 8.1. port list
+---
 voir l'illustration architecture
 
-## 16.3. Graphique Path
+## 8.2. Graphique Path
+---
 
-### 16.3.1. LGM Centrale solaire du lycée du Grésivaudan
+## 8.3. LGM Centrale solaire du lycée du Grésivaudan
+---
 
 
-### 16.3.2. INPG acepi polygone pulse atex
+## 8.4. INPG acepi polygone pulse atex
 adeunis pulse atex
 ttn and nodered ttn uplink node: pulse_atex app device_id pulse_atex_polygone
 nodered  flow inpg acepi polygon pulse atex
