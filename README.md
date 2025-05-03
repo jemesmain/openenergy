@@ -63,6 +63,7 @@
   - [4.2. Change Docker’s root dir](#42-change-dockers-root-dir)
   - [4.3. Docker-compose](#43-docker-compose)
   - [4.4. Docker developement](#44-docker-developement)
+  - [4.5. Docker trouble shooting](#45-docker-trouble-shooting)
     - [4.4.1. Nginx container](#441-nginx-container)
     - [4.4.2. Cerbot nginx container](#442-cerbot-nginx-container)
       - [4.4.2.1. certbot nginx container TROUBLESHOOTING](#4421-certbot-nginx-container-troubleshooting)
@@ -76,6 +77,7 @@
     - [4.4.8. Grafana container](#448-grafana-container)
     - [4.4.9. Chirpstack container](#449-chirpstack-container)
     - [4.4.10. XTRMUS XTR container](#4410-xtrmus-xtr-container)
+    - [4.4.11 NextCloud All in one Container](#4411-nextcloud-all-in-one-container)
 - [5. KUBERNETES](#5-kubernetes)
   - [5.1. Install Kubetcl](#51-install-kubetcl)
   - [5.2. install minikube](#52-install-minikube)
@@ -2502,6 +2504,27 @@ Version : 1.17.0
 Serveur de publication : ms-azuretools
 Lien de la Place de marché pour VS : https://open-vsx.org/vscode/item?itemName=ms-azuretools.vscode-docker
 
+## 4.5. Docker trouble shooting
+---
+
+for vs codium plugin to run correctly on another user (ie echinix user)
+source: https://docs.docker.com/engine/install/linux-postinstall/
+for xtrmus
+```
+sudo usermod -aG docker $USER
+
+sudo usermod -aG docker xtrmus
+```
+
+How to fix "dial unix /var/run/docker.sock: connect: permission denied" when group permissions seem correct?
+source: https://stackoverflow.com/questions/51342810/how-to-fix-dial-unix-var-run-docker-sock-connect-permission-denied-when-gro
+
+```
+sudo setfacl --modify user:<user name or ID>:rw /var/run/docker.sock
+
+sudo setfacl --modify user:xtrmus:rw /var/run/docker.sock
+```
+
 ### 4.4.1. Nginx container
 ---
 https://hub.docker.com/_/nginx
@@ -2511,8 +2534,57 @@ preferez certbot nginx container
 ### 4.4.2. Cerbot nginx container
 ---
 https://hub.docker.com/r/certbot/certbot
-tuto / howto: https://pentacent.medium.com/nginx-and-lets-encrypt-with-docker-in-less-than-5-minutes-b4b8a60d3a71
+
+tuto / howto: 
+https://phoenixnap.com/kb/letsencrypt-docker
+
+https://pentacent.medium.com/nginx-and-lets-encrypt-with-docker-in-less-than-5-minutes-b4b8a60d3a71
+
 script: https://github.com/wmnnd/nginx-certbot
+
+APRES QUE JYR EN AI BIEN CHIE VOICI LES COMMANDES
+
+```
+eleq@echinix:~/el/compose$ docker-compose run --rm --entrypoint " certbot renew --dry-run " certbot
+Creating compose_certbot_run ... done
+Saving debug log to /var/log/letsencrypt/letsencrypt.log
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Processing /etc/letsencrypt/renewal/echinix.energyleaks.org.conf
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Found a new certificate /archive/ that was not linked to in /live/; fixing...
+Simulating renewal of an existing certificate for echinix.energyleaks.org and 6 more domains
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Congratulations, all simulated renewals succeeded: 
+  /etc/letsencrypt/live/echinix.energyleaks.org/fullchain.pem (success)
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+eleq@echinix:~/el/compose$ docker-compose run --rm --entrypoint " certbot renew  " certbot
+Creating compose_certbot_run ... done
+Saving debug log to /var/log/letsencrypt/letsencrypt.log
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Processing /etc/letsencrypt/renewal/echinix.energyleaks.org.conf
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Renewing an existing certificate for echinix.energyleaks.org and 6 more domains
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Congratulations, all renewals succeeded: 
+  /etc/letsencrypt/live/echinix.energyleaks.org/fullchain.pem (success)
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+```
+
+ET POUR AJOUTER UN DOMAINE
+LE RAJOUTER D ABORD DANS LE 
+certbot-nginx/data/nginx/app.conf
+le nom du nouveau domaine dans la liste sur le serveur en port 80
+
+PUIS JOUER LA COMMANDE SUIVANTE
+
+```
+eleq@echinix:~/el/compose$ docker-compose run --rm --entrypoint "certbot certonly --webroot -w /var/www/certbot --email jeaneric.mesmain@gmail.com  -d echinix.energyleaks.org -d chirpstack.echinix.energyleaks.org -d nodered.echinix.energyleaks.org -d thingsboard.echinix.energyleaks.org -d grafana.echinix.energyleaks.org -d grafana-pub.echinix.energyleaks.org -d xtr.echinix.energyleaks.org -d xtrdev.echinix.energyleaks.org -d nextcloud.echinix.energyleaks.org --rsa-key-size 4096 --agree-tos --force-renewal " certbot
+```
+
 
 #192.168.1.48	docker.is-a-green.com
 192.168.1.48	docker.energyleaks.org
@@ -2915,13 +2987,15 @@ pour faire tourner le site web d xtrmus il faut:
 
 source: https://gist.github.com/jcavat/2ed51c6371b9b488d6a940ba1049189b
 
-import de la base sql xtremus dans xtr
+import de la base sql xtrmus dans xtr
 renommer table user en User
 
-pb pour le ogin sql>5.7 jouer la commande suivante dans adminer
+pb pour le login sql>5.7 jouer la commande suivante dans adminer
 ```
 SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
 ```
+Entre windows et linux, le firstlogin diot etre changé en timestamp. La table est du type innodb 
+
 
 Tweak du container php apache pour l'installation de postfix
 ```
@@ -3057,6 +3131,262 @@ tu vas detester ...
  getfacl /shared/xtr/newfile.txt vs ls -l /shared/xtr/newfile.txt. les appearances sont trompeuses
 ```
 
+### 4.4.11 NextCloud All in one Container
+
+Thomas Lavocat big remerciement
+Dans la config ci dessous remplace nextcloud.domain.tld par ton nom de domaine nextcloud.
+
+```
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    '' close;
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name nextcloud.domain.tld;
+
+    # Uncomment to redirect HTTP to HTTPS
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl http2;      # for nginx versions below v1.25.1
+    listen [::]:443 ssl http2; # for nginx versions below v1.25.1 - comment to disable IPv6
+
+    # listen 443 ssl;      # for nginx v1.25.1+
+    # listen [::]:443 ssl; # for nginx v1.25.1+ - keep comment to disable IPv6
+    # http2 on;                                 # uncomment to enable HTTP/2        - supported on nginx v1.25.1+
+    # http3 on;                                 # uncomment to enable HTTP/3 / QUIC - supported on nginx v1.25.0+
+    # quic_retry on;                            # uncomment to enable HTTP/3 / QUIC - supported on nginx v1.25.0+
+    # add_header Alt-Svc 'h3=":443"; ma=86400'; # uncomment to enable HTTP/3 / QUIC - supported on nginx v1.25.0+
+    # listen 443 quic reuseport;       # uncomment to enable HTTP/3 / QUIC - supported on nginx v1.25.0+ - please remove "reuseport" if there is already another quic listener on port 443 with enabled reuseport
+    # listen [::]:443 quic reuseport;  # uncomment to enable HTTP/3 / QUIC - supported on nginx v1.25.0+ - please remove "reuseport" if there is already another quic listener on port 443 with enabled reuseport - keep comment to disable IPv6
+
+    server_name nextcloud.domaine.tld;
+
+    location / {
+        ##proxy_pass http://127.0.0.1:11000$request_uri;
+         proxy_pass http://172.25.0.75:8080$request_uri; # to nextcloud all in one...
+
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Port $server_port;
+        proxy_set_header X-Forwarded-Scheme $scheme;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Accept-Encoding "";
+        proxy_set_header Host $host;
+
+        client_body_buffer_size 512k;
+        proxy_read_timeout 86400s;
+        client_max_body_size 0;
+
+        # Websocket
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+    }
+
+    # If running nginx on a subdomain (eg. nextcloud.example.com) of a domain that already has an wildcard ssl certificate from certbot on this machine,
+    # the nextcloud.domain.tld in the below lines should be replaced with just the domain (eg. example.com), not the subdomain.
+    # In this case the subdomain should already be secured without additional actions
+    ssl_certificate /etc/letsencrypt/live/nextcloud.domain.tld/fullchain.pem;   # managed by certbot on host machine
+    ssl_certificate_key /etc/letsencrypt/live/nextcloud.domain.tld/privkey.pem; # managed by certbot on host machine
+
+    ssl_session_timeout 1d;
+    ssl_session_cache shared:MozSSL:10m; # about 40000 sessions
+    ssl_session_tickets off;
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-CHACHA20-POLY1305;
+    ssl_prefer_server_ciphers on;
+
+    # Optional settings:
+
+    # OCSP stapling
+    # ssl_stapling on;
+    # ssl_stapling_verify on;
+    # ssl_trusted_certificate /etc/letsencrypt/live/nextcloud.domain.tld/chain.pem;
+
+    # replace with the IP address of your resolver
+    # resolver 127.0.0.1; # needed for oscp stapling: e.g. use 94.140.15.15 for adguard / 1.1.1.1 for cloudflared or 8.8.8.8 for google - you can use the same nameserver as listed in your /etc/resolv.conf file
+}
+
+```
+Un autre truc à savoir c'est que docker va ouvrir un paquet de ports. Du coup, fais attention à ton firewall.
+
+De mon côté, voici ma commande pour démarrer le master container nextecloud:
+```
+#!/bin/bash
+# 109 groupe minidlna
+sudo docker run \
+--init \
+--sig-proxy=false \
+--name nextcloud-aio-mastercontainer \
+--restart always \
+--publish 8686:8080 \
+--env APACHE_PORT=11000 \
+--env NEXTCLOUD_MEMORY_LIMIT=8200M \
+--env APACHE_IP_BINDING=0.0.0.0 \
+--volume nextcloud_aio_mastercontainer:/mnt/docker-aio-config \
+--volume /var/run/docker.sock:/var/run/docker.sock:ro \
+--env NEXTCLOUD_DATADIR="/mnt/nextcloud" \
+--env NEXTCLOUD_MOUNT="/media/" \
+--env SKIP_DOMAIN_VALIDATION=true \
+--group-add 109 \
+nextcloud/all-in-one:latest
+```
+Je met le user nextcloud dans le groupe minidlna
+Je dis à nextcloud que son dossier pour les données est dans "/mnt/nextcloud"
+Je lui donne accès à un dossier dans lequel les volumes externes sont montés dans "/media/"
+et je donne un peu plus de ram à nextcloud avec NEXTCLOUD_MEMORY_LIMIT=8200M
+Si ton master container est déjà démarré, tu devras l'arrêter, le supprimer et ensuite exécuter cette commande à nouveau.
+
+A+
+
+Notre traduction pour le docker compose
+```
+#nextcloud
+#services:
+  nextcloud-aio-mastercontainer:
+    image: ghcr.io/nextcloud-releases/all-in-one:latest
+    init: true
+    restart: always
+    container_name: nextcloud-aio-mastercontainer # This line is not allowed to be changed as otherwise AIO will not work correctly
+   # copied below in the volume section
+    volumes:
+      #original pas de ./ - ./nextcloud_aio_mastercontainer:/mnt/docker-aio-config # This line is not allowed to be changed as otherwise the built-in backup solution will not work
+      - nextcloud_aio_mastercontainer:/mnt/docker-aio-config # This line is not allowed to be changed as otherwise the built-in backup solution will not work
+      #- /home/eleq/el/compose/nextcloud_aio_mastercontainer:/mnt/docker-aio-config # jyria configThis line is not allowed to be changed as otherwise the built-in backup solution will not work
+      - /var/run/docker.sock:/var/run/docker.sock:ro # May be changed on macOS, Windows or docker rootless. See the applicable documentation. If adjusting, don't forget to also set 'WATCHTOWER_DOCKER_SOCKET_PATH'!
+    #network_mode: bridge # add to the same network as docker run would do
+    #network_mode: host # because of nginx https://github.com/nextcloud/all-in-one/blob/main/reverse-proxy.md#1-configure-the-reverse-proxy
+    ports:
+      #- 80:80 # Can be removed when running behind a web server or reverse proxy (like Apache, Nginx, Caddy, Cloudflare Tunnel and else). See https://github.com/nextcloud/all-in-one/blob/main/reverse-proxy.md
+      #- 8080:8080 #replaced by
+      - 8686:8080
+      #- 11001:11000
+      #- 8443:8443 # Can be removed when running behind a web server or reverse proxy (like Apache, Nginx, Caddy, Cloudflare Tunnel and else). See https://github.com/nextcloud/all-in-one/blob/main/reverse-proxy.md
+    networks:
+       nginxapp:
+         ipv4_address: 172.25.0.75
+    environment: # Is needed when using any of the options below
+      # AIO_DISABLE_BACKUP_SECTION: false # Setting this to true allows to hide the backup section in the AIO interface. See https://github.com/nextcloud/all-in-one#how-to-disable-the-backup-section
+      # AIO_COMMUNITY_CONTAINERS: # With this variable, you can add community containers very easily. See https://github.com/nextcloud/all-in-one/tree/main/community-containers#community-containers
+      APACHE_PORT: 11000 # Is needed when running behind a web server or reverse proxy (like Apache, Nginx, Caddy, Cloudflare Tunnel and else). See https://github.com/nextcloud/all-in-one/blob/main/reverse-proxy.md
+      #APACHE_IP_BINDING: 127.0.0.1 # Should be set when running behind a web server or reverse proxy (like Apache, Nginx, Caddy, Cloudflare Tunnel and else) that is running on the same host. See https://github.com/nextcloud/all-in-one/blob/main/reverse-proxy.md
+      APACHE_IP_BINDING: 0.0.0.0 #thomas lavocat and https://github.com/nextcloud/all-in-one/blob/main/reverse-proxy.md#6-how-to-debug-things in order to debug things!
+      # APACHE_ADDITIONAL_NETWORK: frontend_net # (Optional) Connect the apache container to an additional docker network. Needed when behind a web server or reverse proxy (like Apache, Nginx, Caddy, Cloudflare Tunnel and else) running in a different docker network on same server. See https://github.com/nextcloud/all-in-one/blob/main/reverse-proxy.md
+      # APACHE_ADDITIONAL_NETWORK: "http://nextcloud-aio-apache:11000"
+      APACHE_ADDITIONAL_NETWORK: "172.21.0.11"
+      # BORG_RETENTION_POLICY: --keep-within=7d --keep-weekly=4 --keep-monthly=6 # Allows to adjust borgs retention policy. See https://github.com/nextcloud/all-in-one#how-to-adjust-borgs-retention-policy
+      # COLLABORA_SECCOMP_DISABLED: false # Setting this to true allows to disable Collabora's Seccomp feature. See https://github.com/nextcloud/all-in-one#how-to-disable-collaboras-seccomp-feature
+      # FULLTEXTSEARCH_JAVA_OPTIONS: "-Xms1024M -Xmx1024M" # Allows to adjust the fulltextsearch java options. See https://github.com/nextcloud/all-in-one#how-to-adjust-the-fulltextsearch-java-options
+      # NEXTCLOUD_DATADIR: /mnt/ncdata # Allows to set the host directory for Nextcloud's datadir. ⚠️⚠️⚠️ Warning: do not set or adjust this value after the initial Nextcloud installation is done! See https://github.com/nextcloud/all-in-one#how-to-change-the-default-location-of-nextclouds-datadir
+      #NEXTCLOUD_DATADIR: /mnt/nextcloud
+      # NEXTCLOUD_MOUNT: /mnt/ # Allows the Nextcloud container to access the chosen directory on the host. See https://github.com/nextcloud/all-in-one#how-to-allow-the-nextcloud-container-to-access-directories-on-the-host
+      #NEXTCLOUD_MOUNT: /media
+      # NEXTCLOUD_UPLOAD_LIMIT: 16G # Can be adjusted if you need more. See https://github.com/nextcloud/all-in-one#how-to-adjust-the-upload-limit-for-nextcloud
+      # NEXTCLOUD_MAX_TIME: 3600 # Can be adjusted if you need more. See https://github.com/nextcloud/all-in-one#how-to-adjust-the-max-execution-time-for-nextcloud
+      # NEXTCLOUD_MEMORY_LIMIT: 512M # Can be adjusted if you need more. See https://github.com/nextcloud/all-in-one#how-to-adjust-the-php-memory-limit-for-nextcloud
+      #NEXTCLOUD_TRUSTED_CACERTS_DIR: /etc/letsencrypt/live/echinix.energyleaks.org #/path/to/my/cacerts # CA certificates in this directory will be trusted by the OS of the nextcloud container (Useful e.g. for LDAPS) See https://github.com/nextcloud/all-in-one#how-to-trust-user-defined-certification-authorities-ca
+      # NEXTCLOUD_STARTUP_APPS: deck twofactor_totp tasks calendar contacts notes # Allows to modify the Nextcloud apps that are installed on starting AIO the first time. See https://github.com/nextcloud/all-in-one#how-to-change-the-nextcloud-apps-that-are-installed-on-the-first-startup
+      # NEXTCLOUD_ADDITIONAL_APKS: imagemagick # This allows to add additional packages to the Nextcloud container permanently. Default is imagemagick but can be overwritten by modifying this value. See https://github.com/nextcloud/all-in-one#how-to-add-os-packages-permanently-to-the-nextcloud-container
+      # NEXTCLOUD_ADDITIONAL_PHP_EXTENSIONS: imagick # This allows to add additional php extensions to the Nextcloud container permanently. Default is imagick but can be overwritten by modifying this value. See https://github.com/nextcloud/all-in-one#how-to-add-php-extensions-permanently-to-the-nextcloud-container
+      # NEXTCLOUD_ENABLE_DRI_DEVICE: true # This allows to enable the /dev/dri device for containers that profit from it. ⚠️⚠️⚠️ Warning: this only works if the '/dev/dri' device is present on the host! If it should not exist on your host, don't set this to true as otherwise the Nextcloud container will fail to start! See https://github.com/nextcloud/all-in-one#how-to-enable-hardware-acceleration-for-nextcloud
+      # NEXTCLOUD_ENABLE_NVIDIA_GPU: true # This allows to enable the NVIDIA runtime and GPU access for containers that profit from it. ⚠️⚠️⚠️ Warning: this only works if an NVIDIA gpu is installed on the server. See https://github.com/nextcloud/all-in-one#how-to-enable-hardware-acceleration-for-nextcloud.
+      # NEXTCLOUD_KEEP_DISABLED_APPS: false # Setting this to true will keep Nextcloud apps that are disabled in the AIO interface and not uninstall them if they should be installed. See https://github.com/nextcloud/all-in-one#how-to-keep-disabled-apps
+      SKIP_DOMAIN_VALIDATION: false # This should only be set to true if things are correctly configured. See https://github.com/nextcloud/all-in-one?tab=readme-ov-file#how-to-skip-the-domain-validation
+      #SKIP_DOMAIN_VALIDATION: true
+      # TALK_PORT: 3478 # This allows to adjust the port that the talk container is using which is exposed on the host. See https://github.com/nextcloud/all-in-one#how-to-adjust-the-talk-port
+      # WATCHTOWER_DOCKER_SOCKET_PATH: /var/run/docker.sock # Needs to be specified if the docker socket on the host is not located in the default '/var/run/docker.sock'. Otherwise mastercontainer updates will fail. For macos it needs to be '/var/run/docker.sock'
+    # security_opt: ["label:disable"] # Is needed when using SELinux
+
+#   # Optional: Caddy reverse proxy. See https://github.com/nextcloud/all-in-one/discussions/575
+#   # Alternatively, use Tailscale if you don't have a domain yet. See https://github.com/nextcloud/all-in-one/discussions/5439
+#   # Hint: You need to uncomment APACHE_PORT: 11000 above, adjust cloud.example.com to your domain and uncomment the necessary docker volumes at the bottom of this file in order to make it work
+#   # You can find further examples here: https://github.com/nextcloud/all-in-one/discussions/588
+#   caddy:
+#     image: caddy:alpine
+#     restart: always
+#     container_name: caddy
+#     volumes:
+#       - caddy_certs:/certs
+#       - caddy_config:/config
+#       - caddy_data:/data
+#       - caddy_sites:/srv
+#     network_mode: "host"
+#     configs:
+#       - source: Caddyfile
+#         target: /etc/caddy/Caddyfile
+# configs:
+#   Caddyfile:
+#     content: |
+#       # Adjust cloud.example.com to your domain below
+#       https://cloud.example.com:443 {
+#         reverse_proxy localhost:11000
+#       }
+
+# copied below in the volume section
+# volumes: # If you want to store the data on a different drive, see https://github.com/nextcloud/all-in-one#how-to-store-the-filesinstallation-on-a-separate-drive
+#   nextcloud_aio_mastercontainer:
+#     name: nextcloud_aio_mastercontainer # This line is not allowed to be changed as otherwise the built-in backup solution will not work
+  # caddy_certs:
+  # caddy_config:
+  # caddy_data:
+  # caddy_sites:        
+
+volumes:
+  #chirpstack data
+  postgresqldata:
+  redisdata:
+  #nodered data
+  nodereddata:
+  #thingsboard data
+  thingsboarddata:
+  # grafana data
+  grafanadata:
+#volumes:
+  #- nextcloud_aio_mastercontainer:/mnt/docker-aio-config # This line is not allowed to be changed as otherwise the built-in backup solution will not work
+  #- /var/run/docker.sock:/var/run/docker.sock:ro # May be changed on macOS, Windows or docker rootless. See the applicable documentation. If adjusting, don't forget to also set 'WATCHTOWER_DOCKER_SOCKET_PATH'!
+#volumes: # If you want to store the data on a different drive, see https://github.com/nextcloud/all-in-one#how-to-store-the-filesinstallation-on-a-separate-drive
+  nextcloud_aio_mastercontainer:
+    name: nextcloud_aio_mastercontainer # This line is not allowed to be changed as otherwise the built-in backup solution will not work
+
+```
+
+
+jemesmain remarque
+il faut désactiver (commenter) la partie ssl dans le apache du container nextcloud all in one
+
+/etc/apache2/site-available/marstercontainer.conf
+```
+<VirtualHost *:8080>
+ # Proxy to https
+    #ProxyPass / http://127.0.0.1:8000/ #For container config and update
+    #ProxyPassReverse / http://127.0.0.1:8000/
+    ProxyPass / http://172.21.0.11:8000/ #For using next cloud container
+    ProxyPassReverse / http://172.21.0.11:8000/
+    ProxyPreserveHost On
+    # SSL #comment ssl to avoid plain text pb
+    # SSLCertificateKeyFile /etc/apache2/certs/ssl.key
+    # SSLCertificateFile /etc/apache2/certs/ssl.crt
+    # SSLEngine               on
+    # SSLProtocol             -all +TLSv1.2 +TLSv1.3
+    # SSLCipherSuite          ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-CHACHA20-POLY1305
+    # SSLHonorCipherOrder     off
+    # SSLSessionTickets       off
+ 
+</VirtualHost>
+```
+problem de synchronisation de fichier trop grand
+https://help.nextcloud.com/t/files-not-getting-synced-413-request-entity-too-large/45681
+added in nginx/certbot app.conf
+```
+client_max_body_size 10G;
+client_body_buffer_size 400M;
+```
 
 
 # 5. KUBERNETES
