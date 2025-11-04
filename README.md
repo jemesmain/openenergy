@@ -66,6 +66,8 @@
   - [4.5. Docker trouble shooting](#45-docker-trouble-shooting)
     - [4.4.1. Nginx container](#441-nginx-container)
     - [4.4.2. Cerbot nginx container](#442-cerbot-nginx-container)
+    - [4.4.2. Cerbot dry-run last update...](#442-cerbot-dry-run-last-update)
+  - [faut faire relire les certificats par le nginx cad redemmarrer le container](#faut-faire-relire-les-certificats-par-le-nginx-cad-redemmarrer-le-container)
       - [4.4.2.1. certbot nginx container TROUBLESHOOTING](#4421-certbot-nginx-container-troubleshooting)
     - [4.4.3. Oauth2-proxy container](#443-oauth2-proxy-container)
     - [4.4.4. mongo / mongo-express container](#444-mongo--mongo-express-container)
@@ -78,6 +80,13 @@
     - [4.4.9. Chirpstack container](#449-chirpstack-container)
     - [4.4.10. XTRMUS XTR container](#4410-xtrmus-xtr-container)
     - [4.4.11 NextCloud All in one Container](#4411-nextcloud-all-in-one-container)
+      - [4.4.11.1 NGINX reverse proxy config](#44111-nginx-reverse-proxy-config)
+      - [4.4.11.2 nextcloud DockerFile configuration](#44112-nextcloud-dockerfile-configuration)
+      - [4.4.11.3 AIO Mastercontainer apache configuration](#44113-aio-mastercontainer-apache-configuration)
+      - [4.4.11.4 client nextcloud sur debian](#44114-client-nextcloud-sur-debian)
+- [Should be something like:](#should-be-something-like)
+- [OR](#or)
+  - [4.5. Install MailCow](#45-install-mailcow)
 - [5. KUBERNETES](#5-kubernetes)
   - [5.1. Install Kubetcl](#51-install-kubetcl)
   - [5.2. install minikube](#52-install-minikube)
@@ -1407,15 +1416,71 @@ ainsi on obtient cela dans posgres.log de var/log/postgres
 2022-05-09 16:42:08.499 UTC [9] FATAL:  lock file "postmaster.pid" already exists
 2022-05-09 16:42:08.499 UTC [9] HINT:  Is another postmaster (PID 10) running in data directory "/data/db"?
 
+---
+---
+---
+---
+**POUR REDEMARRER THINGSBOARD PB DE PID!!!!!! JYR JEMSN JEMESMAIN
 **il faut virer le postmaster.pid dans le repertoire data du bon container /var/lib/docker,ce fichier empeche les acces concurrent à la db**
+
+CASSSAGE DE COUILLE POUR REDEMARRER THINGSBOARD LA PUTAIN!!!!!!!!!
+
+
 ```
 sudo find /var/lib/docker/ -name "*.pid"
-/var/lib/docker/volumes/thingsboarddata/_data/db/postmaster.pid
+OBSOLETE PATH /var/lib/docker/volumes/thingsboarddata/_data/db/postmaster.pid
 /var/lib/docker/volumes/compose_thingsboarddata/_data/db/postmaster.pid
 ```
+uniquemeent supprimer le 10 dans le fichier postmaster.pid de compose_thingsboarddata mais cela ne fonctionne plus désormais (voir ci dessous)
+```
+10
+/data/db
+1746645658
+5432
+/var/run/postgresql
+localhost
+  5432001         0
+ready
+~           
+```
+
+dans logfile à la racide de /db il y a le fichier logfile
+```
+2025-05-08 16:19:59.259 UTC [64] FATAL:  lock file "/var/run/postgresql/.s.PGSQL.5432.lock" already exists
+2025-05-08 16:19:59.259 UTC [64] HINT:  Is another postmaster (PID 10) using socket file "/var/run/postgresql/.s.PGSQL.5432"?
+2025-05-08 16:19:59.259 UTC [64] LOG:  database system is shut down
+```
+IL FAUT DESORMAIS SUPPRIMER LE FICHIER LOCK FILE DANS LE CONTAINER. Dans codium préparer l'instruction suivante à éxécuter rapidement dans un shell attach du container...
+```
+rm /var/run/postgresql/.s.PGSQL.5432
+rm /var/run/postgresql/.s.PGSQL.5432.lock
+```
+pg_ctl: could not send stop signal (PID: 10): No such process
+ *  Terminal will be reused by tasks, press any key to close it. 
+
+thingsboard@thingsboard:/$ ls -al /var/run/postgresql/
+total 20
+drwxrwsr-x 1 thingsboard thingsboard 4096 Jul 22 15:53 .
+drwxr-xr-x 1 root        root        4096 Dec 13  2021 ..
+srwxrwxrwx 1 thingsboard thingsboard    0 Aug  2 18:46 .s.PGSQL.5432
+-rw------- 1 thingsboard thingsboard   48 Aug  2 18:46 .s.PGSQL.5432.lock
+drwxr-s--- 1 thingsboard thingsboard 4096 Dec 13  2021 12-main.pg_stat_tmp
+thingsboard@thingsboard:/$ 
+
+error pg_ctl: could not send stop signal (pid 10 no such process)
+ ls /var/run/postgresql/
+  ls -al /var/run/postgresql/
+
+ls -al /usr/lib/postgresql/12/bin/postgres
+
 
 **redemarrer le container DANS TOUS LES CAS PREFERER UN ARRET CORRECT DES CONTAINER ;-) docker-compose stop.**
 
+---
+---
+---
+ 
+  
 
 
 
@@ -2574,6 +2639,13 @@ Congratulations, all renewals succeeded:
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ```
 
+
+
+
+<span style="color:red">
+### 4.4.2. Cerbot dry-run last update...
+---
+
 ET POUR AJOUTER UN DOMAINE
 LE RAJOUTER D ABORD DANS LE 
 certbot-nginx/data/nginx/app.conf
@@ -2581,10 +2653,15 @@ le nom du nouveau domaine dans la liste sur le serveur en port 80
 
 PUIS JOUER LA COMMANDE SUIVANTE
 
+CE SONT LES DEUX COMMANDES SUIVANTES QUI FONCTIONNENT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ```
-eleq@echinix:~/el/compose$ docker-compose run --rm --entrypoint "certbot certonly --webroot -w /var/www/certbot --email jeaneric.mesmain@gmail.com  -d echinix.energyleaks.org -d chirpstack.echinix.energyleaks.org -d nodered.echinix.energyleaks.org -d thingsboard.echinix.energyleaks.org -d grafana.echinix.energyleaks.org -d grafana-pub.echinix.energyleaks.org -d xtr.echinix.energyleaks.org -d xtrdev.echinix.energyleaks.org -d nextcloud.echinix.energyleaks.org --rsa-key-size 4096 --agree-tos --force-renewal " certbot
-```
+DRY RUN
+eleq@echinix:~/el/compose$ docker-compose run --rm --entrypoint "certbot certonly --dry-run --webroot -w /var/www/certbot --email jeaneric.mesmain@gmail.com  -d echinix.energyleaks.org -d chirpstack.echinix.energyleaks.org -d nodered.echinix.energyleaks.org -d thingsboard.echinix.energyleaks.org -d grafana.echinix.energyleaks.org -d grafana-pub.echinix.energyleaks.org -d xtr.echinix.energyleaks.org -d xtrdev.echinix.energyleaks.org -d nextcloud.echinix.energyleaks.org -d labco.echinix.energyleaks.org --rsa-key-size 4096 --agree-tos  " certbot
 
+RENEW FORCE RENEWAL
+eleq@echinix:~/el/compose$ docker-compose run --rm --entrypoint "certbot certonly --webroot -w /var/www/certbot --email jeaneric.mesmain@gmail.com  -d echinix.energyleaks.org -d chirpstack.echinix.energyleaks.org -d nodered.echinix.energyleaks.org -d thingsboard.echinix.energyleaks.org -d grafana.echinix.energyleaks.org -d grafana-pub.echinix.energyleaks.org -d xtr.echinix.energyleaks.org -d xtrdev.echinix.energyleaks.org -d nextcloud.echinix.energyleaks.org -d labco.echinix.energyleaks.org --rsa-key-size 4096 --agree-tos --force-renewal " certbot
+```
+</span>
 
 #192.168.1.48	docker.is-a-green.com
 192.168.1.48	docker.energyleaks.org
@@ -2661,29 +2738,41 @@ server {
     }
 }
 ```
-#certbot nginx renew certificate renouvellement de certificat
+---
+---
+**certbot nginx renew certificate renouvellement de certificat**
 
-modifier dans ./init-letsencrypt.sh
+modifier dans /home/eleq/el/compose/certbot-nginx/init-letsencrypt.sh
 staging=1 # Set to 1 if you're testing your setup to avoid hitting request limits
 bien remettre à 0 pour de la production...
 
-depuis le répertoire /el/compose lancer la commande suivante lors de l'ajout d'un nouveau domaine
+OBSOLETE / LANCER LES DEUX INSTRUCTION DOCKER COMPOSE CI DESSOUS depuis le répertoire /el/compose lancer la commande suivante lors de l'ajout d'un nouveau domaine
 certbot-nginx/init-letsencrypt.sh
 
 
 ATTENTION ne pas utiliser directement ./init-letsencrypt.sh depuis le répertoire certbot-nginx car dans ce cas la la commande va appeler le docker-compose.yml présent dans ce répertoire et donner l'illusion d'un comportement correct.
 
 
-pour le lancer dans /el/compose
+lancer les commande dans /home/eleq/el/compose
 ```
 docker-compose run --rm --entrypoint " certbot renew --dry-run " certbot
+```
+si on obtient l'erreur suivante arreter le container certbot
+```
+Creating compose_certbot_run ... done
+Error response from daemon: failed to set up container networking: Address already in use
 ```
 et sans le dry-run ensuite (le dry run effectue un essai de renouvellement)
 ```
 docker-compose run --rm --entrypoint " certbot renew" certbot
+
+pour obliger le renewal
+
+docker-compose run --rm --entrypoint " certbot renew --force-renewal" certbot
 ```
 faut faire relire les certificats par le nginx cad redemmarrer le container
-
+---
+---
 
 #### 4.4.2.1. certbot nginx container TROUBLESHOOTING
 ---
@@ -3133,6 +3222,8 @@ tu vas detester ...
 
 ### 4.4.11 NextCloud All in one Container
 
+#### 4.4.11.1 NGINX reverse proxy config
+
 Thomas Lavocat big remerciement
 Dans la config ci dessous remplace nextcloud.domain.tld par ton nom de domaine nextcloud.
 
@@ -3169,6 +3260,7 @@ server {
     location / {
         ##proxy_pass http://127.0.0.1:11000$request_uri;
          proxy_pass http://172.25.0.75:8080$request_uri; # to nextcloud all in one...
+          #proxy_pass http://nextcloud-aio-mastercontainer:8080$request_uri; # to nextcloud all in one with DNS name...NE FONCTIONNE PAS...
 
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Port $server_port;
@@ -3214,6 +3306,19 @@ server {
 }
 
 ```
+**Taille Max de fichier a synchroniser**
+
+problem de synchronisation de fichier trop grand
+https://help.nextcloud.com/t/files-not-getting-synced-413-request-entity-too-large/45681
+added in nginx/certbot app.conf
+```
+client_max_body_size 100M;
+client_body_buffer_size 400M;
+```
+
+
+#### 4.4.11.2 nextcloud DockerFile configuration
+
 Un autre truc à savoir c'est que docker va ouvrir un paquet de ports. Du coup, fais attention à ton firewall.
 
 De mon côté, voici ma commande pour démarrer le master container nextecloud:
@@ -3260,6 +3365,8 @@ Notre traduction pour le docker compose
       - nextcloud_aio_mastercontainer:/mnt/docker-aio-config # This line is not allowed to be changed as otherwise the built-in backup solution will not work
       #- /home/eleq/el/compose/nextcloud_aio_mastercontainer:/mnt/docker-aio-config # jyria configThis line is not allowed to be changed as otherwise the built-in backup solution will not work
       - /var/run/docker.sock:/var/run/docker.sock:ro # May be changed on macOS, Windows or docker rootless. See the applicable documentation. If adjusting, don't forget to also set 'WATCHTOWER_DOCKER_SOCKET_PATH'!
+      #TO ENABLE APACHE CONFIGURATION PERSISTENT
+      - /home/eleq/el/compose/nextcloud_aio_mastercontainer/etc_apache/:/etc/apache2/
     #network_mode: bridge # add to the same network as docker run would do
     #network_mode: host # because of nginx https://github.com/nextcloud/all-in-one/blob/main/reverse-proxy.md#1-configure-the-reverse-proxy
     ports:
@@ -3268,6 +3375,8 @@ Notre traduction pour le docker compose
       - 8686:8080
       #- 11001:11000
       #- 8443:8443 # Can be removed when running behind a web server or reverse proxy (like Apache, Nginx, Caddy, Cloudflare Tunnel and else). See https://github.com/nextcloud/all-in-one/blob/main/reverse-proxy.md
+      #labco collabora try with mastercontainer apache2 redirection
+      - 9980:9980
     networks:
        nginxapp:
          ipv4_address: 172.25.0.75
@@ -3357,6 +3466,10 @@ volumes:
 ```
 
 
+
+
+
+#### 4.4.11.3 AIO Mastercontainer apache configuration
 jemesmain remarque
 il faut désactiver (commenter) la partie ssl dans le apache du container nextcloud all in one
 
@@ -3364,10 +3477,15 @@ il faut désactiver (commenter) la partie ssl dans le apache du container nextcl
 ```
 <VirtualHost *:8080>
  # Proxy to https
-    #ProxyPass / http://127.0.0.1:8000/ #For container config and update
+    #For AIO Master container config and update
+    #ProxyPass / http://127.0.0.1:8000/ 
     #ProxyPassReverse / http://127.0.0.1:8000/
-    ProxyPass / http://172.21.0.11:8000/ #For using next cloud container
-    ProxyPassReverse / http://172.21.0.11:8000/
+    #For using next cloud container
+    #ProxyPass / http://172.21.0.11:8000/ 
+    #ProxyPassReverse / http://172.21.0.11:8000/
+    #for using nextcloud container with DNS name
+    ProxyPass / http://nextcloud-aio-apache:8000/ 
+    ProxyPassReverse / http://nextcloud-aio-apache:8000/
     ProxyPreserveHost On
     # SSL #comment ssl to avoid plain text pb
     # SSLCertificateKeyFile /etc/apache2/certs/ssl.key
@@ -3380,13 +3498,365 @@ il faut désactiver (commenter) la partie ssl dans le apache du container nextcl
  
 </VirtualHost>
 ```
-problem de synchronisation de fichier trop grand
-https://help.nextcloud.com/t/files-not-getting-synced-413-request-entity-too-large/45681
-added in nginx/certbot app.conf
+**Cette configuratin n'est pas persistante** il faut faire un bind mount
+
+
+source: https://docs.docker.com/get-started/workshop/06_bind_mounts/
+
+Run the following command to start bash in an ubuntu container with a bind mount.
 ```
-client_max_body_size 10G;
-client_body_buffer_size 400M;
+ docker run -it --mount "type=bind,src=%cd%,target=/src" ubuntu bash
+ ```
+%cd% = current directory
+The --mount type=bind option tells Docker to create a bind mount, where src is the current working directory on your host machine (getting-started-app), and target is where that directory should appear inside the container (/src).
+
+After running the command, Docker starts an interactive bash session in the root directory of the container's filesystem. You can see the result in /src
 ```
+docker run -it --mount "type=bind,src=/home/eleq/el/compose/nextcloud_aio_mastercontainer/etc_apache/,target=/etc/apache2/ " nextcloud-aio-mastercontainer bash
+
+response:
+
+Unable to find image 'nextcloud-aio-mastercontainer:latest' locally
+docker: Error response from daemon: pull access denied for nextcloud-aio-mastercontainer, repository does not exist or may require 'docker login': denied: requested access to the resource is denied
+
+Run 'docker run --help' for more information
+
+
+```
+
+DOCKER NETWORK connect le mastercontainer to nextcloud aio network... SI LES PING SAUTE ENTRE AIO MASTERCONTAINER ET AIO APACHE
+docker network connect nextcloud-aio nextcloud-aio-mastercontainer
+
+
+---
+---
+ #### 4.4.11.4 client nextcloud sur debian
+ ```
+ sudo apt install nextcloud-desktop
+ ```
+
+---
+
+####4.4.11.5 NextCloud SOFTWARE installation
+
+**CONFIGURING an application with OCC**
+
+FOR EXAMPLE MEMORIES REVERSE GEOCODING places-setup
+Simply run the following: sudo docker exec --user www-data -it nextcloud-aio-nextcloud php occ your-command. Of course your-command needs to be exchanged with the command that you want to run.
+
+avec un commande directement sur echinix
+```
+sudo docker exec --user www-data -it nextcloud-aio-nextcloud php occ memories:places-setup
+```
+---
+**app Memories**
+
+ s'installe avec l'interface d'admin.
+En revanche il faut configurer le géocoding inverse avec OCC 
+
+
+```
+sudo docker exec --user www-data -it nextcloud-aio-nextcloud php occ memories:places-setup
+Attempting to set up reverse geocoding
+Database support was detected
+
+Database is already set up
+This will drop and re-download the planet database
+This is generally not necessary to do frequently 
+
+Are you sure you want to download the planet database?
+Proceed? [y/N] y
+Download planet data to temporary file...
+Inserting planet data into database...
+Inserted 500 / 635189 places (0.1%), Last: Val-d''Oise
+Inserted 1000 / 635189 places (0.2%), Last: Hyvinkää
+Inserted 1500 / 635189 places (0.2%), Last: Mandanici
+Inserted 2000 / 635189 places (0.3%), Last: Sueddi/Suelli
+
+```
+---
+
+**app recognize**
+
+ s'installe avec l'interface d'admin => il faut ensuite valider la reconnaissance de visage dans la partie recognize de l'interface
+
+plusieurs instructions sont possible selon les warning..(par exemple téléchargement des modèles incomplets);
+
+ Pour télécharger tous les modèles avant d'exécuter les travaux de classification, exécutez la commande suivante sur le terminal du serveur.
+
+```
+ sudo docker exec --user www-data -it nextcloud-aio-nextcloud php occ recognize:download-models
+ ```
+ pas de retour d'information
+ ```
+ jemesmain@echinix:~$ sudo docker exec --user www-data -it nextcloud-aio-nextcloud php occ recognize:download-models
+[sudo] password for jemesmain: 
+jemesmain@echinix:~$ 
+ ```
+ Retour dans l'interface d'admin recognize
+ Statut
+Les modèles de machine learning ont été téléchargés avec succès.
+Cette application est installée et va automatiquement classer les fichiers en arrière-plan.
+Reconnaissance des visages
+La reconnaissance faciale est en cours. 
+
+le truc c'est que dans l'interface d'admin il fini par me dire que cela fait 1j qu'il n'a pas lancé de farce recognize
+source: https://docs.nextcloud.com/server/latest/admin_manual/ai/app_recognize.html
+
+```
+elimination des background job
+docker exec -u www-data nextcloud-aio-nextcloud php occ recognize:clear-background-jobs
+classify
+docker exec -u www-data nextcloud-aio-nextcloud php occ recognize:classify
+```
+cela ne fait pas apparaitre de nouveaux éléments a traiter...
+```
+Face results for 41269 are in
+Face score too low. continuing with next face.
+face classifier end
+No files left to classify
+Movinet does not support WASM mode
+No files left to classify
+No files left to classify
+face classifier end
+No files left to classify
+Movinet does not support WASM mode
+
+```
+ATTENTION AVEC LA COMMANDE CI DESSOUS ON PERD TOUTE LA FAMILLE QUE L ON A PRIS DU TEMPS A REMETTRE AU BON ENDROIT....
+Pour supprimer tous les regroupements faciaux, mais conserver les visages détectés bruts, exécuter la commande suivante dans le terminal :
+
+```
+docker exec -u www-data nextcloud-aio-nextcloud php occ recognize:reset-face-clusters
+```
+
+---
+
+**app Nextcloud Office**
+
+Collabora Online est une puissante suite bureautique en ligne basée sur LibreOffice avec édition collaborative, qui prend en charge tous les principaux formats de documents, de feuilles de calcul et de présentations et fonctionne avec tous les navigateurs modernes.
+
+Le serveur Collabora Online est accessible.
+
+Collabora Online Development Edition 24.04.13.3 b7ba9a23ba
+
+URL utilisée par le navigateur : https://nextcloud.echinix.energyleaks.org
+URL Nextcloud utilisée par Collabora : https://nextcloud.echinix.energyleaks.org (Determined from the browser URL)
+
+Nextcloud Office nécessite un serveur distinct exécutant Collabora Online pour fournir des fonctionnalités d'édition. Collabora Online nécessite un serveur distinct agissant comme un client de type WOPI pour fournir des capacités d'édition.
+
+dans l'admin nexcloud office URL (et port) du serveur Collabora Online
+```
+OBSOLETE http://nextcloud-aio-collabora:9980
+```
+Voir avec les élément de container unitaire créé par le mastercontainer pour le nom et le port
+```
+
+jemesmain@echinix:~$ docker exec -u www-data nextcloud-aio-nextcloud php occ app:install richdocuments 
+richdocuments already installed
+```
+Il faut configurer un **deuxieme sous domaine**
+```
+labco.echinix.energyleaks.org
+```
+dans l'admin nexcloud office URL (et port) du serveur Collabora Online **bien utiliser le httpS**
+```
+https://labco.echinix.energyleaks.org
+```
+**troubleshooting failed to load document....**
+source: https://help.nextcloud.com/t/collabora-integration-guide/151879
+
+Often only need to complete the checklist and your integration likely will work.
+
+    from the client, verify access to the Nextcloud UI (use a browser or run curl https://cloud.mydomain/status.php)
+    https://nextcloud.echinix.energyleaks.org/status.php
+docker exec -it nextcloud-aio-collabora curl https://nextcloud.echinix.energyleaks.org/status.php -vvv
+
+    from the client, verify access to Collabora (use browser or run curl https://office.mydomain/hosting/discovery)
+    https://labco.echinix.energyleaks.org/hosting/discovery
+
+
+        the result must be an XML document describing the capabilities of the WOPI client
+        (long list of different file types which could be opened)
+        review the content of the XML document reflect the right public hostname
+        verify the content of the document reflect the right - https:// - URL scheme
+
+    from Nextcloud, verify access to Collabora (from console run curl https://office.mydomain/hosting/discovery)
+    cad from nextcloud-aio-mastercontainer
+    curl  https://labco.echinix.energyleaks.org/hosting/discovery
+    docker exec -it nextcloud-aio-nextcloud curl https://labco.echinix.energyleaks.org/hosting/discovery -vvv
+
+    other test
+    docker exec -it nextcloud-aio-nextcloud curl https://nextcloud.echinix.energyleaks.org/standalone-signaling/api/v1/welcome -vvv  
+
+    from Collabora, verify access to the Nextcloud UI (from console run curl https://cloud.mydomain/status.php)
+    curl https://nextcloud.echinix.energyleaks.org/status.php
+
+    Install richdocuments app occ app:enable richdocuments
+    jemesmain@echinix:~$ docker exec -u www-data nextcloud-aio-nextcloud php occ app:install richdocuments
+richdocuments already installed
+jemesmain@echinix:~$ docker exec -u www-data nextcloud-aio-nextcloud php occ app:enable richdocuments
+richdocuments already enabled
+jemesmain@echinix:~$ docker exec -u www-data nextcloud-aio-nextcloud php occ config:app:set richdocuments wopi_url --value https://labco.echinix.energyleaks.org
+Config value 'wopi_url' for app 'richdocuments' is now set to 'https://labco.echinix.energyleaks.org', stored as mixed in fast cache
+
+  verify “Allow list for WOPI requests” entries. empty the list for testing then add IPs as needed
+
+still troubleshooting
+source: https://help.nextcloud.com/t/collabora-office-failed-to-read-document-from-storage/182346/7
+
+docker exec -u 0 -it nextcloud-aio-collabora bash
+le -u 0 nous permet d'etre root sur le container et de faire
+apt update
+apt install traceroute
+
+from collabora container
+root@90ec31702014:/# traceroute nextcloud.echinix.energyleaks.org
+traceroute to nextcloud.echinix.energyleaks.org (82.64.99.135), 30 hops max, 60 byte packets
+ 1  172.21.0.1 (172.21.0.1)  0.062 ms  0.015 ms  0.012 ms
+ 2  82-64-99-135.subs.proxad.net (82.64.99.135)  3.734 ms  4.312 ms  4.285 ms
+
+docker exec -u 0 -it nextcloud-aio-mastercontainer bash
+le -u 0 nous permet d'etre root sur le container et de faire
+apt update
+apt not found
+apt install traceroute
+traceroute est déjà installé
+traceroute to labco.echinix.energyleaks.org (82.64.99.135), 30 hops max, 46 byte packets
+ 1  172.25.0.1 (172.25.0.1)  0.002 ms  0.002 ms  0.001 ms
+ 2  82-64-99-135.subs.proxad.net (82.64.99.135)  4.720 ms  1.189 ms  1.174 ms
+
+
+essai d'installation de CODE plutot que le propore serceur c'est pire
+jemesmain@echinix:~$ docker exec -u www-data nextcloud-aio-nextcloud php -d memory_limit=512M occ app:install richdocumentscode
+richdocumentscode 24.4.1303 installed
+richdocumentscode enabled
+
+Impossible d'établir la connexion au serveur Collabora Online.
+
+Failed to connect to the remote server: Client error: `GET https://nextcloud.echinix.energyleaks.org/custom_apps/richdocumentscode/proxy.php?req=/hosting/discovery` resulted in a `400 Bad Request` response: <html><body> <h1>Socket proxy error</h1> <p>Error: no_glibc</p> </body></html>
+
+desinstallation
+jemesmain@echinix:~$ docker exec -u www-data nextcloud-aio-nextcloud php -d memory_limit=512M occ app:remove richdocumentscode
+richdocumentscode disabled
+richdocumentscode 24.4.1303 removed
+
+
+
+
+
+Extra things
+https://labco.echinix.energyleaks.org/browser/dist/admin/admin.html
+never manage to enter due to login information
+
+corrected here **
+https://www.linode.com/docs/guides/how-to-install-collabora-code/
+in nextcloud-aio-collabora container
+coolconfig set-admin-password
+
+pour récuperer un document dans un container docker arrété genre le fichier de conf de cool de collabora
+ne pas oublier le . a la fin de l'instruction suivante pour copier dans le meme répertoire.
+docker cp nextcloud-aio-collabora:/etc/coolwsd/coolwsd.xml .
+docker cp coolwsd.xml nextcloud-aio-collabora:/etc/coolwsd/coolwsd.xml
+
+pour mettre tous les droits au fichier (not safe)
+chmod 777 coolwsd.xml
+chown chgrp user nom du fichier
+pour modifier les droit (ls -l pour les afficher et comparer autres fichiers)
+chmod user -u ou group -g ou other -o et +-x execution / +-r read / +-w write ou en octal.
+
+pour rentrer en tant que root (user 0) dans un container démarré
+docker exec -u 0 -it nextcloud-aio-collabora bash
+
+
+---
+---
+---
+---
+---
+---
+---
+---
+
+
+Claude AI
+Nextcloud AIO Architecture
+You're correct about the flow, but let me clarify the proper AIO architecture:
+nginx → nextcloud-aio-mastercontainer:8080 → nextcloud-aio-apache:11000 → nextcloud-aio-nextcloud:9000
+
+
+Expected AIO Port Configuration
+In a standard Nextcloud AIO setup:
+
+nextcloud-aio-mastercontainer: Port 8080 (management interface)
+nextcloud-aio-apache: Port 11000 (web server)
+nextcloud-aio-nextcloud: Port 9000 (PHP-FPM)
+
+1. In Nextcloud Admin → Office:
+Collabora Online server: http://nextcloud-aio-collabora:9980
+2. Collabora environment should have:
+bash# Check current Collabora config
+docker exec nextcloud-aio-collabora env | grep aliasgroup
+
+# Should be something like:
+aliasgroup1=http://nextcloud-aio-apache:11000
+# OR
+aliasgroup1=https://nextcloud.echinix.energyleaks.org:443
+
+---
+---
+---
+---
+---
+
+
+---
+**app preview generator**
+
+to better rendering photo and use less bandwith
+
+---
+---
+
+## 4.5. Install MailCow
+https://docs.mailcow.email/getstarted/install/#selinux-configuration-optional
+
+dans 
+```
+sudo vi mailcow.conf.bak
+MAILCOW_HOSTNAME=mail.echinix.energyleaks.org
+HTTP_PORT = 8880
+HTTPS_PORT = 4443
+```
+dans la configuration du  nginx compose il faut ajouter ceci
+```
+server {
+     listen 443 ssl;
+     server_name mail.echinix.energyleaks.org;
+     server_tokens off;
+
+     ssl_certificate /etc/letsencrypt/live/echinix.energyleaks.org/fullchain.pem;
+     ssl_certificate_key /etc/letsencrypt/live/echinix.energyleaks.org/privkey.pem;
+     include /etc/letsencrypt/options-ssl-nginx.conf;
+     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+
+  location /
+  {
+         proxy_pass http://172.30.1.9:8880;
+          proxy_set_header    Host                $http_host;
+          proxy_set_header    X-Real-IP           $remote_addr;
+          proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
+     }
+
+ }
+```
+et pour que le réseau du nginx compose puisse pinger le nginx de mailcow dockerized
+
+```
+docker network connect mailcowdockerized_mailcow-network cnginx
+```
+
 
 
 # 5. KUBERNETES
